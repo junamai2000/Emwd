@@ -34,7 +34,7 @@ protected:
 	/**
 	 * Configuration class
 	 */
-	Configuration* _config;
+	Configuration* _configuration;
 
 public:
 	/**
@@ -65,18 +65,18 @@ public:
 	 * set Configuration class
 	 * @param [in] Configuration config
 	 */
-	virtual void setConfig(Configuration* config)
+	virtual void setConfiguration(Configuration* configuration)
 	{
-		this->_config = config;
+		this->_configuration = configuration;
 	}
 
 	/**
 	 * get Configuration class
 	 * @return Configuration class set by setConfig
 	 */
-	Configuration* getConfig()
+	Configuration* getConfiguration()
 	{
-		return this->_config;
+		return this->_configuration;
 	}
 };
 

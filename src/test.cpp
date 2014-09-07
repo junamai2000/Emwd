@@ -116,7 +116,7 @@ public:
 	bool process()
 	{
 		// test for config
-		picojson::value *config = (picojson::value*)this->getController()->getApplication()->getConfig()->getStorage();
+		picojson::value *config = (picojson::value*)this->getController()->getApplication()->getConfiguration()->getStorage();
 		picojson::object& o = config->get<picojson::object>();
 		picojson::object& e = o["web"].get<picojson::object>();
 		std::cout << "Start Application : " << e["name"].get<std::string>() << std::endl;
@@ -330,7 +330,7 @@ int main (int argc,char **argv)
 	// Application
 	WebApplication *app = new WebApplication();
 	app->setRequest(request);
-	app->setConfig(conf);
+	app->setConfiguration(conf);
 	app->registerController("sampleController", controller);
 	app->registerRoute("/sample/do", "sampleController", "sampleAction");
 	app->registerRoute("/sample/do2", "sampleController", "sample2Action");
