@@ -18,6 +18,11 @@
 
 namespace Emwd { namespace core {
 
+struct char_cmp { bool operator () (const char *a,const char *b) const
+{
+    return strcmp(a,b)<0;}
+};
+
 /**
  * Model class
  * this class validates inputs values with Validator class
@@ -33,7 +38,7 @@ private:
 	/**
 	 * registered validators
 	 */
-	std::map <const char*, std::vector <Validator*> > _validators;
+	std::map <const char*, std::vector <Validator*>, char_cmp> _validators;
 
 	/**
 	 * scenario to change validate action
@@ -137,6 +142,12 @@ public:
 	 */
 	virtual bool validate()
 	{
+		// No validator
+		if (this->_validators[this->_scenario.c_str()].size()==0)
+		{
+			return true;
+		}
+
 		std::vector<Validator *>::iterator it = this->_validators[this->_scenario.c_str()].begin();
 		while (it != this->_validators[this->_scenario.c_str()].end())
 		{
@@ -145,9 +156,9 @@ public:
 		}
 		if (this->hasError())
 		{
-			return (false);
+			return false;
 		}
-		return (true);
+		return true;
 	}
 
 	/**

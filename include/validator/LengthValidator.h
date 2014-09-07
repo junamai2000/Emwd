@@ -21,11 +21,6 @@ class LengthValidator: public Emwd::core::Validator
 {
 private:
 	/**
-	 * input name which is validated
-	 */
-	const char* _attribute;
-
-	/**
 	 * max acceptable length of a string
 	 */
 	int _max;
@@ -34,6 +29,11 @@ private:
 	 * minimun acceptable length of a string
 	 */
 	int _min;
+
+	/**
+	 * input name which is validated
+	 */
+	const char* _attribute;
 
 	/**
 	 * error message if a string is too long

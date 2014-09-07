@@ -28,14 +28,14 @@ protected:
 	int _errorCode;
 
 	/**
-	 * error message
-	 */
-	const char* _message;
-
-	/**
 	 * line number of error
 	 */
 	int _lineNumber;
+
+	/**
+	 * error message
+	 */
+	const char* _message;
 
 	/**
 	 * file name which raised error

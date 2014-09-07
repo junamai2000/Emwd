@@ -1,4 +1,6 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
+#include <time.h>
+
 #include <core/Configuration.h>
 #include <core/Model.h>
 #include <web/WebApplication.h>
@@ -8,17 +10,11 @@
 #include <validator/LengthValidator.h>
 #include <validator/RequiredValidator.h>
 
+#include <picojson/picojson.h>
+
 using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
-
-/**
- * SampleController class
- */
-class SampleController : public Controller
-{
-
-};
 
 /**
  * SampleEmail class
@@ -101,6 +97,12 @@ public:
 
 	bool process()
 	{
+		// test for config
+		picojson::value *config = (picojson::value*)this->getController()->getApplication()->getConfig()->getStorage();
+		picojson::object& o = config->get<picojson::object>();
+		picojson::object& e = o["web"].get<picojson::object>();
+		std::cout << "Start Application : " << e["name"].get<std::string>() << std::endl;
+
 		SampleForm form;
 		form.setParams(this->getController()->getApplication()->getRequest()->getGets());
 		form.registerValidators();
@@ -176,7 +178,96 @@ public:
 		std::cout << "> postFilter in SampleFilter2" << std::endl;
 		return true;
 	}
+};
 
+/**
+ * ProcessTimeFilter class
+ */
+class ProcessTimeFilter : public Filter
+{
+private:
+	clock_t _start;
+	clock_t _end;
+public:
+	virtual const char* getComponentName()
+	{
+		return "ProcessTimeFilter";
+	}
+
+	virtual bool preFilter(Controller* controller, Action* action)
+	{
+		this->_start = clock();
+		std::cout << "Started at "<< std::fixed << this->_start << std::endl;
+		return true;
+	}
+
+	virtual bool postFilter(Controller* controller, Action* action)
+	{
+		this->_end = clock();
+		std::cout << "Finished at "<< std::fixed << this->_end << std::endl;
+		std::cout << std::fixed << (double)(this->_end - this->_start)/CLOCKS_PER_SEC << "秒かかりました" << std::endl;
+		return true;
+	}
+};
+
+/**
+ * SampleController class
+ */
+class SampleController : public Controller
+{
+private:
+	Filter* filter;
+	Filter* filter2;
+	Filter* timer;
+	Action* action;
+	SampleEmail* email;
+
+public:
+	/**
+	 *
+	 * @return
+	 */
+	virtual const char* getComponentName()
+	{
+		return "SampleController";
+	}
+
+	/**
+	 *
+	 */
+	void init()
+	{
+		// Email logic, which is a sample
+		// by using this, users can isolate email logic from a core logig
+		this->email = new SampleEmail;
+
+		// sample action
+		this->action = new SampleAction;
+		this->action->attachEvent("beforeRun", email);
+
+		// filter chain
+		// you may use this to authorize users (but not implmented yet)
+		this->filter = new SampleFilter();
+		this->filter2 = new Sample2Filter();
+		this->filter->setNextFilter(filter2);
+
+		// sample to check process time in action class
+		this->timer = new ProcessTimeFilter();
+
+		this->registerAction("sampleAction", action);
+		this->registerAction("sample2Action", action);
+		this->registerFilter("sampleAction", filter);
+		this->registerFilter("sample2Action", timer);
+	}
+
+	~SampleController()
+	{
+		delete this->filter;
+		delete this->filter2;
+		delete this->timer;
+		delete this->action;
+		delete this->email;
+	}
 };
 
 /**
@@ -193,33 +284,28 @@ int main (int argc,char **argv)
 		return 1;
 	}
 
+	const char* json = "{\"web\":{\"name\":\"Sample Application (string from json)\"}}";
+	picojson::value storage;
+	std::string err;
+	picojson::parse(storage, json, json + strlen(json), &err);
+	if (!err.empty())
+	{
+		std::cerr << "json parse error" << std::endl;
+		return 1;
+	}
+
 	Configuration *conf = new Configuration();
+	conf->setStorage(&storage);
 
 	// create dummy request to emulate http get request
 	Request *request = new DummyRequest();
-	request->setGet("user", "aa");
-	request->setGet("price", "1000");
+	request->setGet("user", "123456");
+	request->setGet("price", "100");
 	request->setRequestUrl(argv[1]);
 
-	// Email logic, which is a sample
-	// by using this, users can isolate email logic from a core logig
-	SampleEmail *email = new SampleEmail;
-
-	// sample action
-	Action* action = new SampleAction;
-	action->attachEvent("beforeRun", email);
-
-	// filter chain
-	// you may use this to authorize users (but not implmented yet)
-	Filter* filter = new SampleFilter();
-	Filter* filter2 = new Sample2Filter();
-	filter->setNextFilter(filter2);
-
 	// Sample controller
-	Controller* controller = new SampleController;
-	controller->registerAction("sampleAction", action);
-	controller->registerAction("sample2Action", action);
-	controller->registerFilter("sampleAction", filter);
+	Controller* controller = new SampleController();
+	controller->init();
 
 	// Application
 	WebApplication *app = new WebApplication();
@@ -235,8 +321,6 @@ int main (int argc,char **argv)
 	// clean up, sould I use auto_ptr or somethig?
 	delete conf;
 	delete request;
-	delete action;
-	delete email;
 	delete controller;
 	delete app;
 

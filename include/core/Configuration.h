@@ -16,9 +16,28 @@ namespace Emwd { namespace core {
 class Configuration
 {
 private:
+	/**
+	 *
+	 */
+	void* _storage;
 
 public:
-	// not implemented yet
+	/**
+	 *
+	 * @param storage
+	 */
+	void setStorage(void* storage)
+	{
+		this->_storage = storage;
+	}
+
+	/**
+	 *
+	 */
+	void* getStorage()
+	{
+		return this->_storage;
+	}
 };
 
 } }

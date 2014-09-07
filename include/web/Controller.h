@@ -46,10 +46,13 @@ public:
 	 * Get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "Controller";
-	}
+	virtual const char* getComponentName() = 0;
+
+	/**
+	 * Init function
+	 * Add actions
+	 */
+	virtual void init() = 0;
 
 	/**
 	 * Get Application class
@@ -65,10 +68,20 @@ public:
 	 * @param name
 	 * @param action
 	 */
-	void registerAction(const char* name, Action* action)
+	void registerAction(const char* actionName, Action* action)
 	{
 		action->setController(this);
-		this->_actions[name] = action;
+		this->_actions[actionName] = action;
+	}
+
+	/**
+	 * Check action class is registered or not
+	 * @param name
+	 * @return true if registered
+	 */
+	bool hasAction(const char* actionName)
+	{
+		return this->_actions[actionName]==NULL? false:true;
 	}
 
 	/**
@@ -100,6 +113,14 @@ public:
 			}
 		}
 		return this->_actions[action]->run(this);
+	}
+
+	/**
+	 *
+	 */
+	~Controller()
+	{
+		;
 	}
 };
 

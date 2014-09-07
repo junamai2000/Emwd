@@ -76,7 +76,7 @@ public:
 		catch (const HttpException& e)
 		{
 			this->_request->setStatusCode(e.getStatusCode());
-			this->_request->setResponse(e.getMessage());
+			// this->_request->setResponse(e.getMessage());
 		}
 		return retval;
 	}
@@ -120,17 +120,36 @@ public:
 	}
 
 	/**
+	 * Has controller
+	 * @param controllerName
+	 * @return true if exists
+	 */
+	bool hasController(const char* controllerName)
+	{
+		return this->_controllers[controllerName]==NULL? false:true;
+	}
+
+	/**
 	 * Register route to a controller and an action
 	 * @param path
 	 * @param controller
 	 * @param action
 	 */
-	virtual void registerRoute(const char* path, const char* controller, const char *action)
+	virtual bool registerRoute(const char* path, const char* controllerName, const char *actionName)
 	{
-		PROCESSOR tmp;
-		tmp.controller = controller;
-		tmp.action = action;
-		this->_processMap[path] = tmp;
+		if (this->hasController(controllerName))
+		{
+			if (this->_controllers[controllerName]->hasAction(actionName))
+			{
+				PROCESSOR tmp;
+				tmp.controller = controllerName;
+				tmp.action = actionName;
+				this->_processMap[path] = tmp;
+				return true;
+			}
+		}
+		return false;
+
 	}
 };
 

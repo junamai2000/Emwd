@@ -13,6 +13,8 @@
 
 namespace Emwd { namespace core {
 
+class Response;
+
 /**
  * Request class
  */
@@ -112,19 +114,45 @@ public:
 	 * set response string such as HTML
 	 * @param response contents
 	 */
-	virtual void setResponse(const char* response) = 0;
+	virtual void setResponse(Response* response) = 0;
 
 	/**
 	 * get response string
 	 * @return response contents like XML
 	 */
-	virtual const char* getResponse() = 0;
+	virtual Response* getResponse() = 0;
 
 	/**
 	 * set request method
 	 * @param method
 	 */
 	virtual void setRequestMethod(REQUEST_METHOD method) = 0;
+
+	/**
+	 *
+	 * @param key
+	 * @param value
+	 */
+	virtual void setHeader(const char* key, const char value) = 0;
+
+	/**
+	 *
+	 * @param headers
+	 */
+	virtual void setHeaders(std::map <const char*, const char*> headers) = 0;
+
+	/**
+	 *
+	 * @param key
+	 * @return
+	 */
+	virtual const char* getHeader(const char* key) = 0;
+
+	/**
+	 *
+	 * @return
+	 */
+	virtual std::map <const char*, const char*> getHeaders() = 0;
 
 	/**
 	 * get request method

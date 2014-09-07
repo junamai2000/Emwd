@@ -31,14 +31,14 @@ protected:
 	int _code;
 
 	/**
-	 * exception message
-	 */
-	const char* _message;
-
-	/**
 	 * line number
 	 */
 	int _lineNumber;
+
+	/**
+	 * exception message
+	 */
+	const char* _message;
 
 	/**
 	 * file name

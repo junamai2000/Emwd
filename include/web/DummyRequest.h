@@ -16,6 +16,8 @@
 
 namespace Emwd { namespace web {
 
+class Response;
+
 /**
  * DummyRequest class
  * Use this class to emulate Http request
@@ -176,18 +178,18 @@ public:
 		this->_statusCode = code;
 	}
 
-	virtual void setResponse(const char* response)
+	virtual void setResponse(Emwd::core::Response* response)
 	{
-		this->_response = response;
+		;
 	}
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual const char* getResponse()
+	virtual Emwd::core::Response* getResponse()
 	{
-		return this->_response.c_str();
+		return NULL;
 	}
 
 	/**
@@ -197,6 +199,46 @@ public:
 	virtual void setRequestMethod(REQUEST_METHOD method)
 	{
 		this->_method = method;
+	}
+
+	/**
+	 *
+	 * @param key
+	 * @param value
+	 */
+	virtual void setHeader(const char* key, const char value)
+	{
+		;
+	}
+
+	/**
+	 *
+	 * @param headers
+	 */
+	virtual void setHeaders(std::map<const char*, const char*> headers)
+	{
+		;
+	}
+
+	/**
+	 *
+	 * @param key
+	 * @return
+	 */
+	virtual const char* getHeader(const char* key)
+	{
+		return "not implemented yet";
+	}
+
+	/**
+	 *
+	 * @return
+	 */
+	virtual std::map<const char*, const char*> getHeaders()
+	{
+		std::map<const char*, const char*> dummy;
+		dummy["not implemented yet"] = "not implemented yet";
+		return dummy;
 	}
 
 	/**

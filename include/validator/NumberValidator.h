@@ -22,11 +22,6 @@ class NumberValidator: public Emwd::core::Validator
 {
 private:
 	/**
-	 * parameter name to be checked
-	 */
-	const char* _attribute;
-
-	/**
 	 * max acceptable number
 	 */
 	int _max;
@@ -35,6 +30,11 @@ private:
 	 * minimum acceptable number
 	 */
 	int _min;
+
+	/**
+	 * parameter name to be checked
+	 */
+	const char* _attribute;
 
 	/**
 	 * user-defined error message when value is too big
