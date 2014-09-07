@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * LenghtValidator.h
  *
@@ -10,15 +11,13 @@
 #include <core/Validator.h>
 #include <core/Model.h>
 
-using namespace Emwd::core;
-
 namespace Emwd { namespace validator {
 
 /**
  * LengthValidator class
  * check if string length is valid
  */
-class LengthValidator: public Validator
+class LengthValidator: public Emwd::core::Validator
 {
 private:
 	/**
@@ -81,7 +80,7 @@ public:
 	 * @param model
 	 * @return true if a string is within specification
 	 */
-	virtual bool validate(Model* model)
+	virtual bool validate(Emwd::core::Model* model)
 	{
 		int length = model->getParam(this->_attribute).length();
 		if (length < this->_min)

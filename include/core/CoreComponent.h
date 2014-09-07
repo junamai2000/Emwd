@@ -1,4 +1,5 @@
-/* vim:set noet ts=2 st=2 sw=2 ft=cpp fenc=utf-8 ff=unix:
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
+/*
  * CoreComponent.h
  *
  *  Created on: 2014/09/04

@@ -1,5 +1,6 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
- * RequiredValidator.h
+* RequiredValidator.h
  *
  *  Created on: 2014/09/06
  *      Author: Junya Namai
@@ -11,14 +12,12 @@
 #include <core/Validator.h>
 #include <core/Model.h>
 
-using namespace Emwd::core;
-
 namespace Emwd { namespace validator {
 
 /**
  * RequiredValidator
  */
-class RequiredValidator: public Validator
+class RequiredValidator: public Emwd::core::Validator
 {
 private:
 	/**
@@ -59,7 +58,7 @@ public:
 	 * @param model
 	 * @return true if value is not empty
 	 */
-	virtual bool validate(Model* model)
+	virtual bool validate(Emwd::core::Model* model)
 	{
 		std::string tmp = model->getParam(this->_attribute);
 		if (tmp.size() == 0)

@@ -1,5 +1,6 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
- * Application.h
+ * WebApplication.h
  *
  *  Created on: 2014/09/06
  *      Author: Junya Namai
@@ -19,13 +20,10 @@
 
 namespace Emwd { namespace web {
 
-using namespace Emwd::core;
-using namespace Emwd::web;
-
 /**
  * WebApplication class
  */
-class WebApplication : public Application
+class WebApplication : public Emwd::core::Application
 {
 private:
 	/**
@@ -75,10 +73,10 @@ public:
 			retval = this->invoke();
 			this->raiseEvent("afterRun");
 		}
-		catch (HttpException *e)
+		catch (const HttpException& e)
 		{
-			this->_request->setStatusCode(e->getStatusCode());
-			this->_request->setResponse(e->getMessage());
+			this->_request->setStatusCode(e.getStatusCode());
+			this->_request->setResponse(e.getMessage());
 		}
 		return retval;
 	}
@@ -100,15 +98,15 @@ public:
 			{
 				const char *controllerName = it->second.controller;
 				if (controllerName == NULL)
-					throw new HttpException(404, "Requested Controller Is Not Found");
+					throw HttpException(404, "Requested Controller Is Not Found");
 
 				if (this->_controllers[controllerName] == NULL)
-					throw new HttpException(404, "Requested Action Is Not Found");
+					throw HttpException(404, "Requested Action Is Not Found");
 
 				return this->_controllers[controllerName]->run(this, it->second.action);
 			}
 		}
-		throw new HttpException(404, "Requested Controller Is Not Found");
+		throw HttpException(404, "Requested Controller Is Not Found");
 	}
 
 	/**

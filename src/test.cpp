@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 #include <core/Configuration.h>
 #include <core/Model.h>
 #include <web/WebApplication.h>
@@ -7,6 +8,7 @@
 #include <validator/LengthValidator.h>
 #include <validator/RequiredValidator.h>
 
+using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
 
@@ -185,13 +187,13 @@ public:
  */
 int main (int argc,char **argv)
 {
-	Configuration *conf = new Configuration();
-
 	if (argv[1] == NULL)
 	{
 		std::cerr << "need request path" << std::endl;
 		return 1;
 	}
+
+	Configuration *conf = new Configuration();
 
 	// create dummy request to emulate http get request
 	Request *request = new DummyRequest();

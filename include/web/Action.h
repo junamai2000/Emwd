@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * Action.h
  *
@@ -18,14 +19,12 @@
 
 namespace Emwd { namespace web {
 
-using namespace Emwd::core;
-
 class Controller;
 
 /**
  * Action class
  */
-class Action : public CoreComponent
+class Action : public Emwd::core::CoreComponent
 {
 private:
 	/**

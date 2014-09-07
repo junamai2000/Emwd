@@ -1,5 +1,6 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
- * NumberValidator.h
+* NumberValidator.h
  *
  *  Created on: 2014/09/06
  *      Author: Junya Namai
@@ -11,15 +12,13 @@
 #include <core/Validator.h>
 #include <core/Model.h>
 
-using namespace Emwd::core;
-
 namespace Emwd { namespace validator {
 
 /**
  * NumberValidator class
  * check if an input is within specific range
  */
-class NumberValidator: public Validator
+class NumberValidator: public Emwd::core::Validator
 {
 private:
 	/**
@@ -82,7 +81,7 @@ public:
 	 * @param model
 	 * @return true if input is valid
 	 */
-	virtual bool validate(Model* model)
+	virtual bool validate(Emwd::core::Model* model)
 	{
 		long num = std::stoi(model->getParam(this->_attribute));
 		if (num < this->_min)

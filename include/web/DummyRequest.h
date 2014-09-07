@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * ApacheRequest.h
  *
@@ -19,7 +20,7 @@ namespace Emwd { namespace web {
  * DummyRequest class
  * Use this class to emulate Http request
  */
-class DummyRequest : public Request
+class DummyRequest : public Emwd::core::Request
 {
 private:
 	/**

@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * HttpException.h
  *
@@ -12,12 +13,10 @@
 
 namespace Emwd { namespace web {
 
-using namespace Emwd::core;
-
 /**
  * HttpException class
  */
-class HttpException : public Exception
+class HttpException : public Emwd::core::Exception
 {
 private:
 	/**
@@ -50,7 +49,7 @@ public:
 	 * Get Http status code
 	 * @return http status code
 	 */
-	int getStatusCode()
+	int getStatusCode() const throw()
 	{
 		return this->_statusCode;
 	}

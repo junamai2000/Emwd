@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * Controller.h
  *
@@ -19,12 +20,10 @@
 
 namespace Emwd { namespace web {
 
-using namespace Emwd::core;
-
 /**
  * Controller class
  */
-class Controller : public CoreComponent
+class Controller : public Emwd::core::CoreComponent
 {
 private:
 	/**
@@ -40,7 +39,7 @@ private:
 	/**
 	 * A pointer to Application class
 	 */
-	Application* _app;
+	Emwd::core::Application* _app;
 
 public:
 	/**
@@ -56,7 +55,7 @@ public:
 	 * Get Application class
 	 * @return a pointer to Application class
 	 */
-	Application* getApplication()
+	Emwd::core::Application* getApplication()
 	{
 		return this->_app;
 	}
@@ -89,7 +88,7 @@ public:
 	 * @param action
 	 * @return true if action finishes successfully
 	 */
-	virtual bool run(Application* app, const char* action)
+	virtual bool run(Emwd::core::Application* app, const char* action)
 	{
 		this->_app = app;
 		if (this->_filters.size() > 0)

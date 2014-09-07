@@ -1,3 +1,4 @@
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
  * FilterChain.h
  *
@@ -17,15 +18,13 @@
 
 namespace Emwd { namespace web {
 
-using namespace Emwd::core;
-
 /**
  * Filter class
  * This class is a chain of responsibility
  * execute filters before and after action class
  * this can be used for authorization before user enters action class
  */
-class Filter : public CoreComponent
+class Filter : public Emwd::core::CoreComponent
 {
 protected:
 	/**

@@ -1,4 +1,5 @@
-/* vim:set noet ts=2 st=2 sw=2 ft=cpp fenc=utf-8 ff=unix:
+// vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
+/*
  * Exception.h
  *
  *  Created on: 2014/09/04
@@ -8,12 +9,14 @@
 #ifndef EMWD_CORE_EXCEPTION_H_
 #define EMWD_CORE_EXCEPTION_H_
 
+#include <exception>
+
 namespace Emwd { namespace core {
 
 /**
  * Exception class
  */
-class Exception
+class Exception : public std::exception
 {
 private:
 	/**
@@ -63,7 +66,7 @@ public:
 	 * get exception code
 	 * @return exception code number
 	 */
-	int getCode()
+	int getCode() const throw()
 	{
 		return this->_code;
 	}
@@ -72,7 +75,16 @@ public:
 	 * get exception message
 	 * @return exception message string
 	 */
-	const char* getMessage()
+	const char* getMessage() const throw()
+	{
+		return this->_message;
+	}
+
+	/**
+	 * get exception message
+	 * @return exception message string
+	 */
+	virtual const char* what() const throw()
 	{
 		return this->_message;
 	}
@@ -81,7 +93,7 @@ public:
 	 * get exception line number
 	 * @return line number
 	 */
-	int getLineNumber()
+	int getLineNumber() const throw()
 	{
 		return this->_lineNumber;
 	}
@@ -90,11 +102,10 @@ public:
 	 * get exception file name
 	 * @return exception file name
 	 */
-	const char* getFileName()
+	const char* getFileName() const throw()
 	{
 		return this->_fileName;
 	}
-
 };
 
 } }
