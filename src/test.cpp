@@ -9,6 +9,7 @@
 #include <validator/NumberValidator.h>
 #include <validator/LengthValidator.h>
 #include <validator/RequiredValidator.h>
+#include <validator/FunctionPointerValidator.h>
 
 #include <picojson/picojson.h>
 
@@ -68,6 +69,23 @@ public:
 		this->attachValidator("default", new NumberValidator(1, "price", 100, 10, "価格が小さすぎ", "価格が大きすぎ"));
 		this->attachValidator("default", new LengthValidator(2, "user", 10, 5, "名前が短すぎ", "名前が長過ぎ"));
 		this->attachValidator("default", new RequiredValidator(3, "age", "年齢は必須項目です"));
+		this->attachValidator("default", new FunctionPointerValidator(SampleForm::complicatedValidator));
+	}
+
+	static int complicatedValidator(Model* model)
+	{
+		// 複数の要素の依存をチェックするようなチェックが実装できるはず
+		int x = atoi(model->getParam("x").c_str());
+		int y = atoi(model->getParam("y").c_str());
+		if (x == y)
+		{
+			model->addError(4, "x and y can not be the same.");
+			return false;
+		}
+		std::cout << atoi(model->getParam("x").c_str()) << std::endl;
+		std::cout << atoi(model->getParam("y").c_str()) << std::endl;
+		std::cout << "custom validator against: x="<< model->getParam("x") << " and y=" << model->getParam("y") << std::endl;
+		return true;
 	}
 
 	bool processSave()
@@ -117,7 +135,7 @@ public:
 			int numOfItems = errors.size();
 			for (int i=0; i<numOfItems; i++)
 			{
-				std::cout << errors[i]->getErrorCode() << " : "<< errors[i]->getMessage() << std::endl;
+				std::cout << "Error Code=" << errors[i]->getErrorCode() << " : "<< errors[i]->getMessage() << std::endl;
 			}
 		}
 		return true;
@@ -284,7 +302,7 @@ int main (int argc,char **argv)
 		return 1;
 	}
 
-	const char* json = "{\"web\":{\"name\":\"Sample Application (string from json)\"}}";
+	const char* json = "{\"web\":{\"name\":\"Sample Application (this string comes from json)\"}}";
 	picojson::value storage;
 	std::string err;
 	picojson::parse(storage, json, json + strlen(json), &err);
@@ -301,6 +319,8 @@ int main (int argc,char **argv)
 	Request *request = new DummyRequest();
 	request->setGet("user", "123456");
 	request->setGet("price", "100");
+	request->setGet("x", "100");
+	request->setGet("y", "100");
 	request->setRequestUrl(argv[1]);
 
 	// Sample controller

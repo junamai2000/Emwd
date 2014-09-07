@@ -4,14 +4,14 @@
     
 TARGET = test
 
-CXXFLAGS = -Wall -I ../include -O0
+CXXFLAGS = -Wall -I ../include -O0 -g3 -ggdb
 CC = g++
 
 $(TARGET):    $(TARGET).o
 	$(CC) -o $(TARGET) $(TARGET).o
    
 $(TARGET).o:    $(TARGET).cpp
-	$(CC) $(CXXFLAGS) -c -g $(TARGET).cpp
+	$(CC) $(CXXFLAGS) -c $(TARGET).cpp
 
 all:    $(TARGET)
 
