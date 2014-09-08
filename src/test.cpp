@@ -1,5 +1,6 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 #include <time.h>
+#include <fstream>
 
 #include <core/Configuration.h>
 #include <core/Model.h>
@@ -16,6 +17,56 @@
 using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
+
+/**
+ * JsonConfiguration
+ */
+class JsonConfiguration
+{
+private:
+	/**
+	 * parsed json
+	 */
+	picojson::value _json;
+
+public:
+	/**
+	 * Open Json
+	 * @param path
+	 * @return
+	 */
+	bool open(const char* path)
+	{
+		std::ifstream file(path);
+		if (file.fail())
+		{
+			std::cout << "Failed to open file : " << path << std::endl;
+			return false;
+		}
+
+		std::istreambuf_iterator<char> first(file);
+		std::istreambuf_iterator<char> last;
+		std::string json_in(first, last);
+
+		std::string error;
+		picojson::parse(this->_json, json_in.begin(), json_in.end(), &error);
+		if (!error.empty())
+		{
+			std::cout << "Json parse error" << std::endl;
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * Get application name
+	 * @return string from json
+	 */
+	const char* getApplicationName()
+	{
+		return this->_json.get<picojson::object>()["web"].get<picojson::object>()["name"].get<std::string>().c_str();
+	}
+};
 
 /**
  * SampleEmail class
@@ -116,10 +167,8 @@ public:
 	bool process()
 	{
 		// test for config
-		picojson::value *config = (picojson::value*)this->getController()->getApplication()->getConfiguration()->getStorage();
-		picojson::object& o = config->get<picojson::object>();
-		picojson::object& e = o["web"].get<picojson::object>();
-		std::cout << "Start Application : " << e["name"].get<std::string>() << std::endl;
+		JsonConfiguration *conf = (JsonConfiguration*)this->getController()->getConfiguration()->getStorage();
+		std::cout << "Start Application : " << conf->getApplicationName() << std::endl;
 
 		SampleForm form;
 		form.setParams(this->getController()->getApplication()->getRequest()->getGets());
@@ -302,18 +351,11 @@ int main (int argc,char **argv)
 		return 1;
 	}
 
-	const char* json = "{\"web\":{\"name\":\"Sample Application (this string comes from json)\"}}";
-	picojson::value storage;
-	std::string err;
-	picojson::parse(storage, json, json + strlen(json), &err);
-	if (!err.empty())
-	{
-		std::cerr << "json parse error" << std::endl;
-		return 1;
-	}
+	JsonConfiguration *json = new JsonConfiguration();
+	json->open("./test.json");
 
 	Configuration *conf = new Configuration();
-	conf->setStorage(&storage);
+	conf->setStorage(json);
 
 	// create dummy request to emulate http get request
 	Request *request = new DummyRequest();
@@ -339,6 +381,7 @@ int main (int argc,char **argv)
 	// std::cout << request->getResponse() << std::endl;
 
 	// clean up, sould I use auto_ptr or somethig?
+	delete json;
 	delete conf;
 	delete request;
 	delete controller;

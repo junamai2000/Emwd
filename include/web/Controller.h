@@ -64,6 +64,15 @@ public:
 	}
 
 	/**
+	 * Get Application class
+	 * @return a pointer to Application class
+	 */
+	Emwd::core::Configuration* getConfiguration()
+	{
+		return this->_app->getConfiguration();
+	}
+
+	/**
 	 * Register Action with a name
 	 * @param name
 	 * @param action
