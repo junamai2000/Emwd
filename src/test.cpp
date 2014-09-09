@@ -13,10 +13,12 @@
 #include <validator/FunctionPointerValidator.h>
 
 #include <picojson/picojson.h>
+#include <kozaiku/Kozaiku.h>
 
 using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
+using namespace Emwd::kozaiku;
 
 /**
  * JsonConfiguration
@@ -187,6 +189,10 @@ public:
 				std::cout << "Error Code=" << errors[i]->getErrorCode() << " : "<< errors[i]->getMessage() << std::endl;
 			}
 		}
+		Kozaiku *kozaiku = new Kozaiku("/Users/junya/Documents/project/emwd/include/kozaiku/Kozaiku_Template_Autogen.so");
+		std::string output;
+		kozaiku->display("sample", &output);
+		std::cout << output << std::endl;
 		return true;
 	}
 };
