@@ -295,20 +295,10 @@ private:
 	Action* action;
 	SampleEmail* email;
 
-public:
 	/**
-	 *
-	 * @return
+	 * Init and register action and filters
 	 */
-	virtual const char* getComponentName()
-	{
-		return "SampleController";
-	}
-
-	/**
-	 *
-	 */
-	void init()
+	virtual void init()
 	{
 		// Email logic, which is a sample
 		// by using this, users can isolate email logic from a core logig
@@ -333,6 +323,19 @@ public:
 		this->registerFilter("sample2Action", timer);
 	}
 
+public:
+	/**
+	 *
+	 * @return
+	 */
+	virtual const char* getComponentName()
+	{
+		return "SampleController";
+	}
+
+	/**
+	 *
+	 */
 	~SampleController()
 	{
 		delete this->filter;
@@ -373,7 +376,6 @@ int main (int argc,char **argv)
 
 	// Sample controller
 	Controller* controller = new SampleController();
-	controller->init();
 
 	// Application
 	WebApplication *app = new WebApplication();
@@ -382,6 +384,7 @@ int main (int argc,char **argv)
 	app->registerController("sampleController", controller);
 	app->registerRoute("/sample/do", "sampleController", "sampleAction");
 	app->registerRoute("/sample/do2", "sampleController", "sample2Action");
+	app->registerRoute("/sample/do3", "sampleController", "sample3Action");
 	app->run();
 
 	// std::cout << request->getResponse() << std::endl;

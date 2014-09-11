@@ -15,6 +15,7 @@
 
 #include <core/Application.h>
 #include <core/Configuration.h>
+#include <web/HttpException.h>
 #include <web/Action.h>
 #include <web/Filter.h>
 
@@ -41,6 +42,13 @@ private:
 	 */
 	Emwd::core::Application* _app;
 
+protected:
+	/**
+	 * Init function
+	 * Add actions
+	 */
+	virtual void init() = 0;
+
 public:
 	/**
 	 * Get component name
@@ -48,11 +56,7 @@ public:
 	 */
 	virtual const char* getComponentName() = 0;
 
-	/**
-	 * Init function
-	 * Add actions
-	 */
-	virtual void init() = 0;
+
 
 	/**
 	 * Get Application class
@@ -110,18 +114,24 @@ public:
 	 * @param action
 	 * @return true if action finishes successfully
 	 */
-	virtual bool run(Emwd::core::Application* app, const char* action)
+	virtual bool run(Emwd::core::Application* app, const char* actionName)
 	{
+		this->init();
+		if (!this->hasAction(actionName))
+		{
+			throw HttpException(404, "Requested Action Is Not Found");
+		}
+
 		this->_app = app;
 		if (this->_filters.size() > 0)
 		{
-			Filter* filters = this->_filters[action];
+			Filter* filters = this->_filters[actionName];
 			if (filters)
 			{
-				return filters->run(this, this->_actions[action]);
+				return filters->run(this, this->_actions[actionName]);
 			}
 		}
-		return this->_actions[action]->run(this);
+		return this->_actions[actionName]->run(this);
 	}
 
 	/**

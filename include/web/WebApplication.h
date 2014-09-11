@@ -76,7 +76,8 @@ public:
 		catch (const HttpException& e)
 		{
 			this->_request->setStatusCode(e.getStatusCode());
-			// this->_request->setResponse(e.getMessage());
+			std::cerr << e.getMessage() << std::endl;
+			//this->_request->setResponse(e.getMessage());
 		}
 		return retval;
 	}
@@ -98,10 +99,10 @@ public:
 			{
 				const char *controllerName = it->second.controller;
 				if (controllerName == NULL)
-					throw HttpException(404, "Requested Controller Is Not Found");
+					throw HttpException(404, "Requested Url Is Not Registered");
 
 				if (this->_controllers[controllerName] == NULL)
-					throw HttpException(404, "Requested Action Is Not Found");
+					throw HttpException(404, "Requested Controller Is Not Found");
 
 				return this->_controllers[controllerName]->run(this, it->second.action);
 			}
@@ -139,17 +140,13 @@ public:
 	{
 		if (this->hasController(controllerName))
 		{
-			if (this->_controllers[controllerName]->hasAction(actionName))
-			{
-				PROCESSOR tmp;
-				tmp.controller = controllerName;
-				tmp.action = actionName;
-				this->_processMap[path] = tmp;
-				return true;
-			}
+			PROCESSOR tmp;
+			tmp.controller = controllerName;
+			tmp.action = actionName;
+			this->_processMap[path] = tmp;
+			return true;
 		}
 		return false;
-
 	}
 };
 
