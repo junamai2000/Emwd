@@ -10,6 +10,7 @@
 #define EMWD_CORE_RESPONSE_H_
 
 #include <map>
+#include <string>
 
 namespace Emwd { namespace core {
 
@@ -24,27 +25,41 @@ public:
 	 * @param key
 	 * @param value
 	 */
-	void setHeader(const char* key, const char* value) = 0;
-	void setHeaders(std::map<const char*, const char*>) = 0;
+	virtual void setHeader(const char* key, const char* value) = 0;
+	virtual void setHeaders(std::map<const char*, const char*>) = 0;
+
+	/**
+	 *
+	 * @param code
+	 */
+	virtual void setStatus(int code) = 0;
+	virtual int getStatus(void) = 0;
 
 	/**
 	 *
 	 * @param key
 	 * @return
 	 */
-	const char* getHeader(const char* key) = 0;
-	std::map<const char*, const char*> getHeaders() = 0;
+	virtual const char* getHeader(const char* key) = 0;
+	virtual std::map<const char*, const char*> getHeaders() = 0;
 
 	/**
 	 *
 	 */
-	void setBody(const char* body) = 0;
+	virtual void setBody(const char* body) = 0;
 
 	/**
 	 *
 	 * @return
 	 */
-	const char* getBody() = 0;
+	virtual const char* getBody() = 0;
+
+	/**
+	 * destructor
+	 */
+	virtual ~Response()
+	{
+	}
 };
 
 } }

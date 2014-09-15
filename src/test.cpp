@@ -6,6 +6,7 @@
 #include <core/Model.h>
 #include <web/WebApplication.h>
 #include <web/DummyRequest.h>
+#include <web/DummyResponse.h>
 #include <web/Filter.h>
 #include <validator/NumberValidator.h>
 #include <validator/LengthValidator.h>
@@ -374,6 +375,9 @@ int main (int argc,char **argv)
 	request->setGet("y", "100");
 	request->setRequestUrl(argv[1]);
 
+	DummyResponse *response = new DummyResponse();
+	request->setResponse(response);
+
 	// Sample controller
 	Controller* controller = new SampleController();
 
@@ -387,12 +391,14 @@ int main (int argc,char **argv)
 	app->registerRoute("/sample/do3", "sampleController", "sample3Action");
 	app->run();
 
-	// std::cout << request->getResponse() << std::endl;
+	std::cout << response->getStatus() << std::endl;
+	std::cout << response->getBody() << std::endl;
 
 	// clean up, sould I use auto_ptr or somethig?
 	delete json;
 	delete conf;
 	delete request;
+	delete response;
 	delete controller;
 	delete app;
 

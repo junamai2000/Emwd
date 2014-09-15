@@ -1,6 +1,6 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 /*
- * ApacheRequest.h
+ * DummyResponse.h
  *
  *  Created on: 2014/09/06
  *      Author: Junya Namai
@@ -10,13 +10,12 @@
 #define EMWD_WEB_DUMMY_REQUEST_H_
 
 #include <core/Request.h>
+#include <core/Response.h>
 
 #include <string>
 #include <map>
 
 namespace Emwd { namespace web {
-
-class Response;
 
 /**
  * DummyRequest class
@@ -51,9 +50,9 @@ private:
 	int _statusCode;
 
 	/**
-	 * response contents
+	 *
 	 */
-	std::string _response;
+	Emwd::core::Response* _response;
 
 	/**
 	 * request method
@@ -180,7 +179,7 @@ public:
 
 	virtual void setResponse(Emwd::core::Response* response)
 	{
-		;
+		this->_response = response;
 	}
 
 	/**
@@ -189,7 +188,7 @@ public:
 	 */
 	virtual Emwd::core::Response* getResponse()
 	{
-		return NULL;
+		return this->_response;
 	}
 
 	/**
@@ -248,6 +247,11 @@ public:
 	virtual REQUEST_METHOD getRequestMethod()
 	{
 		return this->_method;
+	}
+
+	~DummyRequest()
+	{
+
 	}
 };
 

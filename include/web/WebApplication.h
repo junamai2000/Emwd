@@ -15,6 +15,7 @@
 #include <core/Application.h>
 #include <core/Configuration.h>
 #include <core/Request.h>
+#include <core/Response.h>
 #include <web/Controller.h>
 #include <web/HttpException.h>
 
@@ -75,11 +76,19 @@ public:
 		}
 		catch (const HttpException& e)
 		{
-			this->_request->setStatusCode(e.getStatusCode());
-			std::cerr << e.getMessage() << std::endl;
-			//this->_request->setResponse(e.getMessage());
+			this->setErrorResponse(e);
+			retval = false;
 		}
 		return retval;
+	}
+
+	/**
+	 * Set error response
+	 */
+	virtual void setErrorResponse(const HttpException e)
+	{
+		this->_request->getResponse()->setStatus(e.getStatusCode());
+		this->_request->getResponse()->setBody(e.getMessage());
 	}
 
 	/**
