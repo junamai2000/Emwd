@@ -4,6 +4,7 @@
 
 #include <core/Configuration.h>
 #include <core/Model.h>
+#include <core/Serializer.h>
 #include <web/WebApplication.h>
 #include <web/DummyRequest.h>
 #include <web/DummyResponse.h>
@@ -68,6 +69,26 @@ public:
 	const char* getApplicationName()
 	{
 		return this->_json.get<picojson::object>()["web"].get<picojson::object>()["name"].get<std::string>().c_str();
+	}
+};
+
+/**
+ * Serializable User Information
+ */
+class UserInfo : public SerializableComponent
+{
+public:
+	const char *name;
+	int age;
+	const char *prefecture;
+
+	virtual std::string serialize()
+	{
+		SerializableComposite data;
+		data.add(new SerializableObject<const char*>("Name",this->name));
+		data.add(new SerializableObject<int>("Age",this->age));
+		data.add(new SerializableObject<const char*>("Prefecture",this->prefecture));
+		return data.serialize();
 	}
 };
 
@@ -152,6 +173,20 @@ public:
 		// Archive ar;
 		// ar << this;
 
+		SerializableComposite data;
+		data.setElementName("ResultSet");
+		data.add(new SerializableObject<int>("Year", 2014));
+		data.add(new SerializableObject<const char*>("Month", "Sep"));
+		data.add(new SerializableObject<int>("Date", 19));
+
+		UserInfo *info = new UserInfo();
+		info->name = "Junya";
+		info->age = 30;
+		info->prefecture = "Tokyo";
+		data.add(new SerializableObject<UserInfo>("User", info));
+
+		std::cout << data.serialize() << std::endl;
+		delete info;
 		return true;
 	}
 };
@@ -171,7 +206,9 @@ public:
 	{
 		// test for config
 		JsonConfiguration *conf = (JsonConfiguration*)this->getController()->getConfiguration()->getStorage();
-		std::cout << "Start Application : " << conf->getApplicationName() << std::endl;
+		Response *response = this->getController()->getApplication()->getRequest()->getResponse();
+		(*response) << "Start Application : " << conf->getApplicationName(); // << std::endl;
+		// this->getController()->getApplication()->getRequest()->getResponse()->setBody("SampleAction run success!");
 
 		SampleForm form;
 		form.setParams(this->getController()->getApplication()->getRequest()->getGets());
@@ -179,7 +216,7 @@ public:
 		form.setScenario("default");
 		if (form.save())
 		{
-			std::cout << "SampleAction run success!" << std::endl;
+			this->getController()->getApplication()->getRequest()->getResponse()->setBody("SampleAction run success!");
 		}
 		else
 		{
@@ -371,8 +408,9 @@ int main (int argc,char **argv)
 	Request *request = new DummyRequest();
 	request->setGet("user", "123456");
 	request->setGet("price", "100");
+	request->setGet("age", "100");
 	request->setGet("x", "100");
-	request->setGet("y", "100");
+	request->setGet("y", "101");
 	request->setRequestUrl(argv[1]);
 
 	DummyResponse *response = new DummyResponse();

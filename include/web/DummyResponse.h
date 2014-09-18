@@ -90,6 +90,19 @@ public:
 		this->_output = body;
 	}
 
+	virtual void appendBody(const char* content)
+	{
+		this->_output.append(content);
+	}
+
+	/**
+	 * Clear response body
+	 */
+	virtual void clearBody()
+	{
+		this->_output.clear();
+	}
+
 	/**
 	 *
 	 * @return

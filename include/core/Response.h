@@ -49,6 +49,29 @@ public:
 	virtual void setBody(const char* body) = 0;
 
 	/**
+	 * Clear response body
+	 */
+	virtual void clearBody() = 0;
+
+	/**
+	 *
+	 * @param content
+	 */
+	virtual void appendBody(const char* content) = 0;
+
+	/**
+	 * Append contents to response buffer
+	 * @param content
+	 * @return
+	 */
+	Response &operator << (const char* content)
+	{
+		this->appendBody(content);
+		return *this;
+	}
+
+
+	/**
 	 *
 	 * @return
 	 */
