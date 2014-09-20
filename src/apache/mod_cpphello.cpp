@@ -16,41 +16,84 @@
 #include "http_core.h"
 #include "http_request.h"
 #include "http_protocol.h"
+
 #include <string>
+
+#include <core/Configuration.h>
+#include <core/Model.h>
+#include <core/XmlSerializable.h>
+#include <web/WebApplication.h>
+#include <web/ApacheRequest.h>
+#include <web/DummyResponse.h>
+#include <web/Filter.h>
+#include <validator/NumberValidator.h>
+#include <validator/LengthValidator.h>
+#include <validator/RequiredValidator.h>
+#include <validator/FunctionPointerValidator.h>
+
+#include "test.h"
 
 extern "C" module AP_MODULE_DECLARE_DATA cpphello_module;
 
-typedef struct {
-    char *hellomessage;
-} cpphello_dir_config;
-
-static void *cpphello_create_dir_config(apr_pool_t *p, char *path)
-{
-    cpphello_dir_config *cfg = (cpphello_dir_config *)apr_pcalloc(p, sizeof(cpphello_dir_config));
-    cfg->hellomessage = (char *)"こんにちは！";
-    return cfg;
-}
+using namespace Emwd::core;
+using namespace Emwd::web;
+using namespace Emwd::validator;
 
 static int cpphello_handler(request_rec *r)
 {
-    cpphello_dir_config *cfg = (cpphello_dir_config *) ap_get_module_config(r->per_dir_config, &cpphello_module);
-    std::string messagetosend = std::string("<html><p>") + std::string(cfg->hellomessage) + std::string("</p></html>\n");
-    r->content_type = "text/html";
-    if (!r->header_only) {
-      ap_rputs(messagetosend.c_str(), r);
+    if (strcmp(r->handler, "cpphello")) {
+        return DECLINED;
     }
+
+    r->content_type = "text/html"; 
+
+    JsonConfiguration *json = new JsonConfiguration();
+    json->open("/home/junya/Emwd/src/test.json");
+
+    Configuration *conf = new Configuration();
+    conf->setStorage(json);
+
+    Request *request = new ApacheRequest(r);
+
+    DummyResponse *response = new DummyResponse();
+    request->setResponse(response);
+
+    // Sample controller
+    Controller* controller = new SampleController();
+
+    // Application
+    WebApplication *app = new WebApplication();
+    app->setRequest(request);
+    app->setConfiguration(conf);
+    app->registerController("sampleController", controller);
+    app->registerRoute("/sample/do", "sampleController", "sampleAction");
+    app->registerRoute("/sample/do2", "sampleController", "sample2Action");
+    app->registerRoute("/sample/do3", "sampleController", "sample3Action");
+    app->run();
+
+    ap_rputs(response->getBody(), r);
+
+    // clean up, sould I use auto_ptr or somethig?
+    delete json;
+    delete conf;
+    delete request;
+    delete response;
+    delete controller;
+    delete app;
+
     return OK;
 }
 
 static void register_hooks(apr_pool_t *p)
 {
-  ap_hook_fixups(cpphello_handler,NULL,NULL,APR_HOOK_MIDDLE);
+  // ap_hook_fixups(cpphello_handler,NULL,NULL,APR_HOOK_MIDDLE);
+  ap_hook_handler(cpphello_handler, NULL, NULL, APR_HOOK_MIDDLE);
 }
 
 extern "C" {
     module AP_MODULE_DECLARE_DATA cpphello_module = {
 		STANDARD20_MODULE_STUFF,
-		cpphello_create_dir_config,
+		NULL,
 		NULL,
 		NULL,
 		NULL,

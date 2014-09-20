@@ -9,6 +9,8 @@
 #ifndef EMWD_VALIDATOR_NUMBERVALIDATOR_H_
 #define EMWD_VALIDATOR_NUMBERVALIDATOR_H_
 
+#include <stdlib.h>
+
 #include <core/Validator.h>
 #include <core/Model.h>
 
@@ -83,7 +85,7 @@ public:
 	 */
 	virtual bool validate(Emwd::core::Model* model)
 	{
-		long num = std::stoi(model->getParam(this->_attribute));
+		long num = atoi(model->getParam(this->_attribute).c_str());
 		if (num < this->_min)
 		{
 			model->addError(this->_errorCode, this->_tooSmall);

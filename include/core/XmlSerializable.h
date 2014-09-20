@@ -118,7 +118,7 @@ public:
 	{
 		if (this->_name)
 			this->_serialized << "<" << this->_name << ">";
-		for (int i = 0; i < this->_children.size(); i++)
+		for (unsigned int i = 0; i < this->_children.size(); i++)
 			this->_serialized << this->_children[i]->serialize();
 		if (this->_name)
 			this->_serialized << "</" << this->_name << ">";
@@ -127,7 +127,7 @@ public:
 
 	~XmlSerializableComposite()
 	{
-		for (int i = 0; i < this->_children.size(); i++)
+		for (unsigned int i = 0; i < this->_children.size(); i++)
 			delete this->_children[i];
 	}
 };

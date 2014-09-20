@@ -9,6 +9,8 @@
 #ifndef EMWD_MODEL_MODEL_H_
 #define EMWD_MODEL_MODEL_H_
 
+#include <string.h>
+
 #include <iostream>
 #include <vector>
 

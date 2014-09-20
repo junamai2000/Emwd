@@ -4,7 +4,7 @@
 ##  This is a C++ module so things have to be handled a little differently.
 
 #   the used tools
-APXS=/usr/sbin/apxs
+APXS=/usr/bin/apxs2
 APACHECTL=/usr/sbin/apachectl
 
 # Get all of apxs's internal values.
@@ -29,10 +29,10 @@ all: mod_cpphello.so
 
 # compile
 mod_cpphello.o: mod_cpphello.cpp
-	g++ -c -fPIC -I$(APXS_INCLUDEDIR) -I/usr/include/apr-1/ $(APXS_CFLAGS) $(APXS_CFLAGS_SHLIB) -Wall -o $@ $< 
+	g++ -c -fPIC -I$(APXS_INCLUDEDIR) -I../../include/ -I/usr/include/apr-1/ $(APXS_CFLAGS) $(APXS_CFLAGS_SHLIB) -Wall -o $@ $< 
 
 # link
-mod_cpphello.so: mod_cpphello.o 
+mod_cpphello.so: mod_cpphello.o
 	g++ -fPIC -shared -o $@ $< $(APXS_LIBS_SHLIB)
 
 # install the shared object file into Apache 

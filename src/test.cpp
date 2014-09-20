@@ -15,12 +15,12 @@
 #include <validator/FunctionPointerValidator.h>
 
 #include <picojson/picojson.h>
-#include <kozaiku/Kozaiku.h>
+// #include <kozaiku/Kozaiku.h>
 
 using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
-using namespace Emwd::kozaiku;
+// using namespace Emwd::kozaiku;
 
 /**
  * JsonConfiguration
@@ -165,7 +165,7 @@ public:
 
 	bool processSave()
 	{
-		this->_price = std::stoi(this->getParam("price"));
+		this->_price = atoi(this->getParam("price").c_str());
 		this->_user = this->getParam("user").c_str();
 		this->_age = 30;
 
@@ -227,10 +227,10 @@ public:
 				std::cout << "Error Code=" << errors[i]->getErrorCode() << " : "<< errors[i]->getMessage() << std::endl;
 			}
 		}
-		Kozaiku *kozaiku = new Kozaiku("/Users/junya/Documents/project/emwd/include/kozaiku/Kozaiku_Template_Autogen.so");
-		std::string output;
-		kozaiku->display("sample", &output);
-		std::cout << output << std::endl;
+		// Kozaiku *kozaiku = new Kozaiku("/Users/junya/Documents/project/emwd/include/kozaiku/Kozaiku_Template_Autogen.so");
+		// std::string output;
+		// kozaiku->display("sample", &output);
+		// std::cout << output << std::endl;
 		return true;
 	}
 };
