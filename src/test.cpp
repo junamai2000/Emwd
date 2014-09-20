@@ -4,7 +4,7 @@
 
 #include <core/Configuration.h>
 #include <core/Model.h>
-#include <core/Serializer.h>
+#include <core/XmlSerializable.h>
 #include <web/WebApplication.h>
 #include <web/DummyRequest.h>
 #include <web/DummyResponse.h>
@@ -75,7 +75,7 @@ public:
 /**
  * Serializable User Information
  */
-class UserInfo : public SerializableComponent
+class UserInfo : public XmlSerializable
 {
 public:
 	const char *name;
@@ -84,10 +84,10 @@ public:
 
 	virtual std::string serialize()
 	{
-		SerializableComposite data;
-		data.add(new SerializableObject<const char*>("Name",this->name));
-		data.add(new SerializableObject<int>("Age",this->age));
-		data.add(new SerializableObject<const char*>("Prefecture",this->prefecture));
+		XmlSerializableComposite data;
+		data.add(new XmlSerializableObject<const char*>("Name",this->name));
+		data.add(new XmlSerializableObject<int>("Age",this->age));
+		data.add(new XmlSerializableObject<const char*>("Prefecture",this->prefecture));
 		return data.serialize();
 	}
 };
@@ -173,17 +173,17 @@ public:
 		// Archive ar;
 		// ar << this;
 
-		SerializableComposite data;
+		XmlSerializableComposite data;
 		data.setElementName("ResultSet");
-		data.add(new SerializableObject<int>("Year", 2014));
-		data.add(new SerializableObject<const char*>("Month", "Sep"));
-		data.add(new SerializableObject<int>("Date", 19));
+		data.add(new XmlSerializableObject<int>("Year", 2014));
+		data.add(new XmlSerializableObject<const char*>("Month", "Sep"));
+		data.add(new XmlSerializableObject<int>("Date", 19));
 
 		UserInfo *info = new UserInfo();
 		info->name = "Junya";
 		info->age = 30;
 		info->prefecture = "Tokyo";
-		data.add(new SerializableObject<UserInfo>("User", info));
+		data.add(new XmlSerializableObject<UserInfo*>("User", info));
 
 		std::cout << data.serialize() << std::endl;
 		delete info;
