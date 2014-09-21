@@ -10,6 +10,9 @@
 #include <vector>
 
 #include <core/Application.h>
+#include <core/Response.h>
+#include <core/Request.h>
+#include <core/Configuration.h>
 
 namespace Emwd { namespace core {
 
@@ -17,7 +20,7 @@ namespace Emwd { namespace core {
 * set Request class.
 * @param[in] request
 */
-void Application::setRequest(Request *request)
+void Application::setRequest(Emwd::core::Request *request)
 {
     this->_request = request;
 }
@@ -26,7 +29,7 @@ void Application::setRequest(Request *request)
 * set Response class.
 * @param[in] request
 */
-void Application::setResponse(Response *response)
+void Application::setResponse(Emwd::core::Response *response)
 {
     this->_response = response;
 }
@@ -35,7 +38,7 @@ void Application::setResponse(Response *response)
  * get Request class
  * @return Request Request class set by setRequest()
  */
-Request* Application::getRequest()
+Emwd::core::Request* Application::getRequest()
 {
     return this->_request;
 }
@@ -44,7 +47,7 @@ Request* Application::getRequest()
  * get Response class
  * @return Request Request class set by setRequest()
  */
-Response* Application::getResponse()
+Emwd::core::Response* Application::getResponse()
 {
     return this->_response;
 }
@@ -53,7 +56,7 @@ Response* Application::getResponse()
  * set Configuration class
  * @param [in] Configuration config
  */
-void Application::setConfiguration(Configuration* configuration)
+void Application::setConfiguration(Emwd::core::Configuration* configuration)
 {
     this->_configuration = configuration;
 }
@@ -62,7 +65,7 @@ void Application::setConfiguration(Configuration* configuration)
  * get Configuration class
  * @return Configuration class set by setConfig
  */
-Configuration* Application::getConfiguration()
+Emwd::core::Configuration* Application::getConfiguration()
 {
     return this->_configuration;
 }

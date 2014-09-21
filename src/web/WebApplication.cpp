@@ -5,8 +5,11 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
+#include <core/Response.h>
+#include <core/Request.h>
 #include <web/WebApplication.h>
 #include <web/Controller.h>
+#include <web/HttpException.h>
 
 namespace Emwd { namespace web {
 

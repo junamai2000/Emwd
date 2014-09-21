@@ -15,11 +15,12 @@
 
 // Emwd
 #include <core/CoreComponent.h>
-#include <core/Request.h>
-#include <core/Response.h>
-#include <core/Configuration.h>
 
 namespace Emwd { namespace core {
+
+class Request;
+class Response;
+class Configuration;
 
 /**
  * Application class
@@ -32,17 +33,17 @@ protected:
 	/**
 	 * Request class
 	 */
-	Request* _request;
+	Emwd::core::Request* _request;
 
 	/**
 	 * Response class
 	 */
-	Response* _response;
+	Emwd::core::Response* _response;
 
 	/**
 	 * Configuration class
 	 */
-	Configuration* _configuration;
+	Emwd::core::Configuration* _configuration;
 
 public:
 	/**
@@ -55,37 +56,37 @@ public:
 	 * set Request class.
 	 * @param[in] request
 	 */
-	virtual void setRequest(Request *request);
+	virtual void setRequest(Emwd::core::Request *request);
 
 	/**
 	 * set Response class.
 	 * @param[in] request
 	 */
-	virtual void setResponse(Response *response);
+	virtual void setResponse(Emwd::core::Response *response);
 
 	/**
 	 * get Request class
 	 * @return Request Request class set by setRequest()
 	 */
-	virtual Request* getRequest();
+	virtual Emwd::core::Request* getRequest();
 
 	/**
 	 * get Response class
 	 * @return Request Request class set by setRequest()
 	 */
-	virtual Response* getResponse();
+	virtual Emwd::core::Response* getResponse();
 
 	/**
 	 * set Configuration class
 	 * @param [in] Configuration config
 	 */
-	virtual void setConfiguration(Configuration* configuration);
+	virtual void setConfiguration(Emwd::core::Configuration* configuration);
 
 	/**
 	 * get Configuration class
 	 * @return Configuration class set by setConfig
 	 */
-	Configuration* getConfiguration();
+	Emwd::core::Configuration* getConfiguration();
 };
 
 } }
