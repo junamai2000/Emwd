@@ -9,6 +9,7 @@
 #ifndef EMWD_CORE_EXCEPTION_H_
 #define EMWD_CORE_EXCEPTION_H_
 
+// C++ headers
 #include <exception>
 
 namespace Emwd { namespace core {
@@ -54,58 +55,37 @@ public:
 	 * @param fileName
 	 */
 	Exception(int code, const char* message, int lineNumber = __LINE__,
-			const char* fileName = __FILE__)
-	{
-		this->_code = code;
-		this->_message = message;
-		this->_lineNumber = lineNumber;
-		this->_fileName = fileName;
-	}
+			const char* fileName = __FILE__);
 
 	/**
 	 * get exception code
 	 * @return exception code number
 	 */
-	int getCode() const throw()
-	{
-		return this->_code;
-	}
+	int getCode() const throw();
 
 	/**
 	 * get exception message
 	 * @return exception message string
 	 */
-	const char* getMessage() const throw()
-	{
-		return this->_message;
-	}
+	const char* getMessage() const throw();
 
 	/**
 	 * get exception message
 	 * @return exception message string
 	 */
-	virtual const char* what() const throw()
-	{
-		return this->_message;
-	}
+	const char* what() const throw();
 
 	/**
 	 * get exception line number
 	 * @return line number
 	 */
-	int getLineNumber() const throw()
-	{
-		return this->_lineNumber;
-	}
+	int getLineNumber() const throw();
 
 	/**
 	 * get exception file name
 	 * @return exception file name
 	 */
-	const char* getFileName() const throw()
-	{
-		return this->_fileName;
-	}
+	const char* getFileName() const throw();
 };
 
 } }

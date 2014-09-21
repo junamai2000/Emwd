@@ -26,18 +26,12 @@ public:
 	 *
 	 * @param storage
 	 */
-	void setStorage(void* storage)
-	{
-		this->_storage = storage;
-	}
+	void setStorage(void* storage);
 
 	/**
 	 *
 	 */
-	void* getStorage()
-	{
-		return this->_storage;
-	}
+	void* getStorage();
 };
 
 } }

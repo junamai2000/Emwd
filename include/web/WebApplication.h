@@ -8,10 +8,12 @@
 #ifndef EMWD_WEB_APPLICATION_H_
 #define EMWD_WEB_APPLICATION_H_
 
+// C++ headers
 #include <string>
 #include <map>
 #include <vector>
 
+// Emwd
 #include <core/Application.h>
 #include <core/Configuration.h>
 #include <core/Request.h>
@@ -49,95 +51,46 @@ private:
 	/**
 	 * Controllers with a name
 	 */
-	std::map <const char*, Controller*> _controllers;
+	std::map <std::string, Controller*> _controllers;
 
 public:
 	/**
 	 * Get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "WebApplication";
-	}
+	virtual const char* getComponentName();
 
 	/**
 	 * Run application
 	 * @return
 	 */
-	virtual bool run()
-	{
-		bool retval;
-		try
-		{
-			this->raiseEvent("beforeRun");
-			retval = this->invoke();
-			this->raiseEvent("afterRun");
-		}
-		catch (const HttpException& e)
-		{
-			this->setErrorResponse(e);
-			retval = false;
-		}
-		return retval;
-	}
+	virtual bool run();
 
 	/**
 	 * Set error response
 	 */
-	virtual void setErrorResponse(const HttpException e)
-	{
-		this->_request->getResponse()->setStatus(e.getStatusCode());
-		this->_request->getResponse()->setBody(e.getMessage());
-	}
+	virtual void setErrorResponse(const HttpException e);
 
 	/**
 	 * Start controller
 	 * @throw HttpException if there is no controller and action
 	 * @return
 	 */
-	virtual bool invoke()
-	{
-		PROCESS_MAP::iterator it = this->_processMap.begin();
-
-		for (; it != this->_processMap.end(); it++)
-		{
-			// need to think algorithm
-			// too simple
-			if (std::string(this->_request->getRequestUrl()) == it->first)
-			{
-				const char *controllerName = it->second.controller;
-				if (controllerName == NULL)
-					throw HttpException(404, "Requested Url Is Not Registered");
-
-				if (this->_controllers[controllerName] == NULL)
-					throw HttpException(404, "Requested Controller Is Not Found");
-
-				return this->_controllers[controllerName]->run(this, it->second.action);
-			}
-		}
-		throw HttpException(404, "Requested Controller Is Not Found");
-	}
+	virtual bool invoke();
 
 	/**
 	 * Register Controller with a name
 	 * @param controllerName
 	 * @param controller
 	 */
-	void registerController(const char* controllerName, Controller* controller)
-	{
-		this->_controllers[controllerName] = controller;
-	}
+	void registerController(const char* controllerName, Controller* controller);
 
 	/**
 	 * Has controller
 	 * @param controllerName
 	 * @return true if exists
 	 */
-	bool hasController(const char* controllerName)
-	{
-		return this->_controllers[controllerName]==NULL? false:true;
-	}
+	bool hasController(const char* controllerName);
 
 	/**
 	 * Register route to a controller and an action
@@ -145,18 +98,7 @@ public:
 	 * @param controller
 	 * @param action
 	 */
-	virtual bool registerRoute(const char* path, const char* controllerName, const char *actionName)
-	{
-		if (this->hasController(controllerName))
-		{
-			PROCESSOR tmp;
-			tmp.controller = controllerName;
-			tmp.action = actionName;
-			this->_processMap[path] = tmp;
-			return true;
-		}
-		return false;
-	}
+	virtual bool registerRoute(const char* path, const char* controllerName, const char *actionName);
 };
 
 } }

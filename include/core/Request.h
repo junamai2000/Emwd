@@ -111,18 +111,6 @@ public:
 	virtual void setStatusCode(int code) = 0;
 
 	/**
-	 * set response string such as HTML
-	 * @param response contents
-	 */
-	virtual void setResponse(Response* response) = 0;
-
-	/**
-	 * get response string
-	 * @return response contents like XML
-	 */
-	virtual Response* getResponse() = 0;
-
-	/**
 	 * set request method
 	 * @param method
 	 */

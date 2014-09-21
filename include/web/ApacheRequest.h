@@ -22,6 +22,7 @@
 #include "http_protocol.h"
 
 #include <core/Request.h>
+#include <core/Response.h>
 
 namespace Emwd { namespace web {
 
@@ -32,173 +33,79 @@ namespace Emwd { namespace web {
 class ApacheRequest : public Emwd::core::Request
 {
 private:
-    ApacheRequest() {}
+	std::map <const char*, const char *> _getMap;
+	REQUEST_METHOD _method;
+
+	/**
+	 *
+	 */
+    ApacheRequest();
+
+    /**
+     *
+     */
     request_rec *_req;
+
+    /**
+     *
+     */
     apr_hash_t *_get;
 
-    static apr_hash_t *parse_form_from_string(request_rec *r, char *args)
-    {
-        apr_hash_t *form;
-        apr_array_header_t *values;
-        char *pair;
-        char *eq;
-        const char *delim = "&";
-        char *last;
-        if (args == NULL) {
-            return NULL;
-        }
+    /**
+     *
+     * @param r
+     * @param args
+     * @return
+     */
+    apr_hash_t *parse_form_from_string(request_rec *r, char *args);
 
-        form = apr_hash_make(r->pool);
-
-        for (pair = apr_strtok(args, delim, &last);
-                pair != NULL;
-                pair = apr_strtok(NULL, delim, &last)){
-            for (eq = pair; *eq; ++eq){
-                if(*eq == '+'){
-                    *eq = ' ';
-                }
-            }
-            eq = strchr(pair, '=');
-            if (eq) {
-                *eq++ = '\0';
-                ap_unescape_url(pair);
-                ap_unescape_url(eq);
-            }
-            else {
-                eq = "";
-                ap_unescape_url(pair);
-            }
-            values = apr_hash_get(form, pair, APR_HASH_KEY_STRING);
-            if (values == NULL) {
-                values = apr_array_make(r->pool, 1, sizeof(char*));
-                apr_hash_set(form, pair, APR_HASH_KEY_STRING, values);
-            }
-            *((char **)apr_array_push(values)) = apr_pstrdup(r->pool, eq);
-        }
-
-        return form;
-    }
-
-    static apr_hash_t *parse_form_from_GET(request_rec *r)
-    {
-        return parse_form_from_string(r, r->args);
-    }
+    /**
+     *
+     * @param r
+     * @return
+     */
+    apr_hash_t *parse_form_from_GET(request_rec *r);
 
 public:
-    ApacheRequest(request_rec *r)
-    {
-        this->_req = r;
-        this->_get = NULL;
-        this->_get = parse_form_from_GET(this->_req);
-    }
+    ApacheRequest(request_rec *r);
 
-	virtual const char* getGet(const char* key)
-	{
-        return (const char*)apr_hash_get(this-_get, key, APR_HASH_KEY_STRING);
-	}
+	virtual const char* getGet(const char* key);
 
-	virtual void setGet(const char* key, const char* value)
-	{
+	virtual std::map<const char*, const char*> getGets();
 
-	}
+	virtual void setGet(const char* key, const char* value);
 
-	virtual void setGets(std::map <const char*, const char*> gets)
-	{
+	virtual void setGets(std::map <const char*, const char*> gets);
 
-	}
+	virtual const char* getPost(const char* key);
 
-	virtual const char* getPost(const char* key)
-	{
-		return "empty";
-	}
+	virtual std::map<const char*, const char*> getPosts();
 
-	virtual void setPost(const char* key, const char *value)
-	{
+	virtual void setPost(const char* key, const char *value);
 
-	}
+	virtual void setPosts(std::map<const char*, const char*> posts);
 
-	virtual void setContentType(const char* type)
-	{
+	virtual void setContentType(const char* type);
 
-	}
-
-	virtual const char* getContentType()
-	{
-		return "text/plain";
-	}
+	virtual const char* getContentType();
 	
-    /**
-	 * set response string such as HTML
-	 * @param response contents
-	 */
-	virtual void setResponse(Response* response)
-    {
-        ;
-    }
+	virtual void setRequestUrl(const char* url);
 
-	/**
-	 * get response string
-	 * @return response contents like XML
-	 */
-	virtual Response* getResponse()
-    {
-        return NULL;
-    } 
+	virtual const char* getRequestUrl();
 
-	/**
-	 * set request method
-	 * @param method
-	 */
-	virtual void setRequestMethod(REQUEST_METHOD method)
-    {
-    }
+	virtual void setStatusCode(int code);
 
-	/**
-	 *
-	 * @param key
-	 * @param value
-	 */
-	virtual void setHeader(const char* key, const char value)
-    {
-        ;
-    } 
+	virtual void setRequestMethod(REQUEST_METHOD method);
 
-	/**
-	 *
-	 * @param headers
-	 */
-	virtual void setHeaders(std::map <const char*, const char*> headers)
-    {
-        ;
-    }
+	virtual void setHeader(const char* key, const char value);
 
-	/**
-	 *
-	 * @param key
-	 * @return
-	 */
-	virtual const char* getHeader(const char* key)
-    {
-        return NULL;
-    }
+	virtual void setHeaders(std::map <const char*, const char*> headers);
 
-	/**
-	 *
-	 * @return
-	 */
-	virtual std::map <const char*, const char*> getHeaders() 
-    {
-        return NULL;
-    }
+	virtual const char* getHeader(const char* key);
 
-	/**
-	 * get request method
-	 * @return request method enum
-	 */
-	virtual REQUEST_METHOD getRequestMethod()
-    {
-        return NULL;
-    } 
+	virtual std::map <const char*, const char*> getHeaders();
+
+	virtual REQUEST_METHOD getRequestMethod();
 };
 
 } }

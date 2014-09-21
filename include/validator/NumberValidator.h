@@ -59,45 +59,20 @@ public:
 	 * @param tooSmall
 	 */
 	NumberValidator(int errorCode, const char* attribute, int max = 0, int min = 0,
-			const char *tooBig = "", const char *tooSmall = "")
-	{
-		this->_errorCode = errorCode;
-		this->_attribute = attribute;
-		this->_max = max;
-		this->_min = min;
-		this->_tooBig = tooBig;
-		this->_tooSmall = tooSmall;
-	}
+			const char *tooBig = "", const char *tooSmall = "");
 
 	/**
 	 * get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "NumberValidator";
-	}
+	virtual const char* getComponentName();
 
 	/**
 	 * validate inputs
 	 * @param model
 	 * @return true if input is valid
 	 */
-	virtual bool validate(Emwd::core::Model* model)
-	{
-		long num = atoi(model->getParam(this->_attribute).c_str());
-		if (num < this->_min)
-		{
-			model->addError(this->_errorCode, this->_tooSmall);
-			return false;
-		}
-		if (this->_max < num)
-		{
-			model->addError(this->_errorCode, this->_tooBig);
-			return false;
-		}
-		return true;
-	}
+	virtual bool validate(Emwd::core::Model* model);
 };
 
 } }

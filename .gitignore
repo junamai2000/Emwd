@@ -1,0 +1,7 @@
+*.d
+*.so
+*.o
+*.a
+.metadata/
+RemoteSystemsTempFiles/
+include/kozaiku/

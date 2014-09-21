@@ -9,6 +9,8 @@
 #ifndef EMWD_WEB_CONTROLLER_H_
 #define EMWD_WEB_CONTROLLER_H_
 
+// C++ headers
+#include <string>
 #include <map>
 #include <vector>
 #include <list>
@@ -30,12 +32,12 @@ private:
 	/**
 	 * all actions which is attached to this controller
 	 */
-	std::map <const char*, Action*> _actions;
+	std::map <std::string, Action*> _actions;
 
 	/**
 	 * all filters which is attached to this controller
 	 */
-	std::map <const char*, Filter*> _filters;
+	std::map <std::string, Filter*> _filters;
 
 	/**
 	 * A pointer to Application class
@@ -62,40 +64,27 @@ public:
 	 * Get Application class
 	 * @return a pointer to Application class
 	 */
-	Emwd::core::Application* getApplication()
-	{
-		return this->_app;
-	}
+	Emwd::core::Application* getApplication();
 
 	/**
 	 * Get Application class
 	 * @return a pointer to Application class
 	 */
-	Emwd::core::Configuration* getConfiguration()
-	{
-		return this->_app->getConfiguration();
-	}
+	Emwd::core::Configuration* getConfiguration();
 
 	/**
 	 * Register Action with a name
 	 * @param name
 	 * @param action
 	 */
-	void registerAction(const char* actionName, Action* action)
-	{
-		action->setController(this);
-		this->_actions[actionName] = action;
-	}
+	void registerAction(const char* actionName, Action* action);
 
 	/**
 	 * Check action class is registered or not
 	 * @param name
 	 * @return true if registered
 	 */
-	bool hasAction(const char* actionName)
-	{
-		return this->_actions[actionName]==NULL? false:true;
-	}
+	bool hasAction(const char* actionName);
 
 	/**
 	 * Register Filters
@@ -103,10 +92,7 @@ public:
 	 * @param actionName
 	 * @param filters
 	 */
-	void registerFilter(const char* actionName, Filter* filters)
-	{
-		this->_filters[actionName] = filters;
-	}
+	void registerFilter(const char* actionName, Filter* filters);
 
 	/**
 	 * RUn Action with filters
@@ -114,33 +100,12 @@ public:
 	 * @param action
 	 * @return true if action finishes successfully
 	 */
-	virtual bool run(Emwd::core::Application* app, const char* actionName)
-	{
-		this->init();
-		if (!this->hasAction(actionName))
-		{
-			throw HttpException(404, "Requested Action Is Not Found");
-		}
-
-		this->_app = app;
-		if (this->_filters.size() > 0)
-		{
-			Filter* filters = this->_filters[actionName];
-			if (filters)
-			{
-				return filters->run(this, this->_actions[actionName]);
-			}
-		}
-		return this->_actions[actionName]->run(this);
-	}
+	virtual bool run(Emwd::core::Application* app, const char* actionName);
 
 	/**
 	 *
 	 */
-	~Controller()
-	{
-		;
-	}
+	~Controller();
 };
 
 } }

@@ -43,34 +43,20 @@ public:
 	 * Set a pointer to a controller
 	 * @param controller
 	 */
-	void setController(Controller* controller)
-	{
-		this->_controller = controller;
-	}
+	void setController(Controller* controller);
 
 	/**
 	 * get a pointer to a controller
 	 * @return a pointer to a controller
 	 */
-	Controller* getController()
-	{
-		return this->_controller;
-	}
+	Controller* getController();
 
 	/**
 	 * Start action
 	 * @param controller
 	 * @return true if there is no error
 	 */
-	virtual bool run(Controller* controller)
-	{
-		bool retVal;
-		this->_controller = controller;
-		this->raiseEvent("beforeRun");
-		retVal = this->process();
-		this->raiseEvent("afterRun");
-		return retVal;
-	}
+	virtual bool run(Controller* controller);
 
 	/**
 	 * Main logic of action

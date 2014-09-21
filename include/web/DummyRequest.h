@@ -50,11 +50,6 @@ private:
 	int _statusCode;
 
 	/**
-	 *
-	 */
-	Emwd::core::Response* _response;
-
-	/**
 	 * request method
 	 */
 	REQUEST_METHOD _method;
@@ -65,194 +60,118 @@ public:
 	 * @param key
 	 * @return
 	 */
-	virtual const char* getGet(const char* key)
-	{
-		return this->_get[key];
-	}
+	virtual const char* getGet(const char* key);
 
 	/**
 	 *
 	 * @param key
 	 * @param value
 	 */
-	virtual void setGet(const char* key, const char* value)
-	{
-		this->_get[key] = value;
-	}
+	virtual void setGet(const char* key, const char* value);
 
-	virtual std::map<const char*, const char*> getGets()
-	{
-		return this->_get;
-	}
+	virtual std::map<const char*, const char*> getGets();
 
 	/**
 	 *
 	 * @param gets
 	 */
-	virtual void setGets(std::map <const char*, const char*> gets)
-	{
-		this->_get = gets;
-	}
+	virtual void setGets(std::map <const char*, const char*> gets);
 
 	/**
 	 *
 	 * @param key
 	 * @return
 	 */
-	virtual const char* getPost(const char* key)
-	{
-		return this->_post[key];
-	}
+	virtual const char* getPost(const char* key);
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual std::map<const char*, const char*> getPosts()
-	{
-		return this->_post;
-	}
+	virtual std::map<const char*, const char*> getPosts();
 
 	/**
 	 *
 	 * @param key
 	 * @param value
 	 */
-	virtual void setPost(const char* key, const char *value)
-	{
-		this->_post[key] = value;
-	}
+	virtual void setPost(const char* key, const char *value);
 
 	/**
 	 *
 	 * @param posts
 	 */
-	virtual void setPosts(std::map<const char*, const char*> posts)
-	{
-		this->_post = posts;
-	}
+	virtual void setPosts(std::map<const char*, const char*> posts);
 
 	/**
 	 *
 	 * @param type
 	 */
-	virtual void setContentType(const char* type)
-	{
-		this->_contentType = type;
-	}
+	virtual void setContentType(const char* type);
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual const char* getContentType()
-	{
-		return this->_contentType.c_str();
-	}
+	virtual const char* getContentType();
 
 	/**
 	 *
 	 * @param url
 	 */
-	virtual void setRequestUrl(const char* url)
-	{
-		this->_url = url;
-	}
+	virtual void setRequestUrl(const char* url);
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual const char* getRequestUrl()
-	{
-		return this->_url.c_str();
-	}
+	virtual const char* getRequestUrl();
 
 	/**
 	 *
 	 * @param code
 	 */
-	virtual void setStatusCode(int code)
-	{
-		this->_statusCode = code;
-	}
-
-	virtual void setResponse(Emwd::core::Response* response)
-	{
-		this->_response = response;
-	}
-
-	/**
-	 *
-	 * @return
-	 */
-	virtual Emwd::core::Response* getResponse()
-	{
-		return this->_response;
-	}
+	virtual void setStatusCode(int code);
 
 	/**
 	 *
 	 * @param method
 	 */
-	virtual void setRequestMethod(REQUEST_METHOD method)
-	{
-		this->_method = method;
-	}
+	virtual void setRequestMethod(REQUEST_METHOD method);
 
 	/**
 	 *
 	 * @param key
 	 * @param value
 	 */
-	virtual void setHeader(const char* key, const char value)
-	{
-		;
-	}
+	virtual void setHeader(const char* key, const char value);
 
 	/**
 	 *
 	 * @param headers
 	 */
-	virtual void setHeaders(std::map<const char*, const char*> headers)
-	{
-		;
-	}
+	virtual void setHeaders(std::map<const char*, const char*> headers);
 
 	/**
 	 *
 	 * @param key
 	 * @return
 	 */
-	virtual const char* getHeader(const char* key)
-	{
-		return "not implemented yet";
-	}
+	virtual const char* getHeader(const char* key);
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual std::map<const char*, const char*> getHeaders()
-	{
-		std::map<const char*, const char*> dummy;
-		dummy["not implemented yet"] = "not implemented yet";
-		return dummy;
-	}
+	virtual std::map<const char*, const char*> getHeaders();
 
 	/**
 	 *
 	 * @return request method such as POST, GET
 	 */
-	virtual REQUEST_METHOD getRequestMethod()
-	{
-		return this->_method;
-	}
+	virtual REQUEST_METHOD getRequestMethod();
 
-	~DummyRequest()
-	{
-
-	}
+	~DummyRequest();
 };
 
 } }

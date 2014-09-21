@@ -9,6 +9,7 @@
 #ifndef EMWD_CORE_CORE_COMPONENT_H_
 #define EMWD_CORE_CORE_COMPONENT_H_
 
+// C++ headers
 #include <string>
 #include <map>
 #include <vector>
@@ -25,7 +26,7 @@ private:
 	/**
 	 * event handers
 	 */
-	std::map<const char*, std::vector<CoreComponent*> > _events;
+	std::map<std::string, std::vector<CoreComponent*> > _events;
 
 public:
 	/**
@@ -40,7 +41,7 @@ public:
 	 * @param cc pointer from a class which raised an event
 	 * @return true if event finishes successfully
 	 */
-	virtual bool onEvent(const char* componentName, const char* eventName,	CoreComponent* cc) {return true;};
+	virtual bool onEvent(const char* componentName, const char* eventName,	CoreComponent* cc);
 
 	/**
 	 * all classes inherited from this class need to set component name
@@ -53,27 +54,13 @@ public:
 	 * @param eventName
 	 * @param event
 	 */
-	void attachEvent(const char *eventName, CoreComponent *event)
-	{
-		if (eventName == NULL || event == NULL)
-			return;
-		this->_events[eventName].push_back(event);
-	}
+	void attachEvent(const char *eventName, CoreComponent *event);
 
 	/**
 	 * raise events which attached with specific event name
 	 * @param eventName
 	 */
-	void raiseEvent(const char *eventName)
-	{
-		std::vector<CoreComponent *> event = this->_events[eventName];
-		std::vector<CoreComponent *>::iterator it = event.begin();
-		while (it != event.end())
-		{
-			(*it)->onEvent(this->getComponentName(), eventName, this);
-			++it;
-		}
-	}
+	void raiseEvent(const char *eventName);
 };
 
 } }

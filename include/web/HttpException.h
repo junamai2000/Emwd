@@ -39,20 +39,13 @@ public:
 	 */
 	HttpException(int code, const char* message,
 			int lineNumber = __LINE__,
-			const char* fileName = __FILE__)
-			: Exception(code, message, lineNumber, fileName)
-	{
-		this->_statusCode = code;
-	}
+			const char* fileName = __FILE__);
 
 	/**
 	 * Get Http status code
 	 * @return http status code
 	 */
-	int getStatusCode() const throw()
-	{
-		return this->_statusCode;
-	}
+	int getStatusCode() const throw();
 };
 
 } }

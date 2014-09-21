@@ -50,31 +50,19 @@ public:
 	 * @param lineNumber
 	 * @param fileName
 	 */
-	Error(int errorCode, const char* message, int lineNumber = __LINE__, const char* fileName = __FILE__)
-	{
-		this->_errorCode = errorCode;
-		this->_message = message;
-		this->_lineNumber = lineNumber;
-		this->_fileName = fileName;
-	}
+	Error(int errorCode, const char* message, int lineNumber = __LINE__, const char* fileName = __FILE__);
 
 	/**
 	 * get error code
 	 * @return error code
 	 */
-	int getErrorCode()
-	{
-		return this->_errorCode;
-	}
+	int getErrorCode();
 
 	/**
 	 * get error message
 	 * @return error message
 	 */
-	const char* getMessage()
-	{
-		return this->_message;
-	}
+	const char* getMessage();
 };
 
 } }

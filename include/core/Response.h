@@ -14,12 +14,22 @@
 
 namespace Emwd { namespace core {
 
+class Request;
+
 /**
  * Response class
  */
 class Response
 {
+protected:
+	Emwd::core::Request *_request;
+
 public:
+	void setRequest(Request *request)
+	{
+		this->_request = request;
+	}
+
 	/**
 	 *
 	 * @param key

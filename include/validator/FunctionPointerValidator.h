@@ -24,24 +24,13 @@ public:
 	 * get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "FunctionPointerValidator";
-	}
+	virtual const char* getComponentName();
 
 	int (*_pointerToFunction)(Emwd::core::Model*);
 
-	FunctionPointerValidator(int (*pointerToFunction)(Emwd::core::Model*))
-	{
-		this->_pointerToFunction = pointerToFunction;
-	}
+	FunctionPointerValidator(int (*pointerToFunction)(Emwd::core::Model*));
 
-	virtual bool validate(Emwd::core::Model * model)
-	{
-		if (this->_pointerToFunction(model))
-			return true;
-		return false;
-	}
+	virtual bool validate(Emwd::core::Model * model);
 };
 } }
 

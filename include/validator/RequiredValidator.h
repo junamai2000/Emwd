@@ -37,37 +37,20 @@ public:
 	 * @param attribute
 	 * @param message
 	 */
-	RequiredValidator(int errorCode, const char* attribute, const char *message = "")
-	{
-		this->_errorCode = errorCode;
-		this->_attribute = attribute;
-		this->_message = message;
-	}
+	RequiredValidator(int errorCode, const char* attribute, const char *message = "");
 
 	/**
 	 * get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "RequiredValidator";
-	}
+	virtual const char* getComponentName();
 
 	/**
 	 * validate input
 	 * @param model
 	 * @return true if value is not empty
 	 */
-	virtual bool validate(Emwd::core::Model* model)
-	{
-		std::string tmp = model->getParam(this->_attribute);
-		if (tmp.size() == 0)
-		{
-			model->addError(this->_errorCode, this->_message);
-			return false;
-		}
-		return true;
-	}
+	virtual bool validate(Emwd::core::Model* model);
 };
 
 } }

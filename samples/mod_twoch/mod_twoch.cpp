@@ -20,60 +20,53 @@
 #include <string>
 
 #include <core/Configuration.h>
-#include <core/Model.h>
-#include <core/XmlSerializable.h>
-#include <web/WebApplication.h>
 #include <web/ApacheRequest.h>
-#include <web/DummyResponse.h>
-#include <web/Filter.h>
-#include <validator/NumberValidator.h>
-#include <validator/LengthValidator.h>
-#include <validator/RequiredValidator.h>
-#include <validator/FunctionPointerValidator.h>
+#include <web/ApacheResponse.h>
+#include <web/WebApplication.h>
 
-#include "test.h"
-
-extern "C" module AP_MODULE_DECLARE_DATA cpphello_module;
+#include "config/JsonConfiguration.h"
+#include "controllers/TwoChController.h"
 
 using namespace Emwd::core;
 using namespace Emwd::web;
-using namespace Emwd::validator;
 
-static int cpphello_handler(request_rec *r)
+extern "C" module AP_MODULE_DECLARE_DATA twoch_module;
+
+
+static int twoch_handler(request_rec *r)
 {
-    if (strcmp(r->handler, "cpphello")) {
+    if (strcmp(r->handler, "twoch")) {
         return DECLINED;
     }
 
     r->content_type = "text/html"; 
 
     JsonConfiguration *json = new JsonConfiguration();
-    json->open("/home/junya/Emwd/src/test.json");
+    json->open("/home/junya/Emwd/samples/mod_twoch/test.json");
 
     Configuration *conf = new Configuration();
     conf->setStorage(json);
-
+    
     Request *request = new ApacheRequest(r);
-
-    DummyResponse *response = new DummyResponse();
-    request->setResponse(response);
-
+    Response *response = new ApacheResponse(r);
+    
     // Sample controller
-    Controller* controller = new SampleController();
+    Controller* controller = new TwoChController();
 
     // Application
     WebApplication *app = new WebApplication();
     app->setRequest(request);
+    app->setResponse(response);
     app->setConfiguration(conf);
-    app->registerController("sampleController", controller);
-    app->registerRoute("/sample/do", "sampleController", "sampleAction");
-    app->registerRoute("/sample/do2", "sampleController", "sample2Action");
-    app->registerRoute("/sample/do3", "sampleController", "sample3Action");
+    app->registerController("TwoChController", controller);
+    app->registerRoute("/twoch/read", "TwoChController", "ReadAction");
+    // app->registerRoute("/twoch/post", "TwoChController", "PostAction");
+    // app->registerRoute("/twoch/list", "TwoChController", "ListAction");
     app->run();
 
     ap_rputs(response->getBody(), r);
-
     // clean up, sould I use auto_ptr or somethig?
+    
     delete json;
     delete conf;
     delete request;
@@ -86,12 +79,11 @@ static int cpphello_handler(request_rec *r)
 
 static void register_hooks(apr_pool_t *p)
 {
-  // ap_hook_fixups(cpphello_handler,NULL,NULL,APR_HOOK_MIDDLE);
-  ap_hook_handler(cpphello_handler, NULL, NULL, APR_HOOK_MIDDLE);
+  ap_hook_handler(twoch_handler, NULL, NULL, APR_HOOK_MIDDLE);
 }
 
 extern "C" {
-    module AP_MODULE_DECLARE_DATA cpphello_module = {
+    module AP_MODULE_DECLARE_DATA twoch_module = {
 		STANDARD20_MODULE_STUFF,
 		NULL,
 		NULL,

@@ -8,12 +8,15 @@
 #ifndef EMWD_CORE_APPLICATION_H_
 #define EMWD_CORE_APPLICATION_H_
 
+// C++ headers
 #include <string>
 #include <map>
 #include <vector>
 
+// Emwd
 #include <core/CoreComponent.h>
 #include <core/Request.h>
+#include <core/Response.h>
 #include <core/Configuration.h>
 
 namespace Emwd { namespace core {
@@ -31,6 +34,8 @@ protected:
 	 */
 	Request* _request;
 
+	Response* _response;
+
 	/**
 	 * Configuration class
 	 */
@@ -47,37 +52,37 @@ public:
 	 * set Request class.
 	 * @param[in] request
 	 */
-	virtual void setRequest(Request *request)
-	{
-		this->_request = request;
-	}
+	virtual void setRequest(Request *request);
+
+	/**
+	 * set Response class.
+	 * @param[in] request
+	 */
+	virtual void setResponse(Response *response);
 
 	/**
 	 * get Request class
 	 * @return Request Request class set by setRequest()
 	 */
-	virtual Request* getRequest()
-	{
-		return this->_request;
-	}
+	virtual Request* getRequest();
+
+	/**
+	 * get Response class
+	 * @return Request Request class set by setRequest()
+	 */
+	virtual Response* getResponse();
 
 	/**
 	 * set Configuration class
 	 * @param [in] Configuration config
 	 */
-	virtual void setConfiguration(Configuration* configuration)
-	{
-		this->_configuration = configuration;
-	}
+	virtual void setConfiguration(Configuration* configuration);
 
 	/**
 	 * get Configuration class
 	 * @return Configuration class set by setConfig
 	 */
-	Configuration* getConfiguration()
-	{
-		return this->_configuration;
-	}
+	Configuration* getConfiguration();
 };
 
 } }

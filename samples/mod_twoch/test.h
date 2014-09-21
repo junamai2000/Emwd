@@ -44,7 +44,7 @@ public:
 		std::ifstream file(path);
 		if (file.fail())
 		{
-			std::cout << "Failed to open file : " << path << std::endl;
+			std::cerr << "Failed to open file : " << path << std::endl;
 			return false;
 		}
 
@@ -56,7 +56,7 @@ public:
 		picojson::parse(this->_json, json_in.begin(), json_in.end(), &error);
 		if (!error.empty())
 		{
-			std::cout << "Json parse error" << std::endl;
+			std::cerr << "Json parse error" << std::endl;
 			return false;
 		}
 		return true;
@@ -119,7 +119,7 @@ public:
 	{
 		// implement email program here
 		// you can isolate email program from core logic with event handler
-		std::cout << conponentName << ":" << eventName << " => Send Email" << std::endl;
+		std::cerr << conponentName << ":" << eventName << " => Send Email" << std::endl;
 		return 0;
 	}
 };

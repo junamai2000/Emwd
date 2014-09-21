@@ -46,20 +46,13 @@ protected:
 	 * Increment depth each time user adds a filter
 	 * @param depth
 	 */
-	void incrementDepth(int depth)
-	{
-		this->_filterDepth = depth+1;
-	}
+	void incrementDepth(int depth);
 
 public:
 	/**
 	 * Constructor
 	 */
-	Filter()
-	{
-		this->_filterNext = NULL;
-		this->_filterDepth = 0;
-	}
+	Filter();
 
 	/**
 	 * Get component name
@@ -72,29 +65,19 @@ public:
 	 * Set a pointer to a controller
 	 * @param controller
 	 */
-	void setController(Controller* controller)
-	{
-		this->_controller = controller;
-	}
+	void setController(Controller* controller);
 
 	/**
 	 * Get controller class
 	 * @return a pointer to a controller
 	 */
-	Controller* getController()
-	{
-		return this->_controller;
-	}
+	Controller* getController();
 
 	/**
 	 * Add a filter to a chain
 	 * @param filter
 	 */
-	void setNextFilter(Filter* filter)
-	{
-		filter->incrementDepth(this->_filterDepth);
-		this->_filterNext = filter;
-	}
+	void setNextFilter(Filter* filter);
 
 	/**
 	 * run filters with an action class
@@ -102,20 +85,7 @@ public:
 	 * @param action
 	 * @return
 	 */
-	virtual bool run(Controller* controller, Action* action)
-	{
-		this->preFilter(controller, action);
-		if (this->_filterNext)
-		{
-			this->_filterNext->run(controller, action);
-		}
-		else
-		{
-			action->run(controller);
-		}
-		this->postFilter(controller, action);
-		return false;
-	}
+	virtual bool run(Controller* controller, Action* action);
 
 	/**
 	 * User has to implement pre filter in a concreate class

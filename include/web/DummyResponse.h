@@ -43,79 +43,46 @@ public:
 	 * @param key
 	 * @param value
 	 */
-	virtual void setHeader(const char* key, const char* value)
-	{
-		this->_header[key] = value;
-	}
+	virtual void setHeader(const char* key, const char* value);
 
-	virtual void setHeaders(std::map<const char*, const char*> header)
-	{
-		this->_header = header;
-	}
+	virtual void setHeaders(std::map<const char*, const char*> header);
 
 	/**
 	 *
 	 * @param code
 	 */
-	virtual void setStatus(int code)
-	{
-		this->_statusCode = code;
-	}
+	virtual void setStatus(int code);
 
-	virtual int getStatus(void)
-	{
-		return this->_statusCode;
-	}
+	virtual int getStatus(void);
 
 	/**
 	 *
 	 * @param key
 	 * @return
 	 */
-	virtual const char* getHeader(const char* key)
-	{
-		return this->_header[key];
-	}
+	virtual const char* getHeader(const char* key);
 
-	virtual std::map<const char*, const char*> getHeaders()
-	{
-		return this->_header;
-	}
+	virtual std::map<const char*, const char*> getHeaders();
 
 	/**
 	 *
 	 */
-	virtual void setBody(const char* body)
-	{
-		this->_output = body;
-	}
+	virtual void setBody(const char* body);
 
-	virtual void appendBody(const char* content)
-	{
-		this->_output.append(content);
-	}
+	virtual void appendBody(const char* content);
 
 	/**
 	 * Clear response body
 	 */
-	virtual void clearBody()
-	{
-		this->_output.clear();
-	}
+	virtual void clearBody();
 
 	/**
 	 *
 	 * @return
 	 */
-	virtual const char* getBody()
-	{
-		return this->_output.c_str();
-	}
+	virtual const char* getBody();
 
-	virtual  ~DummyResponse()
-	{
-
-	}
+	virtual  ~DummyResponse();
 };
 
 } }

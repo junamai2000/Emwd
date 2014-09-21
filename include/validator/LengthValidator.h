@@ -56,45 +56,20 @@ public:
 	 * @param tooShort
 	 */
 	LengthValidator(int errorCode, const char* attribute, int max = 0, int min = 0,
-			const char *tooLong = "", const char *tooShort = "")
-	{
-		this->_errorCode = errorCode;
-		this->_attribute = attribute;
-		this->_max = max;
-		this->_min = min;
-		this->_tooLong = tooLong;
-		this->_tooShort = tooShort;
-	}
+			const char *tooLong = "", const char *tooShort = "");
 
 	/**
 	 * get component name
 	 * @return component name
 	 */
-	virtual const char* getComponentName()
-	{
-		return "LengthValidator";
-	}
+	virtual const char* getComponentName();
 
 	/**
 	 * validate string length
 	 * @param model
 	 * @return true if a string is within specification
 	 */
-	virtual bool validate(Emwd::core::Model* model)
-	{
-		int length = model->getParam(this->_attribute).length();
-		if (length < this->_min)
-		{
-			model->addError(this->_errorCode, this->_tooShort);
-			return false;
-		}
-		if (this->_max < length)
-		{
-			model->addError(this->_errorCode, this->_tooLong);
-			return false;
-		}
-		return true;
-	}
+	virtual bool validate(Emwd::core::Model* model);
 };
 
 } }

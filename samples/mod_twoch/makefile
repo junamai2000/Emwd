@@ -20,24 +20,27 @@ APXS_LDFLAGS_SHLIB=`$(APXS) -q LDFLAGS_SHLIB`
 APXS_SYSCONFDIR=`$(APXS) -q SYSCONFDIR`
 APXS_LIBS_SHLIB=`$(APXS) -q LIBS_SHLIB`
 
+MY_ARCHIVES=./models/models.a ./controllers/controllers.a ./config/config.a ./actions/actions.a ./filters/filters.a
+FW_ARCHIVES=../../src/web/web.a ../../src/validator/validator.a ../../src/core/core.a
+
 #   the default target
-all: mod_cpphello.so
+all: mod_twoch.so
 
 # compile the shared object file. use g++ instead of letting apxs call
 # ld so we end up with the right c++ stuff. We do this in two steps,
 # compile and link.
 
 # compile
-mod_cpphello.o: mod_cpphello.cpp
+mod_twoch.o: mod_twoch.cpp
 	g++ -c -fPIC -I$(APXS_INCLUDEDIR) -I../../include/ -I/usr/include/apr-1/ $(APXS_CFLAGS) $(APXS_CFLAGS_SHLIB) -Wall -o $@ $< 
 
 # link
-mod_cpphello.so: mod_cpphello.o
-	g++ -fPIC -shared -o $@ $< $(APXS_LIBS_SHLIB)
+mod_twoch.so: mod_twoch.o
+	g++ -fPIC -shared -o $@ $< $(APXS_LIBS_SHLIB) $(MY_ARCHIVES) $(FW_ARCHIVES)
 
 # install the shared object file into Apache 
 install: all
-	$(APXS) -i -a -n 'cpphello' mod_cpphello.so
+	$(APXS) -i -a -n 'mod_twoch' mod_twoch.so
 
 # display the apxs variables
 check_apxs_vars:

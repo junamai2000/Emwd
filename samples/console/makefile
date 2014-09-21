@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -I ../include -O0 -g3 -ggdb
 CC = g++
 
 $(TARGET):    $(TARGET).o
-	$(CC) -o $(TARGET) $(TARGET).o
+	$(CC) -o $(TARGET) $(TARGET).o web/web.a validator/validator.a core/core.a
    
 $(TARGET).o:    $(TARGET).cpp
 	$(CC) $(CXXFLAGS) -c $(TARGET).cpp
