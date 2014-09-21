@@ -15,13 +15,13 @@
 #include <vector>
 #include <list>
 
+#include <core/CoreComponent.h>
 #include <core/Application.h>
-#include <core/Configuration.h>
-#include <web/HttpException.h>
-#include <web/Action.h>
-#include <web/Filter.h>
 
 namespace Emwd { namespace web {
+
+class Action;
+class Filter;
 
 /**
  * Controller class
@@ -32,12 +32,12 @@ private:
 	/**
 	 * all actions which is attached to this controller
 	 */
-	std::map <std::string, Action*> _actions;
+	std::map <std::string, Emwd::web::Action*> _actions;
 
 	/**
 	 * all filters which is attached to this controller
 	 */
-	std::map <std::string, Filter*> _filters;
+	std::map <std::string, Emwd::web::Filter*> _filters;
 
 	/**
 	 * A pointer to Application class
@@ -77,7 +77,7 @@ public:
 	 * @param name
 	 * @param action
 	 */
-	void registerAction(const char* actionName, Action* action);
+	void registerAction(const char* actionName, Emwd::web::Action* action);
 
 	/**
 	 * Check action class is registered or not
@@ -92,7 +92,7 @@ public:
 	 * @param actionName
 	 * @param filters
 	 */
-	void registerFilter(const char* actionName, Filter* filters);
+	void registerFilter(const char* actionName, Emwd::web::Filter* filters);
 
 	/**
 	 * RUn Action with filters

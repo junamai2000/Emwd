@@ -32,7 +32,6 @@ using namespace Emwd::web;
 
 extern "C" module AP_MODULE_DECLARE_DATA twoch_module;
 
-
 static int twoch_handler(request_rec *r)
 {
     if (strcmp(r->handler, "twoch")) {
@@ -63,9 +62,6 @@ static int twoch_handler(request_rec *r)
     app->registerRoute("/twoch/list", "TwoChController", "ListAction");
     app->run();
 
-    // ap_rputs(response->getBody(), r);
-    // clean up, sould I use auto_ptr or somethig?
-    
     delete json;
     delete conf;
     delete request;

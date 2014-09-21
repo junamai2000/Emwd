@@ -6,6 +6,7 @@
  *      Author: Junya Namai
  */
 #include <web/Filter.h>
+#include <web/Action.h>
 
 namespace Emwd { namespace web {
 
@@ -31,7 +32,7 @@ Filter::Filter()
  * Set a pointer to a controller
  * @param controller
  */
-void Filter::setController(Controller* controller)
+void Filter::setController(Emwd::web::Controller* controller)
 {
 	this->_controller = controller;
 }
@@ -40,7 +41,7 @@ void Filter::setController(Controller* controller)
  * Get controller class
  * @return a pointer to a controller
  */
-Controller* Filter::getController()
+Emwd::web::Controller* Filter::getController()
 {
 	return this->_controller;
 }
@@ -61,7 +62,7 @@ void Filter::setNextFilter(Filter* filter)
  * @param action
  * @return
  */
-bool Filter::run(Controller* controller, Action* action)
+bool Filter::run(Emwd::web::Controller* controller, Emwd::web::Action* action)
 {
 	this->preFilter(controller, action);
 	if (this->_filterNext)

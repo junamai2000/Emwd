@@ -12,11 +12,12 @@
 #include <string>
 #include <list>
 
-#include <core/Application.h>
-#include <core/Configuration.h>
-#include <web/Action.h>
+#include <core/CoreComponent.h>
 
 namespace Emwd { namespace web {
+
+class Controller;
+class Action;
 
 /**
  * Filter class
@@ -35,7 +36,7 @@ protected:
 	/**
 	 * Controller which invoke this filter
 	 */
-	Controller* _controller;
+	Emwd::web::Controller* _controller;
 
 	/**
 	 * depth of filter chain
@@ -65,13 +66,13 @@ public:
 	 * Set a pointer to a controller
 	 * @param controller
 	 */
-	void setController(Controller* controller);
+	void setController(Emwd::web::Controller* controller);
 
 	/**
 	 * Get controller class
 	 * @return a pointer to a controller
 	 */
-	Controller* getController();
+	Emwd::web::Controller* getController();
 
 	/**
 	 * Add a filter to a chain
@@ -85,7 +86,7 @@ public:
 	 * @param action
 	 * @return
 	 */
-	virtual bool run(Controller* controller, Action* action);
+	virtual bool run(Emwd::web::Controller* controller, Emwd::web::Action* action);
 
 	/**
 	 * User has to implement pre filter in a concreate class
@@ -93,7 +94,7 @@ public:
 	 * @param action
 	 * @return true if filter finishes successfully
 	 */
-	virtual bool preFilter(Controller* controller, Action* action) = 0;
+	virtual bool preFilter(Emwd::web::Controller* controller, Emwd::web::Action* action) = 0;
 
 	/**
 	 * User has to implement post filter in a concreate class
@@ -101,7 +102,7 @@ public:
 	 * @param action
 	 * @return
 	 */
-	virtual bool postFilter(Controller* controller, Action* action) = 0;
+	virtual bool postFilter(Emwd::web::Controller* controller, Emwd::web::Action* action) = 0;
 };
 
 } }

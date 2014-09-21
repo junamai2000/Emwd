@@ -14,8 +14,7 @@
 #include <vector>
 
 // Emwd
-#include <core/Application.h>
-#include <core/Configuration.h>
+#include <core/CoreComponent.h>
 
 namespace Emwd { namespace web {
 
@@ -30,7 +29,7 @@ private:
 	/**
 	 * A pointer to a Controller class which invokes this action
 	 */
-	Controller* _controller;
+	Emwd::web::Controller* _controller;
 
 public:
 	/**
@@ -43,20 +42,20 @@ public:
 	 * Set a pointer to a controller
 	 * @param controller
 	 */
-	void setController(Controller* controller);
+	void setController(Emwd::web::Controller* controller);
 
 	/**
 	 * get a pointer to a controller
 	 * @return a pointer to a controller
 	 */
-	Controller* getController();
+	Emwd::web::Controller* getController();
 
 	/**
 	 * Start action
 	 * @param controller
 	 * @return true if there is no error
 	 */
-	virtual bool run(Controller* controller);
+	virtual bool run(Emwd::web::Controller* controller);
 
 	/**
 	 * Main logic of action

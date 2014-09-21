@@ -6,6 +6,9 @@
  *      Author: Junya Namai
  */
 #include <web/Controller.h>
+#include <web/Action.h>
+#include <web/Filter.h>
+#include <web/HttpException.h>
 
 namespace Emwd { namespace web {
 

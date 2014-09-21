@@ -6,6 +6,7 @@
  *      Author: Junya Namai
  */
 #include <web/WebApplication.h>
+#include <web/Controller.h>
 
 namespace Emwd { namespace web {
 
@@ -108,7 +109,7 @@ bool WebApplication::registerRoute(const char* path, const char* controllerName,
 	{
 		PROCESSOR tmp;
 		tmp.controller = controllerName;
-		tmp.action = actionName;:w
+		tmp.action = actionName;
 		this->_processMap[path] = tmp;
 		return true;
 	}

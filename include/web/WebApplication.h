@@ -15,13 +15,11 @@
 
 // Emwd
 #include <core/Application.h>
-#include <core/Configuration.h>
-#include <core/Request.h>
-#include <core/Response.h>
-#include <web/Controller.h>
 #include <web/HttpException.h>
 
 namespace Emwd { namespace web {
+
+class Controller;
 
 /**
  * WebApplication class
@@ -51,7 +49,7 @@ private:
 	/**
 	 * Controllers with a name
 	 */
-	std::map <std::string, Controller*> _controllers;
+	std::map <std::string, Emwd::web::Controller*> _controllers;
 
 public:
 	/**
@@ -69,7 +67,7 @@ public:
 	/**
 	 * Set error response
 	 */
-	virtual void setErrorResponse(const HttpException e);
+	virtual void setErrorResponse(const Emwd::web::HttpException e);
 
 	/**
 	 * Start controller
@@ -83,7 +81,7 @@ public:
 	 * @param controllerName
 	 * @param controller
 	 */
-	void registerController(const char* controllerName, Controller* controller);
+	void registerController(const char* controllerName, Emwd::web::Controller* controller);
 
 	/**
 	 * Has controller
