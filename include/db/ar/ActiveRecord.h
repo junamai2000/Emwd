@@ -7,15 +7,22 @@
  */
 #ifndef EMWD_DB_ACTIVERECORD_H_
 #define EMWD_DB_ACTIVERECORD_H_
+// C header
+#include <stdlib.h>
+
 // C++ header
 #include <string>
 #include <map>
 #include <list>
+#include <sstream>
 
 // Emwd
 #include <core/Model.h>
 #include <db/Criteria.h>
 #include <db/SqlBuilder.h>
+#include <db/Connection.h>
+
+#define EMWD_ACTIVE_RECORD_MAKE_COLUMN(col, type) this->makeColumn(#col, type, (void*)&this->col)
 
 namespace Emwd { namespace db {
 
@@ -153,19 +160,23 @@ public:
 				ss << pk.ival;
 				sql += ss.str();
 			}
+			else if (pk.type==COL_CHAR)
+			{
+				sql += pk.cval;
+			}
 		}
 		return sql;
 	}
 
 	bool findByPrimaryKey(std::list<PRIMARY_KEY> &pk)
 	{
-		Criteria *criteria = new Criteria();
+		Emwd::db::Criteria *criteria = new Emwd::db::Criteria();
 		criteria->select = "*";
 		criteria->condition = this->makePkCondition(pk);
 		criteria->limit = 1;
 
-		Connection::Results results;
-		SqlBuilder *builder = this->_connection->getSqlBuilder();
+		Emwd::db::Connection::Results results;
+		Emwd::db::SqlBuilder *builder = this->_connection->getSqlBuilder();
 		std::string sql = builder->buildFindCommand(this, criteria);
 		if (!this->_connection->execute(sql.c_str(), results))
 		{
@@ -173,10 +184,10 @@ public:
 			return false;
 		}
 
-		Connection::Results::iterator it;
+		Emwd::db::Connection::Results::iterator it;
 		for (it = results.begin(); it != results.end(); ++it)
 		{
-			Connection::Result::iterator it2;
+			Emwd::db::Connection::Result::iterator it2;
 			for (it2 = (*it).begin(); it2 != (*it).end(); ++it2)
 			{
 				this->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), this->getMeta());

@@ -7,14 +7,14 @@ class Action;
 /**
  * TwoChController class
  */
-class TwoChController : public Emwd::web::Controller
+class FrameworkBenchmarksController : public Emwd::web::Controller
 {
 private:
 	Emwd::web::Filter* _timer;
-	Emwd::web::Action* _topAction;
-	Emwd::web::Action* _readAction;
-	Emwd::web::Action* _postAction;
-	Emwd::web::Action* _listAction;
+	Emwd::web::Action* _jsonAction;
+	Emwd::web::Action* _dbAction;
+	Emwd::web::Action* _fortuneAction;
+	Emwd::web::Action* _plaintextAction;
 
 	/**
 	 * Init and register action and filters
@@ -24,5 +24,5 @@ private:
 public:
 	virtual const char* getComponentName();
 
-	~TwoChController();
+	~FrameworkBenchmarksController();
 };

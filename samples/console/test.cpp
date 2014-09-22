@@ -365,6 +365,54 @@ public:
     	this->setTableSchema();
     }
 
+    virtual void setTableSchema()
+    {
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(categoryId, COL_INT);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(categoryName, COL_CHAR);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(parentCategoryId, COL_INT);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(isValid, COL_BOOL);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(flags, COL_LONG);
+        this->makePrimaryKey("categoryId", COL_INT);
+    }
+
+    static Category* findByPk(int id, Connection *con)
+    {
+    	PRIMARY_KEY pk;
+    	pk.ival = id;
+    	pk.type = COL_INT;
+    	pk.col = "categoryId";
+    	std::list<PRIMARY_KEY> pks;
+    	pks.push_back(pk);
+    	Category *category = new Category(con);
+    	category->findByPrimaryKey(pks);
+    	return category;
+    }
+};
+
+class World : public ActiveRecord
+{
+public:
+    int categoryId;
+    const char* categoryName;
+    int parentCategoryId;
+    bool isValid;
+    long flags;
+
+    typedef std::list<World*> Worlds;
+
+    virtual const char* getComponentName()
+    {
+        return "World";
+    }
+
+    virtual bool processSave() {return true;}
+    virtual void registerValidators() {return;}
+
+    Category(Connection *connection) : ActiveRecord(connection)
+    {
+    	this->setTableSchema();
+    }
+
     #define EMWD_ACTIVE_RECORD_MAKE_COLUMN(col, type) this->makeColumn(#col, type, (void*)&this->col)
     virtual void setTableSchema()
     {

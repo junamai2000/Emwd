@@ -20,9 +20,6 @@ namespace Emwd { namespace db {
 
 class SqlBuilder;
 
-/**
- *
- */
 class Connection : public Emwd::core::CoreComponent
 {
 private:

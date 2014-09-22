@@ -9,17 +9,17 @@
 #include <web/Action.h>
 #include <web/Filter.h>
 
-#include "actions/ReadAction.h"
+#include "actions/PlainTextAction.h"
 
 using namespace Emwd::core;
 using namespace Emwd::web;
 
-const char* ReadAction::getComponentName()
+const char* PlainTextAction::getComponentName()
 {
-    return "ReadAction";
+    return "PlainTextAction";
 }
 
-bool ReadAction::process()
+bool PlainTextAction::process()
 {
     //JsonConfiguration *conf = (JsonConfiguration*)this->getController()->getConfiguration()->getStorage();
     //Response *response = this->getController()->getApplication()->getRequest()->getResponse();
