@@ -5,15 +5,15 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_WEB_ACTION_H_
 #define EMWD_WEB_ACTION_H_
 
-#include <iostream>
+// C++ headers
 #include <string>
 #include <map>
 #include <vector>
 
+// Emwd
 #include <core/Application.h>
 #include <core/Configuration.h>
 

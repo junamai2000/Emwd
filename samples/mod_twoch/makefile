@@ -20,7 +20,7 @@ APXS_LDFLAGS_SHLIB=`$(APXS) -q LDFLAGS_SHLIB`
 APXS_SYSCONFDIR=`$(APXS) -q SYSCONFDIR`
 APXS_LIBS_SHLIB=`$(APXS) -q LIBS_SHLIB`
 
-MY_ARCHIVES=./models/models.a ./controllers/controllers.a ./config/config.a ./actions/actions.a ./filters/filters.a
+MY_ARCHIVES=./controllers/controllers.a ./config/config.a ./actions/actions.a ./filters/filters.a ./models/models.a
 FW_ARCHIVES=../../src/web/web.a ../../src/validator/validator.a ../../src/core/core.a
 
 #   the default target

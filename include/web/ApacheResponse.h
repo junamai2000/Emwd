@@ -9,6 +9,7 @@
 #ifndef EMWD_WEB_APACHE_RESPONSE_H_
 #define EMWD_WEB_APACHE_RESPONSE_H_
 
+// Apache headers
 #include "ap_config.h"
 #include "apr.h"
 #include "apr_lib.h"
@@ -21,10 +22,12 @@
 #include "http_request.h"
 #include "http_protocol.h"
 
-#include <core/Response.h>
-
+// C++ headers
 #include <string>
 #include <map>
+
+// Emwd
+#include <core/Response.h>
 
 namespace Emwd { namespace web {
 
@@ -59,15 +62,16 @@ public:
 	 * @param value
 	 */
 	virtual void setHeader(const char* key, const char* value);
-
 	virtual void setHeaders(std::map<const char*, const char*> header);
+
+	virtual void setContentType(const char* contentType);
+	virtual const char* getContentType();
 
 	/**
 	 *
 	 * @param code
 	 */
 	virtual void setStatus(int code);
-
 	virtual int getStatus(void);
 
 	/**
@@ -84,7 +88,7 @@ public:
 	 */
 	virtual void setBody(const char* body);
 
-	virtual void appendBody(const char* content);
+	virtual void appendBody(const char* body);
 
 	/**
 	 * Clear response body

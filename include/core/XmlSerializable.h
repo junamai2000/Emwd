@@ -5,10 +5,10 @@
  *  Created on: 2014/09/19
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_CORE_SERIALIZER_H_
 #define EMWD_CORE_SERIALIZER_H_
 
+// C++ headers
 #include <string>
 #include <vector>
 #include <sstream>
@@ -57,7 +57,7 @@ public:
  * 各型の部分特殊化
  * SerializableObject<const char*>
  */
-template <> std::string XmlSerializableObject<const char*>::serialize()
+template <> inline std::string XmlSerializableObject<const char*>::serialize()
 {
 	this->_serialized << "<" << this->_name << ">";
 	this->_serialized << this->_object;
@@ -65,7 +65,7 @@ template <> std::string XmlSerializableObject<const char*>::serialize()
 	return this->_serialized.str();
 };
 
-template<> std::string XmlSerializableObject<int>::serialize()
+template<> inline std::string XmlSerializableObject<int>::serialize()
 {
 	this->_serialized << "<" << this->_name << ">";
 	this->_serialized << this->_object;
@@ -73,7 +73,7 @@ template<> std::string XmlSerializableObject<int>::serialize()
 	return this->_serialized.str();
 };
 
-template<> std::string XmlSerializableObject<float>::serialize()
+template<> inline std::string XmlSerializableObject<float>::serialize()
 {
 	this->_serialized << "<" << this->_name << ">";
 	this->_serialized << this->_object;
@@ -81,7 +81,7 @@ template<> std::string XmlSerializableObject<float>::serialize()
 	return this->_serialized.str();
 };
 
-template<> std::string XmlSerializableObject<double>::serialize()
+template<> inline std::string XmlSerializableObject<double>::serialize()
 {
 	this->_serialized << "<" << this->_name << ">";
 	this->_serialized << this->_object;
@@ -98,15 +98,22 @@ class XmlSerializableComposite : public XmlSerializable
 private:
 	std::vector<XmlSerializable *> _children;
 	const char* _name;
+	const char* _header;
 
 public:
 	XmlSerializableComposite()
 	{
 		this->_name = NULL;
+		this->_header = NULL;
 	}
 	void setElementName(const char* name)
 	{
 		this->_name = name;
+	}
+
+	void setHeader(const char* header)
+	{
+		this->_header = header;
 	}
 
 	void add(XmlSerializable *element)
@@ -114,8 +121,10 @@ public:
 		this->_children.push_back(element);
 	}
 
-	std::string serialize()
+	virtual std::string serialize()
 	{
+		if (this->_header)
+			this->_serialized << this->_header;
 		if (this->_name)
 			this->_serialized << "<" << this->_name << ">";
 		for (unsigned int i = 0; i < this->_children.size(); i++)

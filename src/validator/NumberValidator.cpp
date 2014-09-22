@@ -5,6 +5,10 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
+// C header
+#include <stdlib.h>
+
+// Emwd
 #include <validator/NumberValidator.h>
 
 namespace Emwd { namespace validator {

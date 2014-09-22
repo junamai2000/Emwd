@@ -24,6 +24,16 @@ void DummyResponse::setHeaders(std::map<const char*, const char*> header)
 	this->_header = header;
 }
 
+void DummyResponse::setContentType(const char* contentType)
+{
+	this->_contentType = contentType;
+}
+
+const char* DummyResponse::getContentType()
+{
+	return this->_contentType.c_str();
+}
+
 /**
  *
  * @param code

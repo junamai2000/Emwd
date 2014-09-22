@@ -34,6 +34,9 @@ protected:
 	 */
 	Request* _request;
 
+	/**
+	 * Response class
+	 */
 	Response* _response;
 
 	/**

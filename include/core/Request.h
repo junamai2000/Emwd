@@ -5,10 +5,10 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_CORE_REQUEST_H_
 #define EMWD_CORE_REQUEST_H_
 
+// C++ headers
 #include <map>
 
 namespace Emwd { namespace core {

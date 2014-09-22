@@ -39,8 +39,6 @@ static int twoch_handler(request_rec *r)
         return DECLINED;
     }
 
-    r->content_type = "text/html"; 
-
     JsonConfiguration *json = new JsonConfiguration();
     json->open("/home/junya/Emwd/samples/mod_twoch/test.json");
 
@@ -59,12 +57,13 @@ static int twoch_handler(request_rec *r)
     app->setResponse(response);
     app->setConfiguration(conf);
     app->registerController("TwoChController", controller);
+    app->registerRoute("/twoch", "TwoChController", "TopAction");
     app->registerRoute("/twoch/read", "TwoChController", "ReadAction");
-    // app->registerRoute("/twoch/post", "TwoChController", "PostAction");
-    // app->registerRoute("/twoch/list", "TwoChController", "ListAction");
+    app->registerRoute("/twoch/post", "TwoChController", "PostAction");
+    app->registerRoute("/twoch/list", "TwoChController", "ListAction");
     app->run();
 
-    ap_rputs(response->getBody(), r);
+    // ap_rputs(response->getBody(), r);
     // clean up, sould I use auto_ptr or somethig?
     
     delete json;

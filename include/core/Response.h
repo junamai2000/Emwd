@@ -5,10 +5,10 @@
  *  Created on: 2014/09/07
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_CORE_RESPONSE_H_
 #define EMWD_CORE_RESPONSE_H_
 
+// C++ headers
 #include <map>
 #include <string>
 
@@ -21,15 +21,7 @@ class Request;
  */
 class Response
 {
-protected:
-	Emwd::core::Request *_request;
-
 public:
-	void setRequest(Request *request)
-	{
-		this->_request = request;
-	}
-
 	/**
 	 *
 	 * @param key
@@ -44,6 +36,18 @@ public:
 	 */
 	virtual void setStatus(int code) = 0;
 	virtual int getStatus(void) = 0;
+
+	/**
+	 * Set content type
+	 * @param contentType
+	 */
+	virtual void setContentType(const char* contentType) = 0;
+
+	/**
+	 * Get content type
+	 * @return
+	 */
+	virtual const char* getContentType() = 0;
 
 	/**
 	 *

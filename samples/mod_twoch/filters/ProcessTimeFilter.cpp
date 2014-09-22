@@ -1,7 +1,12 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
+// C headers
 #include <sys/time.h>
-#include <fstream>
 
+// C++ headers
+#include <fstream>
+#include <iostream>
+
+// Emwd
 #include <web/Filter.h>
 
 #include "filters/ProcessTimeFilter.h"

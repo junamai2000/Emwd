@@ -17,19 +17,18 @@ class Configuration
 {
 private:
 	/**
-	 *
+	 * Storage pointer
 	 */
 	void* _storage;
 
 public:
 	/**
-	 *
 	 * @param storage
 	 */
 	void setStorage(void* storage);
 
 	/**
-	 *
+	 * @return Storage pointer
 	 */
 	void* getStorage();
 };

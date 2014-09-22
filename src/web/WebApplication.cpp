@@ -108,7 +108,7 @@ bool WebApplication::registerRoute(const char* path, const char* controllerName,
 	{
 		PROCESSOR tmp;
 		tmp.controller = controllerName;
-		tmp.action = actionName;
+		tmp.action = actionName;:w
 		this->_processMap[path] = tmp;
 		return true;
 	}

@@ -5,12 +5,10 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_VALIDATOR_NUMBERVALIDATOR_H_
 #define EMWD_VALIDATOR_NUMBERVALIDATOR_H_
 
-#include <stdlib.h>
-
+// Emwd
 #include <core/Validator.h>
 #include <core/Model.h>
 

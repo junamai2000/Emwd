@@ -28,6 +28,11 @@ private:
 	std::map <const char*, const char *> _header;
 
 	/**
+	 * Content type
+	 */
+	std::string _contentType;
+
+	/**
 	 * Http Status Code
 	 */
 	int _statusCode;
@@ -46,6 +51,9 @@ public:
 	virtual void setHeader(const char* key, const char* value);
 
 	virtual void setHeaders(std::map<const char*, const char*> header);
+
+	virtual void setContentType(const char* contentType);
+	virtual const char* getContentType();
 
 	/**
 	 *

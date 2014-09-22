@@ -5,10 +5,10 @@
  *  Created on: 2014/09/05
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_VALIDATOR_VALIDATOR_H_
 #define EMWD_VALIDATOR_VALIDATOR_H_
 
+// Emwd
 #include <core/CoreComponent.h>
 
 namespace Emwd { namespace core {

@@ -5,7 +5,6 @@
  *  Created on: 2014/09/04
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_CORE_CORE_COMPONENT_H_
 #define EMWD_CORE_CORE_COMPONENT_H_
 

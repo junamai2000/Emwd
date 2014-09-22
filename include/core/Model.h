@@ -5,7 +5,6 @@
  *  Created on: 2014/09/05
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_MODEL_MODEL_H_
 #define EMWD_MODEL_MODEL_H_
 

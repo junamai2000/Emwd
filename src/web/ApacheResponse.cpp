@@ -9,6 +9,10 @@
 
 namespace Emwd { namespace web {
 
+/**
+ * Contructor
+ * @param r
+ */
 ApacheResponse::ApacheResponse(request_rec *r)
 {
 	this->_req = r;
@@ -27,6 +31,16 @@ void ApacheResponse::setHeader(const char* key, const char* value)
 void ApacheResponse::setHeaders(std::map<const char*, const char*> header)
 {
 	this->_header = header;
+}
+
+void ApacheResponse::setContentType(const char* contentType)
+{
+	this->_req->content_type = contentType;
+}
+
+const char* ApacheResponse::getContentType()
+{
+	return this->_req->content_type;
 }
 
 /**
@@ -63,12 +77,12 @@ std::map<const char*, const char*> ApacheResponse::getHeaders()
  */
 void ApacheResponse::setBody(const char* body)
 {
-	this->_output = body;
+	ap_rputs(body, this->_req);
 }
 
-void ApacheResponse::appendBody(const char* content)
+void ApacheResponse::appendBody(const char* body)
 {
-	this->_output.append(content);
+	ap_rputs(body, this->_req);
 }
 
 /**
@@ -76,7 +90,7 @@ void ApacheResponse::appendBody(const char* content)
  */
 void ApacheResponse::clearBody()
 {
-	this->_output.clear();
+	;
 }
 
 /**
@@ -85,7 +99,7 @@ void ApacheResponse::clearBody()
  */
 const char* ApacheResponse::getBody()
 {
-	return this->_output.c_str();
+	;
 }
 
 ApacheResponse::~ApacheResponse()

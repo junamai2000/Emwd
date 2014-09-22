@@ -6,6 +6,9 @@
 
 #include "controllers/TwoChController.h"
 #include "actions/ReadAction.h"
+#include "actions/ListAction.h"
+#include "actions/TopAction.h"
+#include "actions/PostAction.h"
 #include "filters/ProcessTimeFilter.h"
 
 using namespace Emwd::core;
@@ -13,13 +16,20 @@ using namespace Emwd::web;
 
 void TwoChController::init()
 {
-    // Read action
-    this->action = new ReadAction();
+    // actions
+    this->_readAction = new ReadAction();
+    this->_listAction = new ListAction();
+    this->_topAction = new TopAction();
+    this->_postAction = new PostAction();
     // Process Time Filter chain
-    this->timer = new ProcessTimeFilter();
+    this->_timer = new ProcessTimeFilter();
 
-    this->registerAction("ReadAction", action);
-    this->registerFilter("ReadAction", timer);
+    this->registerAction("ReadAction", this->_readAction);
+    this->registerAction("TopAction", this->_topAction);
+    this->registerAction("ListAction", this->_listAction);
+    this->registerAction("PostAction", this->_postAction);
+
+    this->registerFilter("ReadAction", this->_timer);
 }
 
 const char* TwoChController::getComponentName()
@@ -29,6 +39,9 @@ const char* TwoChController::getComponentName()
 
 TwoChController::~TwoChController()
 {
-    delete this->timer;
-    delete this->action;
+    delete this->_timer;
+    delete this->_readAction;
+    delete this->_topAction;
+    delete this->_listAction;
+    delete this->_postAction;
 }

@@ -5,10 +5,10 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
-
 #ifndef EMWD_WEB_APACHE_REQUEST_H_
 #define EMWD_WEB_APACHE_REQUEST_H_
 
+// Apache headers
 #include "ap_config.h"
 #include "apr.h"
 #include "apr_lib.h"
@@ -21,6 +21,7 @@
 #include "http_request.h"
 #include "http_protocol.h"
 
+// Emwd
 #include <core/Request.h>
 #include <core/Response.h>
 
@@ -37,22 +38,21 @@ private:
 	REQUEST_METHOD _method;
 
 	/**
-	 *
+	 * Do not need. Always requires request_req
 	 */
     ApacheRequest();
 
     /**
-     *
+     * Apache request_rec
      */
     request_rec *_req;
 
     /**
-     *
+     * Get parameters
      */
     apr_hash_t *_get;
 
     /**
-     *
      * @param r
      * @param args
      * @return
@@ -60,7 +60,6 @@ private:
     apr_hash_t *parse_form_from_string(request_rec *r, char *args);
 
     /**
-     *
      * @param r
      * @return
      */
