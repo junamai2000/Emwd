@@ -18,7 +18,7 @@ class Model;
 /**
  * Validator class
  */
-class Validator: public CoreComponent
+class Validator: public Emwd::core::CoreComponent
 {
 protected:
 	/**
@@ -33,7 +33,7 @@ public:
 	 * @param model
 	 * @return true if input is valid
 	 */
-	virtual bool validate(Model* model) = 0;
+	virtual bool validate(Emwd::core::Model* model) = 0;
 };
 
 } }

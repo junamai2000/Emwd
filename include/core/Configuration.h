@@ -53,6 +53,14 @@ public:
 	 * @return
 	 */
 	const char* getApplicationName();
+
+	const char* getDatabaseDriver();
+	const char* getDatabaseDriverPath();
+	const char* getDatabaseHost();
+	const char* getDatabaseUser();
+	const char* getDatabasePassword();
+	const char* getDatabaseName();
+	int getDatabasePort();
 };
 
 } }

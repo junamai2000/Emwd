@@ -10,6 +10,7 @@
 
 // C++ header
 #include <string>
+#include <iostream>
 
 // Emwd
 #include <db/Connection.h>
@@ -21,22 +22,24 @@ Emwd::db::Connection* ConnectionManager::loadDriver(const char* path, const char
 	std::string soName = path;
 	soName += "libemwd";
 	soName += driverName;
-	soName += "driver";
+	soName += "driver.so";
+
+	void* handle = dlopen(soName.c_str(), RTLD_LAZY);
+	if (!handle)
+	{
+		std::cerr << "case 1:" << soName << dlerror() << std::endl;
+		return NULL;
+	}
 
 	std::string symbol = "get_emwd_";
 	symbol += driverName;
 	symbol += "_driver";
 
-	void* handle = dlopen(soName.c_str(), RTLD_LAZY);
-	if (!handle)
-	{
-		return NULL;
-	}
-
 	Emwd::db::Connection* (*getEmwdDatabaseDriver)(void);
 	getEmwdDatabaseDriver = (Emwd::db::Connection* (*)(void))dlsym(handle, symbol.c_str());
 	if (getEmwdDatabaseDriver == 0)
 	{
+		std::cerr << "case 2" << std::endl;
 		return NULL;
 	}
 	return getEmwdDatabaseDriver();

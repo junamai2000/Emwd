@@ -15,7 +15,7 @@
 // Emwd
 #include <core/CoreComponent.h>
 
-namespace Emwd { namespace db { namespace schema
+namespace Emwd { namespace db {
 
 /**
  * Criteria
@@ -33,8 +33,13 @@ public:
 	std::string group;
 	std::string join;
 	std::string having;
+
+	const char* getComponentName()
+	{
+		return "Criteria";
+	}
 };
 
-} } }
+} }
 
 #endif /* EMWD_DB_CRITERIA_H_ */

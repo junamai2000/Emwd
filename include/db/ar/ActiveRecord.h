@@ -14,8 +14,10 @@
 
 // Emwd
 #include <core/Model.h>
+#include <db/Criteria.h>
+#include <db/SqlBuilder.h>
 
-namespace Emwd { namespace db { namespace ar
+namespace Emwd { namespace db {
 
 class Connection;
 
@@ -28,31 +30,166 @@ private:
 	ActiveRecord() {};
 
 protected:
-	enum COLUMN_TYPE {COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR};
-	struct FILE_PAIR {
-		const char* col;
+	enum COLUMN_TYPE {COL_BOOL=1, COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR};
+	struct FIELD_META {
+		COLUMN_TYPE type;
 		void* member;
 	};
-	std::map<std::string, COLUMN_TYPE> _meta;
+	std::map<std::string, FIELD_META> _meta;
 
 	struct PRIMARY_KEY {
 		const char* col;
 		COLUMN_TYPE type;
+		union
+		{
+			int ival;
+			bool bval;
+			long lval;
+			float fval;
+			double dval;
+			const char* cval;
+		};
 	};
 	std::list<PRIMARY_KEY> _pks;
-
 	Emwd::db::Connection* _connection;
 
+	std::map<std::string, FIELD_META>& getMeta()
+	{
+		return this->_meta;
+	}
+
 public:
-	ActiveRecord(Emwd::db::Connection *);
-	virtual void setup() = 0;
+	ActiveRecord(Emwd::db::Connection *connection) {
+		this->_connection = connection;
+		//this->setTableSchema();
+	};
 
+	virtual void makeColumn(const char* col, COLUMN_TYPE type, void* member)
+	{
+		FIELD_META meta;
+		meta.type = type;
+		meta.member = member;
+		this->_meta[col] = meta;
+	}
 
-	// template <typename T> bool findByPk(T id);
+	virtual void makePrimaryKey(const char* col, COLUMN_TYPE type)
+	{
+		PRIMARY_KEY pk;
+		pk.col = col;
+		pk.type = type;
+		this->_pks.push_back(pk);
+	}
 
+	virtual void restoreRecord(const char* col, const char* value, std::map<std::string, FIELD_META> &meta)
+	{
+		FIELD_META field = meta[col];
+		if(field.type == COL_INT)
+		{
+			int *tmpInt = (int*)field.member;
+			*tmpInt = atoi(value);
+		}
+		else if (field.type == COL_CHAR)
+		{
+			const char **tmpChar = (const char**)field.member;
+			*tmpChar = value;
+		}
+		else if (field.type == COL_LONG)
+		{
+			long *tmpLong = (long*)field.member;
+			*tmpLong = atol(value);
+		}
+		else if (field.type == COL_BOOL)
+		{
+			std::string tmp = value;
+			bool *tmpBool = (bool*) field.member;
+			if (tmp == "1" or tmp == "true")
+			{
+				*tmpBool = true;
+			}
+			else
+			{
+				*tmpBool = false;
+			}
+		}
+		else if (field.type == COL_FLOAT)
+		{
+			float *tmpFloat = (float*)field.member;
+			*tmpFloat = (float)atof(value);
+		}
+		else if (field.type == COL_DOUBLE)
+		{
+			double *tmpDouble = (double*) field.member;
+			*tmpDouble = atof(value);
+		}
+		else if (field.type == COL_DATE)
+		{
+			// not implemented yet
+		}
+		else if (field.type == COL_BIN)
+		{
+			// not implemented yet
+		}
+	}
 
+	virtual void setTableSchema() = 0;
+
+	Emwd::db::Connection *getConnection()
+	{
+		return this->_connection;
+	}
+
+	std::string makePkCondition(std::list<PRIMARY_KEY> &pk)
+	{
+		std::string sql;
+		std::list<PRIMARY_KEY>::iterator it = pk.begin();
+		for(;it != pk.end(); ++it)
+		{
+			PRIMARY_KEY pk = *it;
+			sql = pk.col;
+			sql += "=";
+			if (pk.type==COL_INT)
+			{
+				std::stringstream ss;
+				ss << pk.ival;
+				sql += ss.str();
+			}
+		}
+		return sql;
+	}
+
+	bool findByPrimaryKey(std::list<PRIMARY_KEY> &pk)
+	{
+		Criteria *criteria = new Criteria();
+		criteria->select = "*";
+		criteria->condition = this->makePkCondition(pk);
+		criteria->limit = 1;
+
+		Connection::Results results;
+		SqlBuilder *builder = this->_connection->getSqlBuilder();
+		std::string sql = builder->buildFindCommand(this, criteria);
+		if (!this->_connection->execute(sql.c_str(), results))
+		{
+			std::cerr << "query error: " << sql << std::endl;
+			return false;
+		}
+
+		Connection::Results::iterator it;
+		for (it = results.begin(); it != results.end(); ++it)
+		{
+			Connection::Result::iterator it2;
+			for (it2 = (*it).begin(); it2 != (*it).end(); ++it2)
+			{
+				this->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), this->getMeta());
+			}
+		}
+		delete criteria;
+		return true;
+	}
+
+	// T find(int id);
+	// std::list<T> findAll(Emwd::db:schema::Criteria criteria);
 };
 
-} } }
+} }
 
 #endif /* EMWD_DB_ACTIVERECORD_H_ */

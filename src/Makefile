@@ -35,11 +35,12 @@ define make-library
 	$(AR) $(ARFLAGS) $$@ $$^
 endef
 
+# Usage:$(call make-library, library-name, source-file-list, libraries)
 define make-so
   libraries		+= $1
   sources		+= $2
 
-  $1: $(call source-to-object, $2)
+  $1: $(call source-to-object, $2) $3
 	$(CC) -shared -fPIC -o $$@ $$^
 endef
 

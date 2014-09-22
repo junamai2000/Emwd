@@ -65,4 +65,94 @@ const char* Configuration::getApplicationName()
 	}
 }
 
+const char* Configuration::getDatabaseDriver()
+{
+	if (boost::optional < std::string > str = this->_ptree.get_optional
+			< std::string > ("web.db.driver"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+
+const char* Configuration::getDatabaseDriverPath()
+{
+	if (boost::optional < std::string > str = this->_ptree.get_optional
+			< std::string > ("web.db.driverPath"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+
+const char* Configuration::getDatabaseHost()
+{
+	if (boost::optional < std::string > str = this->_ptree.get_optional
+			< std::string > ("web.db.host"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+
+const char* Configuration::getDatabaseUser()
+{
+	if (boost::optional<std::string> str =
+			this->_ptree.get_optional<std::string>("web.db.user"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+const char* Configuration::getDatabasePassword()
+{
+	if (boost::optional<std::string> str =
+			this->_ptree.get_optional<std::string>("web.db.password"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+
+const char* Configuration::getDatabaseName()
+{
+	if (boost::optional<std::string> str =
+			this->_ptree.get_optional<std::string>("web.db.database"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
+}
+
+int Configuration::getDatabasePort()
+{
+	if (boost::optional<int> port =
+			this->_ptree.get_optional<int>("web.db.port"))
+	{
+		return port.get();
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 } }

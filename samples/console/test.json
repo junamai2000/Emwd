@@ -1,1 +1,14 @@
-{"web":{"name":"Sample Application (this string comes from json)"}}
+{
+  "web": {
+    "name": "Sample Application (this string comes from json)",
+    "db": {
+      "driver": "mysql",
+      "driverPath": "/home/junya/Emwd/src/db/mysql/",
+      "host": "localhost",
+      "port": 3340,
+      "user": "sample",
+      "password": "sample",
+      "database": "sample"
+    }
+  }
+}

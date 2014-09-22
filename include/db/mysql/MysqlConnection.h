@@ -7,18 +7,19 @@
  */
 #ifndef EMWD_DB_MYSQL_CONNECTION_H_
 #define EMWD_DB_MYSQL_CONNECTION_H_
-
+// C++ header
+#include <mysql/mysql.h>
 // Emwd
 #include <db/Connection.h>
 #include <mysql/mysql.h>
 
 namespace Emwd { namespace db {
 
-
 class MysqlConnection : public Connection
 {
 private:
 	MYSQL* _connection;
+	std::map<std::string, MYSQL_STMT *> _statements;
 
 public:
 	MysqlConnection();
@@ -32,8 +33,11 @@ public:
 	virtual bool rollback();
 	virtual bool commit();
 	virtual bool execute(const char* query);
-	virtual bool prepare(const char* query);
+	virtual bool execute(const char* query, Results &results);
+	virtual bool prepare(const char* name, const char* query);
 	virtual bool bindParams();
+
+	virtual SqlBuilder* getSqlBuilder();
 
 };
 

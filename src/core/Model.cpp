@@ -16,10 +16,10 @@ namespace Emwd { namespace core {
 Model::~Model()
 {
     // clean up validators
-    std::map <std::string, std::vector <Validator*> >::iterator mvIt= _validators.begin();
+    std::map <std::string, std::vector <Emwd::core::Validator*> >::iterator mvIt= _validators.begin();
     while (mvIt != this->_validators.end())
     {
-        std::vector<Validator *>::iterator vIt = mvIt->second.begin();
+        std::vector<Emwd::core::Validator *>::iterator vIt = mvIt->second.begin();
         while (vIt != mvIt->second.end())
         {
             delete *vIt;
@@ -29,7 +29,7 @@ Model::~Model()
     }
 
     // clean up errors
-    std::vector<Error *>::iterator eIt = this->_errors.begin();
+    std::vector<Emwd::core::Error *>::iterator eIt = this->_errors.begin();
     while (eIt != this->_errors.end())
     {
         delete *eIt;
@@ -88,7 +88,7 @@ std::string Model::getParam(const char* name)
  * attach validator with scenario
  * @param validator
  */
-void Model::attachValidator(const char* scenario, Validator *validator)
+void Model::attachValidator(const char* scenario, Emwd::core::Validator *validator)
 {
     this->_validators[scenario].push_back(validator);
 }
@@ -125,7 +125,7 @@ bool Model::validate()
  */
 void Model::addError(int errorCode, const char* message)
 {
-    Error* err = new Error(errorCode, message);
+	Emwd::core::Error* err = new Emwd::core::Error(errorCode, message);
     this->_errors.push_back(err);
 }
 
@@ -142,7 +142,7 @@ bool Model::hasError()
  * return all errors in this model
  * @return error classes
  */
-std::vector<Error *> Model::getErrors()
+std::vector<Emwd::core::Error *> Model::getErrors()
 {
     return this->_errors;
 }

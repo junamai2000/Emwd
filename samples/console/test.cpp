@@ -1,5 +1,8 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 #include <time.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 #include <fstream>
 
 #include <core/Configuration.h>
@@ -9,68 +12,22 @@
 #include <web/DummyRequest.h>
 #include <web/DummyResponse.h>
 #include <web/Filter.h>
+#include <web/Action.h>
+#include <web/Controller.h>
+#include <db/Connection.h>
+#include <db/ar/ActiveRecord.h>
+#include <db/SqlBuilder.h>
 #include <validator/NumberValidator.h>
 #include <validator/LengthValidator.h>
 #include <validator/RequiredValidator.h>
 #include <validator/FunctionPointerValidator.h>
-
-#include <picojson/picojson.h>
 // #include <kozaiku/Kozaiku.h>
 
 using namespace Emwd::core;
 using namespace Emwd::web;
 using namespace Emwd::validator;
+using namespace Emwd::db;
 // using namespace Emwd::kozaiku;
-
-/**
- * JsonConfiguration
- */
-class JsonConfiguration
-{
-private:
-	/**
-	 * parsed json
-	 */
-	picojson::value _json;
-
-public:
-	/**
-	 * Open Json
-	 * @param path
-	 * @return
-	 */
-	bool open(const char* path)
-	{
-		std::ifstream file(path);
-		if (file.fail())
-		{
-			std::cout << "Failed to open file : " << path << std::endl;
-			return false;
-		}
-
-		std::istreambuf_iterator<char> first(file);
-		std::istreambuf_iterator<char> last;
-		std::string json_in(first, last);
-
-		std::string error;
-		picojson::parse(this->_json, json_in.begin(), json_in.end(), &error);
-		if (!error.empty())
-		{
-			std::cout << "Json parse error" << std::endl;
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * Get application name
-	 * @return string from json
-	 */
-	const char* getApplicationName()
-	{
-		return this->_json.get<picojson::object>()["web"].get<picojson::object>()["name"].get<std::string>().c_str();
-	}
-};
 
 /**
  * Serializable User Information
@@ -205,18 +162,18 @@ public:
 	bool process()
 	{
 		// test for config
-		JsonConfiguration *conf = (JsonConfiguration*)this->getController()->getConfiguration()->getStorage();
-		Response *response = this->getController()->getApplication()->getRequest()->getResponse();
-		(*response) << "Start Application : " << conf->getApplicationName(); // << std::endl;
+		//Configuration *conf = this->getController()->getConfiguration();
+		//Response *response = this->getController()->getApplication()->getRequest()->getResponse();
+		//(*response) << "Start Application : " << conf->getApplicationName(); // << std::endl;
 		// this->getController()->getApplication()->getRequest()->getResponse()->setBody("SampleAction run success!");
 
 		SampleForm form;
-		form.setParams(this->getController()->getApplication()->getRequest()->getGets());
+		// form.setParams(this->getController()->getApplication()->getRequest()->getGets());
 		form.registerValidators();
 		form.setScenario("default");
 		if (form.save())
 		{
-			this->getController()->getApplication()->getRequest()->getResponse()->setBody("SampleAction run success!");
+			this->getController()->getApplication()->getResponse()->setBody("SampleAction run success!");
 		}
 		else
 		{
@@ -384,6 +341,55 @@ public:
 	}
 };
 
+class Category : public ActiveRecord
+{
+public:
+    int categoryId;
+    const char* categoryName;
+    int parentCategoryId;
+    bool isValid;
+    long flags;
+
+    typedef std::list<Category*> Categories;
+
+    virtual const char* getComponentName()
+    {
+        return "Category";
+    }
+
+    virtual bool processSave() {return true;}
+    virtual void registerValidators() {return;}
+
+    Category(Connection *connection) : ActiveRecord(connection)
+    {
+    	this->setTableSchema();
+    }
+
+    #define EMWD_ACTIVE_RECORD_MAKE_COLUMN(col, type) this->makeColumn(#col, type, (void*)&this->col)
+    virtual void setTableSchema()
+    {
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(categoryId, COL_INT);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(categoryName, COL_CHAR);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(parentCategoryId, COL_INT);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(isValid, COL_BOOL);
+    	EMWD_ACTIVE_RECORD_MAKE_COLUMN(flags, COL_LONG);
+        this->makePrimaryKey("categoryId", COL_INT);
+    }
+
+    static Category* findByPk(int id, Connection *con)
+    {
+    	PRIMARY_KEY pk;
+    	pk.ival = id;
+    	pk.type = COL_INT;
+    	pk.col = "categoryId";
+    	std::list<PRIMARY_KEY> pks;
+    	pks.push_back(pk);
+    	Category *category = new Category(con);
+    	category->findByPrimaryKey(pks);
+    	return category;
+    }
+};
+
 /**
  * Main
  * @param argc
@@ -398,11 +404,28 @@ int main (int argc,char **argv)
 		return 1;
 	}
 
-	JsonConfiguration *json = new JsonConfiguration();
-	json->open("./test.json");
-
 	Configuration *conf = new Configuration();
-	conf->setStorage(json);
+	conf->readJson("./test.json");
+
+    Connection *con = ConnectionManager::loadDriver(conf->getDatabaseDriverPath(), conf->getDatabaseDriver());
+    if (!con)
+    {
+    	std::cerr << "can not open driver" << std::endl;
+    	return 1;
+    }
+    con->connect(
+    		conf->getDatabaseHost(),
+    		conf->getDatabasePort(),
+    		conf->getDatabaseUser(),
+    		conf->getDatabasePassword(),
+    		conf->getDatabaseName());
+
+    Category *category = Category::findByPk(1, con);
+    std::cout << "CategoryId: " << category->categoryId << std::endl;
+    std::cout << "CategoryName: " << category->categoryName << std::endl;
+    std::cout << "parentCategoryId: " << category->parentCategoryId << std::endl;
+    delete category;
+    return 1;
 
 	// create dummy request to emulate http get request
 	Request *request = new DummyRequest();
@@ -414,7 +437,6 @@ int main (int argc,char **argv)
 	request->setRequestUrl(argv[1]);
 
 	DummyResponse *response = new DummyResponse();
-	request->setResponse(response);
 
 	// Sample controller
 	Controller* controller = new SampleController();
@@ -422,6 +444,7 @@ int main (int argc,char **argv)
 	// Application
 	WebApplication *app = new WebApplication();
 	app->setRequest(request);
+	app->setResponse(response);
 	app->setConfiguration(conf);
 	app->registerController("sampleController", controller);
 	app->registerRoute("/sample/do", "sampleController", "sampleAction");
@@ -432,8 +455,8 @@ int main (int argc,char **argv)
 	std::cout << response->getStatus() << std::endl;
 	std::cout << response->getBody() << std::endl;
 
-	// clean up, sould I use auto_ptr or somethig?
-	delete json;
+	con->disconnect();
+	delete con;
 	delete conf;
 	delete request;
 	delete response;

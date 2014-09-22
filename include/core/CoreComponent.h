@@ -25,7 +25,7 @@ private:
 	/**
 	 * event handers
 	 */
-	std::map<std::string, std::vector<CoreComponent*> > _events;
+	std::map<std::string, std::vector<Emwd::core::CoreComponent*> > _events;
 
 public:
 	/**
@@ -40,7 +40,7 @@ public:
 	 * @param cc pointer from a class which raised an event
 	 * @return true if event finishes successfully
 	 */
-	virtual bool onEvent(const char* componentName, const char* eventName,	CoreComponent* cc);
+	virtual bool onEvent(const char* componentName, const char* eventName,	Emwd::core::CoreComponent* cc);
 
 	/**
 	 * all classes inherited from this class need to set component name
@@ -53,7 +53,7 @@ public:
 	 * @param eventName
 	 * @param event
 	 */
-	void attachEvent(const char *eventName, CoreComponent *event);
+	void attachEvent(const char *eventName, Emwd::core::CoreComponent *event);
 
 	/**
 	 * raise events which attached with specific event name

@@ -4,11 +4,11 @@
     
 TARGET = test
 
-CXXFLAGS = -Wall -I ../include -O0 -g3 -ggdb
+CXXFLAGS = -Wall -I ../../include -O3 -g3 -ggdb 
 CC = g++
 
 $(TARGET):    $(TARGET).o
-	$(CC) -o $(TARGET) $(TARGET).o web/web.a validator/validator.a core/core.a
+	$(CC)  -o $(TARGET) $(TARGET).o ../../src/web/web.a ../../src/validator/validator.a ../../src/db/db.a ../../src/core/core.a -ldl -lmysqlclient
    
 $(TARGET).o:    $(TARGET).cpp
 	$(CC) $(CXXFLAGS) -c $(TARGET).cpp

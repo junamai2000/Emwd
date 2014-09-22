@@ -25,7 +25,7 @@ class Configuration;
 /**
  * Application class
  */
-class Application : public CoreComponent
+class Application : public Emwd::core::CoreComponent
 {
 private:
 

@@ -24,7 +24,7 @@ namespace Emwd { namespace core {
  * Model class
  * this class validates inputs values with Validator class
  */
-class Model : public CoreComponent
+class Model : public Emwd::core::CoreComponent
 {
 private:
 	/**
@@ -35,7 +35,7 @@ private:
 	/**
 	 * registered validators
 	 */
-	std::map <std::string, std::vector <Validator*> > _validators;
+	std::map <std::string, std::vector <Emwd::core::Validator*> > _validators;
 
 	/**
 	 * scenario to change validate action
@@ -46,7 +46,7 @@ private:
 	 * error objects
 	 * if any errors occur, this contains error with messages from validators
 	 */
-	std::vector<Error *> _errors;
+	std::vector<Emwd::core::Error *> _errors;
 
 public:
 	/**
@@ -88,7 +88,7 @@ public:
 	 * attach validator with scenario
 	 * @param validator
 	 */
-	void attachValidator(const char* scenario, Validator *validator);
+	void attachValidator(const char* scenario, Emwd::core::Validator *validator);
 
 	/**
 	 * validate inputs
@@ -113,7 +113,7 @@ public:
 	 * return all errors in this model
 	 * @return error classes
 	 */
-	std::vector<Error *> getErrors();
+	std::vector<Emwd::core::Error *> getErrors();
 
 	/**
 	 * save data
