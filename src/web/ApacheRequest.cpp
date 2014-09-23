@@ -43,7 +43,7 @@ apr_hash_t* ApacheRequest::parse_form_from_string(request_rec *r, char *args)
             ap_unescape_url(eq);
         }
         else {
-            eq = "";
+            eq = (char*)"";
             ap_unescape_url(pair);
         }
         values = (apr_array_header_t*)apr_hash_get(form, pair, APR_HASH_KEY_STRING);
@@ -111,7 +111,7 @@ void ApacheRequest::setPosts(std::map<const char*, const char*> posts)
 
 void ApacheRequest::setContentType(const char* type)
 {
-
+	;
 }
 
 const char* ApacheRequest::getContentType()

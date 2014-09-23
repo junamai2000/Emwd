@@ -1,6 +1,7 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
 // Emwd
 #include <core/Response.h>
+#include <core/Configuration.h>
 #include <web/Controller.h>
 
 #include "actions/TopAction.h"
@@ -27,6 +28,7 @@ bool TopAction::process()
     category->id = 1; 
     category->explanation = "Real time news"; 
     output.add(new XmlSerializableObject<Category*>("Category", category));
+    output.add(new XmlSerializableObject<const char*>("SiteName", this->getController()->getConfiguration()->getApplicationName()));
     response->setBody(output.serialize().c_str());
 
     return true;

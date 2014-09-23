@@ -8,6 +8,8 @@
 #ifndef EMWD_CORE_CONFIGURATION_H_
 #define EMWD_CORE_CONFIGURATION_H_
 
+#include <boost/property_tree/ptree.hpp>
+
 namespace Emwd { namespace core {
 
 /**
@@ -21,6 +23,11 @@ private:
 	 */
 	void* _storage;
 
+	/**
+	 * Boost property tree
+	 */
+	boost::property_tree::ptree _ptree;
+
 public:
 	/**
 	 * @param storage
@@ -31,6 +38,21 @@ public:
 	 * @return Storage pointer
 	 */
 	void* getStorage();
+
+	/**
+	 * Config file parser
+	 * @param fileName
+	 */
+	void readJson(const char* fileName);
+	void readXml(const char* fileName);
+	void readIni(const char* fileName);
+	boost::property_tree::ptree& getPropertyTree();
+
+	/**
+	 * Get settings
+	 * @return
+	 */
+	const char* getApplicationName();
 };
 
 } }

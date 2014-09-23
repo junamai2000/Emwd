@@ -99,7 +99,7 @@ void ApacheResponse::clearBody()
  */
 const char* ApacheResponse::getBody()
 {
-	;
+	return "";
 }
 
 ApacheResponse::~ApacheResponse()

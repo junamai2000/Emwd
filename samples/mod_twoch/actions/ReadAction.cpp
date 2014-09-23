@@ -9,7 +9,6 @@
 #include <web/Action.h>
 #include <web/Filter.h>
 
-#include "config/JsonConfiguration.h"
 #include "actions/ReadAction.h"
 
 using namespace Emwd::core;

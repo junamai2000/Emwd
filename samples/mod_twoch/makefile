@@ -20,7 +20,7 @@ APXS_LDFLAGS_SHLIB=`$(APXS) -q LDFLAGS_SHLIB`
 APXS_SYSCONFDIR=`$(APXS) -q SYSCONFDIR`
 APXS_LIBS_SHLIB=`$(APXS) -q LIBS_SHLIB`
 
-MY_ARCHIVES=./controllers/controllers.a ./config/config.a ./actions/actions.a ./filters/filters.a ./models/models.a
+MY_ARCHIVES=./controllers/controllers.a ./actions/actions.a ./filters/filters.a ./models/models.a
 FW_ARCHIVES=../../src/web/web.a ../../src/validator/validator.a ../../src/core/core.a
 
 #   the default target
@@ -32,7 +32,7 @@ all: mod_twoch.so
 
 # compile
 mod_twoch.o: mod_twoch.cpp
-	g++ -c -fPIC -I$(APXS_INCLUDEDIR) -I../../include/ -I/usr/include/apr-1/ $(APXS_CFLAGS) $(APXS_CFLAGS_SHLIB) -Wall -o $@ $< 
+	g++ -c -O3 -fPIC -I$(APXS_INCLUDEDIR) -I../../include/ -I/usr/include/apr-1/ $(APXS_CFLAGS) $(APXS_CFLAGS_SHLIB) -Wall -o $@ $< 
 
 # link
 mod_twoch.so: mod_twoch.o

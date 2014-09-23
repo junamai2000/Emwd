@@ -24,7 +24,6 @@
 #include <web/ApacheResponse.h>
 #include <web/WebApplication.h>
 
-#include "config/JsonConfiguration.h"
 #include "controllers/TwoChController.h"
 
 using namespace Emwd::core;
@@ -38,11 +37,8 @@ static int twoch_handler(request_rec *r)
         return DECLINED;
     }
 
-    JsonConfiguration *json = new JsonConfiguration();
-    json->open("/home/junya/Emwd/samples/mod_twoch/test.json");
-
     Configuration *conf = new Configuration();
-    conf->setStorage(json);
+    conf->readJson("/home/junya/Emwd/samples/mod_twoch/test.json");
     
     Request *request = new ApacheRequest(r);
     Response *response = new ApacheResponse(r);
@@ -62,7 +58,6 @@ static int twoch_handler(request_rec *r)
     app->registerRoute("/twoch/list", "TwoChController", "ListAction");
     app->run();
 
-    delete json;
     delete conf;
     delete request;
     delete response;

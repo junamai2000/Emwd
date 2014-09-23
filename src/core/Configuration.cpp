@@ -8,6 +8,12 @@
 
 #include <core/Configuration.h>
 
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/ini_parser.hpp>
+#include <boost/foreach.hpp>
+#include <boost/optional.hpp>
+
 namespace Emwd { namespace core {
 
 /**
@@ -24,6 +30,39 @@ void Configuration::setStorage(void* storage)
 void* Configuration::getStorage()
 {
     return this->_storage;
+}
+
+void Configuration::readJson(const char* fileName)
+{
+	boost::property_tree::read_json(fileName, this->_ptree);
+}
+
+void Configuration::readXml(const char* fileName)
+{
+	boost::property_tree::read_xml(fileName, this->_ptree);
+}
+
+void Configuration::readIni(const char* fileName)
+{
+	boost::property_tree::read_ini(fileName, this->_ptree);
+}
+
+boost::property_tree::ptree& Configuration::getPropertyTree()
+{
+	return this->_ptree;
+}
+
+const char* Configuration::getApplicationName()
+{
+	if (boost::optional < std::string > str = this->_ptree.get_optional
+			< std::string > ("web.name"))
+	{
+		return str.get().c_str();
+	}
+	else
+	{
+		return "";
+	}
 }
 
 } }

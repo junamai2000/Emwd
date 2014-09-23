@@ -69,7 +69,7 @@ MV := mv -f
 RM := rm -f
 SED := sed
 #C++コンパイラオプション
-CXXFLAGS := -Wall -fPIC
+CXXFLAGS := -Wall -fPIC -O3
 #リンクを担当する暗黙ルール%:%.oで呼び出される$(LINK.o)がデフォルトで$(CC)なので、CCも設定し直す
 CC := g++
 #リンカのオプション
