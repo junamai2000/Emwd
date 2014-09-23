@@ -5,8 +5,8 @@
  *  Created on: 2014/09/08
  *      Author: junya
  */
-#ifndef EMWD_DB_CONNECTION_H_
-#define EMWD_DB_CONNECTION_H_
+#ifndef EMWD_CORE_CONNECTION_H_
+#define EMWD_CORE_CONNECTION_H_
 // C++ header
 #include <map>
 #include <list>
@@ -16,9 +16,7 @@
 #include <core/CoreComponent.h>
 
 
-namespace Emwd { namespace db {
-
-class SqlBuilder;
+namespace Emwd { namespace core {
 
 class Connection : public Emwd::core::CoreComponent
 {
@@ -40,16 +38,13 @@ public:
 	virtual bool execute(const char* query) = 0;
 	virtual bool prepare(const char* name, const char* query) = 0;
 	virtual bool bindParams() = 0;
-
-	virtual Emwd::db::SqlBuilder* getSqlBuilder() = 0;
-
 };
 
 class ConnectionManager
 {
 public:
-	static Emwd::db::Connection* loadDriver(const char* path, const char* driver);
+	static Emwd::core::Connection* loadDriver(const char* path, const char* driver);
 };
 } }
 
-#endif /* EMWD_VALIDATOR_FUNCTIONPOINTERVALIDATOR_H_ */
+#endif /* EMWD_CORE_CONNECTION_H_ */

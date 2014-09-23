@@ -5,15 +5,15 @@
  *  Created on: 2014/09/08
  *      Author: junya
  */
-#ifndef EMWD_DB_MYSQL_CONNECTION_H_
-#define EMWD_DB_MYSQL_CONNECTION_H_
-// C++ header
+#ifndef EMWD_CORE_MYSQL_CONNECTION_H_
+#define EMWD_CORE_MYSQL_CONNECTION_H_
+// C header
 #include <mysql/mysql.h>
 // Emwd
-#include <db/Connection.h>
+#include <core/Connection.h>
 #include <mysql/mysql.h>
 
-namespace Emwd { namespace db {
+namespace Emwd { namespace core {
 
 class MysqlConnection : public Connection
 {
@@ -36,11 +36,8 @@ public:
 	virtual bool execute(const char* query, Results &results);
 	virtual bool prepare(const char* name, const char* query);
 	virtual bool bindParams();
-
-	virtual SqlBuilder* getSqlBuilder();
-
 };
 
 } }
 
-#endif /* EMWD_DB_MYSQL_CONNECTION_H_ */
+#endif /* EMWD_CORE_CONNECTION_H_ */

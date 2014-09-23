@@ -2,4 +2,4 @@
 local_src := $(wildcard $(subdirectory)/*.cpp)
 
 # このアーカイブのルールを生成
-$(eval $(call make-so, $(subdirectory)/libemwdmysqldriver.so, $(local_src), core/core.a db/db.a))
+$(eval $(call make-so, $(subdirectory)/libemwdmysqldriver.so, $(local_src), core/core.a))

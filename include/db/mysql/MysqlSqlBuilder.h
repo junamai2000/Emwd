@@ -18,7 +18,7 @@ class Criteria;
 class MysqlSqlBuilder : public Emwd::db::SqlBuilder
 {
 public:
-    MysqlSqlBuilder(Emwd::db::Connection *connection) : SqlBuilder(connection) {};
+    MysqlSqlBuilder(Emwd::core::Connection *connection) : SqlBuilder(connection) {};
     const char* getComponentName()
     {
     	return "MysqlSqlBuilder";

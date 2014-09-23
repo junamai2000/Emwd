@@ -9,18 +9,17 @@
 #include <string.h>
 
 // Emwd
-#include <db/mysql/MysqlConnection.h>
-#include <db/mysql/MysqlSqlBuilder.h>
+#include <core/mysql/MysqlConnection.h>
 
 extern "C"
 {
-	Emwd::db::Connection* get_emwd_mysql_driver()
+	Emwd::core::Connection* get_emwd_mysql_driver()
 	{
-		return new Emwd::db::MysqlConnection();
+		return new Emwd::core::MysqlConnection();
 	}
 }
 
-namespace Emwd { namespace db {
+namespace Emwd { namespace core {
 
 const char* MysqlConnection::getComponentName()
 {
@@ -159,11 +158,6 @@ bool MysqlConnection::prepare(const char* name, const char* query)
 bool MysqlConnection::bindParams()
 {
 	return true;
-}
-
-Emwd::db::SqlBuilder* MysqlConnection::getSqlBuilder()
-{
-	return new Emwd::db::MysqlSqlBuilder(this);
 }
 
 } }

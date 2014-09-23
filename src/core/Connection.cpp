@@ -13,11 +13,11 @@
 #include <iostream>
 
 // Emwd
-#include <db/Connection.h>
+#include <core/Connection.h>
 
-namespace Emwd { namespace db {
+namespace Emwd { namespace core {
 
-Emwd::db::Connection* ConnectionManager::loadDriver(const char* path, const char* driverName)
+Emwd::core::Connection* ConnectionManager::loadDriver(const char* path, const char* driverName)
 {
 	std::string soName = path;
 	soName += "libemwd";
@@ -35,8 +35,8 @@ Emwd::db::Connection* ConnectionManager::loadDriver(const char* path, const char
 	symbol += driverName;
 	symbol += "_driver";
 
-	Emwd::db::Connection* (*getEmwdDatabaseDriver)(void);
-	getEmwdDatabaseDriver = (Emwd::db::Connection* (*)(void))dlsym(handle, symbol.c_str());
+	Emwd::core::Connection* (*getEmwdDatabaseDriver)(void);
+	getEmwdDatabaseDriver = (Emwd::core::Connection* (*)(void))dlsym(handle, symbol.c_str());
 	if (getEmwdDatabaseDriver == 0)
 	{
 		std::cerr << "case 2" << std::endl;

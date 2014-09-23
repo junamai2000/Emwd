@@ -21,7 +21,7 @@ APXS_SYSCONFDIR=`$(APXS) -q SYSCONFDIR`
 APXS_LIBS_SHLIB=`$(APXS) -q LIBS_SHLIB`
 
 MY_ARCHIVES=./controllers/controllers.a ./actions/actions.a ./filters/filters.a ./models/models.a
-FW_ARCHIVES=../../src/web/web.a ../../src/validator/validator.a ../../src/core/core.a
+FW_ARCHIVES=../../src/web/web.a ../../src/validator/validator.a ../../src/db/db.a ../../src/core/core.a
 
 #   the default target
 all: mod_FrameworkBenchmarks.so
@@ -36,7 +36,7 @@ mod_FrameworkBenchmarks.o: mod_FrameworkBenchmarks.cpp
 
 # link
 mod_FrameworkBenchmarks.so: mod_FrameworkBenchmarks.o
-	g++ -fPIC -shared -o $@ $< $(APXS_LIBS_SHLIB) $(MY_ARCHIVES) $(FW_ARCHIVES)
+	g++ -fPIC -shared -o $@ $< $(APXS_LIBS_SHLIB) $(MY_ARCHIVES) $(FW_ARCHIVES) -ldl -lmysqlclient
 
 # install the shared object file into Apache 
 install: all

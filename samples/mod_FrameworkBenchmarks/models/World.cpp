@@ -1,5 +1,5 @@
 // vim:set noexpandtab sts=0 ts=4 sw=4 ft=cpp fenc=utf-8 ff=unix:
-#include <db/Connection.h>
+#include <core/Connection.h>
 #include <db/ar/ActiveRecord.h>
 
 #include "models/World.h"
@@ -11,7 +11,7 @@ const char* World::getComponentName()
 	return "World";
 }
 
-World::World(Emwd::db::Connection *connection) : ActiveRecord(connection)
+World::World(Emwd::core::Connection *connection) : ActiveRecord(connection)
 {
 	this->setTableSchema();
 }
@@ -23,7 +23,7 @@ void World::setTableSchema()
     this->makePrimaryKey("id", COL_INT);
 }
 
-World* World::findByPk(int id, Emwd::db::Connection *con)
+World* World::findByPk(int id, Emwd::core::Connection *con)
 {
     PRIMARY_KEY pk;
     pk.ival = id;

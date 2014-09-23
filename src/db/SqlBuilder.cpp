@@ -9,13 +9,14 @@
 #include <sstream>
 
 // Emwd
+#include <core/Connection.h>
 #include <db/SqlBuilder.h>
-#include <db/Connection.h>
+#include <db/mysql/MysqlSqlBuilder.h>
 #include <db/Criteria.h>
 
 namespace Emwd { namespace db {
 
-SqlBuilder::SqlBuilder(Emwd::db::Connection *connection)
+SqlBuilder::SqlBuilder(Emwd::core::Connection *connection)
 {
     this->_connection = connection;
 }
@@ -57,6 +58,17 @@ std::string SqlBuilder::applyGroup()
 
 std::string SqlBuilder::applyHaving()
 {
+}
+
+Emwd::db::SqlBuilder* SqlBuilderManager::createSqlBuilder(Emwd::core::Connection *connection)
+{
+    std::string driverName = connection->getDriverName();
+    if (driverName == "mysql")
+    {
+        return new Emwd::db::MysqlSqlBuilder(connection);
+    }
+    else
+        return NULL;
 }
 
 } }

@@ -18,15 +18,14 @@
 
 // Emwd
 #include <core/Model.h>
+#include <core/Connection.h>
+
 #include <db/Criteria.h>
 #include <db/SqlBuilder.h>
-#include <db/Connection.h>
 
 #define EMWD_ACTIVE_RECORD_MAKE_COLUMN(col, type) this->makeColumn(#col, type, (void*)&this->col)
 
 namespace Emwd { namespace db {
-
-class Connection;
 
 /**
  * ActiveRecord
@@ -58,7 +57,7 @@ protected:
 		};
 	};
 	std::list<PRIMARY_KEY> _pks;
-	Emwd::db::Connection* _connection;
+	Emwd::core::Connection* _connection;
 
 	std::map<std::string, FIELD_META>& getMeta()
 	{
@@ -66,7 +65,7 @@ protected:
 	}
 
 public:
-	ActiveRecord(Emwd::db::Connection *connection) {
+	ActiveRecord(Emwd::core::Connection *connection) {
 		this->_connection = connection;
 		//this->setTableSchema();
 	};
@@ -140,7 +139,7 @@ public:
 
 	virtual void setTableSchema() = 0;
 
-	Emwd::db::Connection *getConnection()
+	Emwd::core::Connection *getConnection()
 	{
 		return this->_connection;
 	}
@@ -175,8 +174,8 @@ public:
 		criteria->condition = this->makePkCondition(pk);
 		criteria->limit = 1;
 
-		Emwd::db::Connection::Results results;
-		Emwd::db::SqlBuilder *builder = this->_connection->getSqlBuilder();
+		Emwd::core::Connection::Results results;
+		Emwd::db::SqlBuilder *builder = SqlBuilderManager::createSqlBuilder(this->_connection);
 		std::string sql = builder->buildFindCommand(this, criteria);
 		if (!this->_connection->execute(sql.c_str(), results))
 		{
@@ -184,10 +183,10 @@ public:
 			return false;
 		}
 
-		Emwd::db::Connection::Results::iterator it;
+		Emwd::core::Connection::Results::iterator it;
 		for (it = results.begin(); it != results.end(); ++it)
 		{
-			Emwd::db::Connection::Result::iterator it2;
+			Emwd::core::Connection::Result::iterator it2;
 			for (it2 = (*it).begin(); it2 != (*it).end(); ++it2)
 			{
 				this->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), this->getMeta());

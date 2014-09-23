@@ -8,19 +8,23 @@
 #include <core/Configuration.h>
 #include <core/Model.h>
 #include <core/XmlSerializable.h>
+#include <core/Connection.h>
+
 #include <web/WebApplication.h>
 #include <web/DummyRequest.h>
 #include <web/DummyResponse.h>
 #include <web/Filter.h>
 #include <web/Action.h>
 #include <web/Controller.h>
-#include <db/Connection.h>
+
 #include <db/ar/ActiveRecord.h>
 #include <db/SqlBuilder.h>
+
 #include <validator/NumberValidator.h>
 #include <validator/LengthValidator.h>
 #include <validator/RequiredValidator.h>
 #include <validator/FunctionPointerValidator.h>
+
 // #include <kozaiku/Kozaiku.h>
 
 using namespace Emwd::core;
@@ -408,7 +412,7 @@ public:
     virtual bool processSave() {return true;}
     virtual void registerValidators() {return;}
 
-    Category(Connection *connection) : ActiveRecord(connection)
+    World(Connection *connection) : ActiveRecord(connection)
     {
     	this->setTableSchema();
     }

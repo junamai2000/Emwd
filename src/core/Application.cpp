@@ -13,6 +13,7 @@
 #include <core/Response.h>
 #include <core/Request.h>
 #include <core/Configuration.h>
+#include <core/Connection.h>
 
 namespace Emwd { namespace core {
 
@@ -35,6 +36,15 @@ void Application::setResponse(Emwd::core::Response *response)
 }
 
 /**
+ * set Connection
+ * @param response
+ */
+void Application::setConnection(Emwd::core::Connection *connection)
+{
+    this->_connection = connection;
+}
+
+/**
  * get Request class
  * @return Request Request class set by setRequest()
  */
@@ -50,6 +60,15 @@ Emwd::core::Request* Application::getRequest()
 Emwd::core::Response* Application::getResponse()
 {
     return this->_response;
+}
+
+/**
+ * get Connection class
+ * @return Connection class
+ */
+Emwd::core::Connection* Application::getConnection()
+{
+	return this->_connection;
 }
 
 /**

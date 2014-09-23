@@ -14,7 +14,7 @@
 namespace Emwd { namespace db {
 
 class Criteria;
-class Connection;
+class Emwd::core::Connection;
 /**
  *
  */
@@ -24,10 +24,10 @@ private:
     SqlBuilder() {};
 
 protected:
-    Emwd::db::Connection *_connection;
+    Emwd::core::Connection *_connection;
 
 public:
-    SqlBuilder(Emwd::db::Connection *connection);
+    SqlBuilder(Emwd::core::Connection *connection);
 
     std::string buildFindCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria);
     std::string buildCountCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {} ;
@@ -42,6 +42,13 @@ public:
     std::string applyGroup();
     std::string applyHaving();
 };
+
+class SqlBuilderManager
+{
+public:
+	static Emwd::db::SqlBuilder* createSqlBuilder(Emwd::core::Connection* connection);
+};
+
 } }
 
 #endif /* EMWD_DB_SQL_BUILDER_H_ */

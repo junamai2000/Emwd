@@ -3,7 +3,7 @@
     "name": "Sample Application (this string comes from json)",
     "db": {
       "driver": "mysql",
-      "driverPath": "/home/junya/Emwd/src/db/mysql/",
+      "driverPath": "/home/junya/Emwd/src/core/mysql/",
       "host": "localhost",
       "port": 3340,
       "user": "sample",

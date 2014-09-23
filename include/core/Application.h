@@ -21,6 +21,7 @@ namespace Emwd { namespace core {
 class Request;
 class Response;
 class Configuration;
+class Connection;
 
 /**
  * Application class
@@ -45,6 +46,11 @@ protected:
 	 */
 	Emwd::core::Configuration* _configuration;
 
+	/**
+	 * Connection class
+	 */
+	Emwd::core::Connection* _connection;
+
 public:
 	/**
 	 * start application
@@ -65,6 +71,12 @@ public:
 	virtual void setResponse(Emwd::core::Response *response);
 
 	/**
+	 * Set Connection class
+	 * @param connection
+	 */
+	virtual void setConnection(Emwd::core::Connection *connection);
+
+	/**
 	 * get Request class
 	 * @return Request Request class set by setRequest()
 	 */
@@ -75,6 +87,12 @@ public:
 	 * @return Request Request class set by setRequest()
 	 */
 	virtual Emwd::core::Response* getResponse();
+
+	/**
+	 * get Connection class
+	 * @return
+	 */
+	virtual Emwd::core::Connection* getConnection();
 
 	/**
 	 * set Configuration class
