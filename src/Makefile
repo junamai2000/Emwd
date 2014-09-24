@@ -35,6 +35,14 @@ define make-library
 	$(AR) $(ARFLAGS) $$@ $$^
 endef
 
+define make-so
+  libraries		+= $1
+  sources		+= $2
+
+  $1: $(call source-to-object, $2)
+	$(CC) -shared -fPIC -o $$@ $$^
+endef
+
 # Usage:$(call make-exec-binary, exec-binary-name, source-file-list, libraries)
 define make-exec-binary
   programs	+= $1
@@ -69,7 +77,7 @@ MV := mv -f
 RM := rm -f
 SED := sed
 #C++コンパイラオプション
-CXXFLAGS := -Wall  -fPIC -O3
+CXXFLAGS := -Wall -fPIC -O3
 #リンクを担当する暗黙ルール%:%.oで呼び出される$(LINK.o)がデフォルトで$(CC)なので、CCも設定し直す
 CC := g++
 #リンカのオプション
