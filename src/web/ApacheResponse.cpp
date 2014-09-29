@@ -25,7 +25,7 @@ ApacheResponse::ApacheResponse(request_rec *r)
  */
 void ApacheResponse::setHeader(const char* key, const char* value)
 {
-	this->_header[key] = value;
+	apr_table_setn(this->_req->headers_out, key, value);
 }
 
 void ApacheResponse::setHeaders(std::map<const char*, const char*> header)

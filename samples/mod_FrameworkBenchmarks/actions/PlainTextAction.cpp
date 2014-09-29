@@ -21,8 +21,8 @@ const char* PlainTextAction::getComponentName()
 
 bool PlainTextAction::process()
 {
-    //JsonConfiguration *conf = (JsonConfiguration*)this->getController()->getConfiguration()->getStorage();
-    //Response *response = this->getController()->getApplication()->getRequest()->getResponse();
-    //(*response) << "Start Application : " << conf->getApplicationName(); // << std::endl;
+	Response *response = this->getController()->getApplication()->getResponse();
+	response->setContentType("text/plain");
+	response->setBody("Hello, World");
     return true;
 }

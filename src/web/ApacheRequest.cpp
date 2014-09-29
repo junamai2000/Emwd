@@ -5,6 +5,7 @@
  *  Created on: 2014/09/06
  *      Author: Junya Namai
  */
+#include <iostream>
 #include <web/ApacheRequest.h>
 
 namespace Emwd { namespace web {
@@ -22,36 +23,44 @@ apr_hash_t* ApacheRequest::parse_form_from_string(request_rec *r, char *args)
     char *eq;
     const char *delim = "&";
     char *last;
-    if (args == NULL) {
+    if (args == NULL)
+    {
         return NULL;
     }
 
     form = apr_hash_make(r->pool);
-
-    for (pair = apr_strtok(args, delim, &last);
-            pair != NULL;
-            pair = apr_strtok(NULL, delim, &last)){
-        for (eq = pair; *eq; ++eq){
-            if(*eq == '+'){
+    for (pair = apr_strtok(args, delim, &last); pair != NULL; pair = apr_strtok(NULL, delim, &last))
+    {
+        for (eq = pair; *eq; ++eq)
+        {
+            if(*eq == '+')
+            {
                 *eq = ' ';
             }
         }
         eq = strchr(pair, '=');
-        if (eq) {
+        if (eq)
+        {
             *eq++ = '\0';
             ap_unescape_url(pair);
             ap_unescape_url(eq);
         }
-        else {
+        else
+        {
             eq = (char*)"";
             ap_unescape_url(pair);
         }
+
+        /*
+        std::cerr << pair << " = " << eq << std::endl;
         values = (apr_array_header_t*)apr_hash_get(form, pair, APR_HASH_KEY_STRING);
         if (values == NULL) {
             values = apr_array_make(r->pool, 1, sizeof(char*));
             apr_hash_set(form, pair, APR_HASH_KEY_STRING, values);
         }
         *((char **)apr_array_push(values)) = apr_pstrdup(r->pool, eq);
+        */
+        apr_hash_set(form, pair, APR_HASH_KEY_STRING, apr_pstrdup(r->pool, eq));
     }
 
     return form;
@@ -65,7 +74,6 @@ apr_hash_t * ApacheRequest::parse_form_from_GET(request_rec *r)
 ApacheRequest::ApacheRequest(request_rec *r)
 {
     this->_req = r;
-    this->_get = NULL;
     this->_get = parse_form_from_GET(this->_req);
 }
 

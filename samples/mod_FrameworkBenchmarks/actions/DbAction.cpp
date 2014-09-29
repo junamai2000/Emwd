@@ -41,5 +41,7 @@ bool DbAction::process()
 	picojson::value val(obj);
 	response->setBody(val.serialize().c_str());
 
+	delete world;
+
     return true;
 }

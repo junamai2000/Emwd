@@ -7,6 +7,7 @@
 #include "controllers/FrameworkBenchmarksController.h"
 #include "actions/JsonAction.h"
 #include "actions/DbAction.h"
+#include "actions/QueriesAction.h"
 #include "actions/FortuneAction.h"
 #include "actions/PlainTextAction.h"
 #include "filters/ProcessTimeFilter.h"
@@ -19,6 +20,7 @@ void FrameworkBenchmarksController::init()
     // actions
     this->_jsonAction = new JsonAction();
     this->_dbAction = new DbAction();
+    this->_queriesAction = new QueriesAction();
     this->_fortuneAction = new FortuneAction();
     this->_plaintextAction = new PlainTextAction();
     // Process Time Filter chain
@@ -26,6 +28,7 @@ void FrameworkBenchmarksController::init()
 
     this->registerAction("JsonAction", this->_jsonAction);
     this->registerAction("DbAction", this->_dbAction);
+    this->registerAction("QueriesAction", this->_queriesAction);
     this->registerAction("FortuneAction", this->_fortuneAction);
     this->registerAction("PlainTextAction", this->_plaintextAction);
 
@@ -44,4 +47,5 @@ FrameworkBenchmarksController::~FrameworkBenchmarksController()
     delete this->_dbAction;
     delete this->_fortuneAction;
     delete this->_plaintextAction;
+    delete this->_queriesAction;
 }

@@ -127,7 +127,7 @@ bool MysqlConnection::execute(const char* query, Results &results)
 		}
 		results.push_back(record);
 	}
-
+	mysql_free_result(res);
 	return true;
 }
 
