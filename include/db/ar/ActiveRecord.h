@@ -197,7 +197,7 @@ public:
 	}
 
 	// T find(int id);
-	// std::list<T> findAll(Emwd::db:schema::Criteria criteria);
+	// bool findAll(Emwd::db:schema::Criteria criteria);
 };
 
 } }

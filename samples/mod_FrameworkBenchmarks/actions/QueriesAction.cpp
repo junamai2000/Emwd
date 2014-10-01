@@ -50,6 +50,7 @@ bool QueriesAction::process()
         count = 1;
     }
 
+    picojson::array elements;
     response->setContentType("application/json; charset=UTF-8");
     for (int i = 0; i < count; i++)
     {
@@ -64,10 +65,10 @@ bool QueriesAction::process()
                 std::make_pair("randomNumber", picojson::value((double)world->randomNumber))
                 );
         picojson::value val(obj);
-
-        response->setBody(val.serialize().c_str());
+        elements.push_back(val);
         delete world;
     }
-
+    picojson::value result(elements);
+    response->setBody(result.serialize().c_str());
     return true;
 }

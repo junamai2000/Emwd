@@ -60,7 +60,7 @@ static int FrameworkBenchmarks_handler(request_rec *r)
     // Test type 3: Multiple database queries
     app->registerRoute("/FrameworkBenchmarks/queries", "FrameworkBenchmarksController", "QueriesAction");
     // Test type 4: Fortunes
-    app->registerRoute("/FrameworkBenchmarks/fortune", "FrameworkBenchmarksController", "FortuneAction");
+    app->registerRoute("/FrameworkBenchmarks/fortunes", "FrameworkBenchmarksController", "FortunesAction");
     // Test type 5: Database updates
     // Test type 6: Plaintext
     app->registerRoute("/FrameworkBenchmarks/plaintext", "FrameworkBenchmarksController", "PlainTextAction");
