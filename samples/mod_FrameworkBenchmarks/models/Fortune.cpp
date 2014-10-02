@@ -20,7 +20,7 @@ Fortune::Fortune(Emwd::core::Connection *connection) : ActiveRecord(connection)
 void Fortune::setTableSchema()
 {
     EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, COL_INT);
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, COL_CHAR);
     this->makePrimaryKey("id", COL_INT);
 }
 
@@ -37,7 +37,7 @@ Fortune* Fortune::findByPk(int id, Emwd::core::Connection *con)
     return fortune;
 }
 
-Fortune::Fortunes Fortune::findAll(Emwd::core::Connection *con)
+Fortune::Fortunes* Fortune::findAll(Emwd::core::Connection *con)
 {
 	Emwd::db::Criteria *criteria = new Emwd::db::Criteria();
 	criteria->select = "*";
@@ -53,7 +53,7 @@ Fortune::Fortunes Fortune::findAll(Emwd::core::Connection *con)
 	}
 	delete fortune;
 
-	Fortunes fortunes;
+	Fortunes *fortunes = new Fortunes();
 	Emwd::core::Connection::Results::iterator it;
 	for (it = results.begin(); it != results.end(); ++it)
 	{
@@ -63,7 +63,7 @@ Fortune::Fortunes Fortune::findAll(Emwd::core::Connection *con)
 		{
 			fortune->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), fortune->getMeta());
 		}
-		fortunes.push_back(fortune);
+		fortunes->push_back(fortune);
 	}
 
 	delete criteria;

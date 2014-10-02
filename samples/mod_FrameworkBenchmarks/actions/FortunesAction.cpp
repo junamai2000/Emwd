@@ -2,6 +2,7 @@
 // C++ header
 #include <string>
 #include <core/Response.h>
+#include <core/Connection.h>
 #include <web/Controller.h>
 #include <kozaiku/Kozaiku.h>
 
@@ -19,7 +20,8 @@ const char* FortunesAction::getComponentName()
 bool FortunesAction::process()
 {
 	Response *response = this->getController()->getApplication()->getResponse();
-	Kozaiku *kozaiku = new Kozaiku("/Users/junya/Documents/project/emwd/include/kozaiku/Kozaiku_Template_Autogen.so");
+	Connection *connection= this->getController()->getApplication()->getConnection();
+	//i Kozaiku *kozaiku = new Kozaiku("/Users/junya/Documents/project/emwd/include/kozaiku/Kozaiku_Template_Autogen.so");
 
 	typedef struct _FortuneTmplArgs
 	{
@@ -28,8 +30,14 @@ bool FortunesAction::process()
 	} FortuneTmplArgs;
 
 	FortuneTmplArgs args;
-	kozaiku->display("fortunes", &args);
+	Fortune::Fortunes *fortunes = Fortune::findAll(connection);
+	Fortune::Fortunes::iterator it;
+	for (it = fortunes->begin(); it != fortunes->end(); ++it)
+	{
+		response->setBody((*it)->message);
+	}
+	// kozaiku->display("fortunes", &args);
 	response->setContentType("text/html");
-	response->setBody(args.output.c_str());
+	// response->setBody(args.output.c_str());
     return true;
 }

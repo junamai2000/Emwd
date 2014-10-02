@@ -27,12 +27,19 @@ std::string SqlBuilder::buildFindCommand(Emwd::core::CoreComponent *cc, Emwd::db
     sql += criteria->select;
     sql += " FROM ";
     sql += cc->getComponentName();
-    sql += " WHERE ";
-    sql += criteria->condition;
-    sql += " LIMIT ";
-    std::stringstream ss;
-    ss << criteria->limit;
-    sql += ss.str();
+    if (criteria->condition != "")
+    {
+    	sql += " WHERE ";
+    	sql += criteria->condition;
+    }
+
+    if (criteria->limit > 0)
+    {
+    	sql += " LIMIT ";
+    	std::stringstream ss;
+    	ss << criteria->limit;
+    	sql += ss.str();
+    }
     return sql;
 }
 

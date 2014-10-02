@@ -34,6 +34,12 @@ public:
 	std::string join;
 	std::string having;
 
+	Criteria()
+	{
+		this->condition = "";
+		this->limit = 0;
+	}
+
 	const char* getComponentName()
 	{
 		return "Criteria";

@@ -20,7 +20,7 @@ public:
     virtual void setTableSchema();
 
     static Fortune* findByPk(int id, Emwd::core::Connection *con);
-    static Fortunes findAll(Emwd::core::Connection *con);
+    static Fortunes* findAll(Emwd::core::Connection *con);
 };
 
 #endif
