@@ -20,8 +20,8 @@ Fortune::Fortune(Emwd::core::Connection *connection) : ActiveRecord(connection)
 void Fortune::setTableSchema()
 {
     EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, COL_INT);
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, COL_CHAR);
-    this->makePrimaryKey("id", COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, COL_STRING);
+    EMWD_ACTIVE_RECORD_MAKE_PK(id, COL_INT);
 }
 
 Fortune* Fortune::findByPk(int id, Emwd::core::Connection *con)
@@ -54,18 +54,23 @@ Fortune::Fortunes* Fortune::findAll(Emwd::core::Connection *con)
 	delete fortune;
 
 	Fortunes *fortunes = new Fortunes();
-	Emwd::core::Connection::Results::iterator it;
-	for (it = results.begin(); it != results.end(); ++it)
+	Emwd::core::Connection::Records::iterator it;
+	int index = 0;
+	for (it = results.records.begin(); it != results.records.end(); ++it)
 	{
 		Fortune* fortune = new Fortune(con);
-		Emwd::core::Connection::Result::iterator it2;
-		for (it2 = (*it).begin(); it2 != (*it).end(); ++it2)
+		Emwd::core::Connection::Record::iterator rIt2;
+		int index2 = 0;
+		for (rIt2 = (*it).begin(); rIt2 != (*it).end(); ++rIt2)
 		{
-			fortune->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), fortune->getMeta());
+			fortune->restoreRecord(results.fields[index2].c_str(), (*rIt2).c_str(), fortune->getMeta());
+			index2++;
 		}
 		fortunes->push_back(fortune);
+		index++;
 	}
 
 	delete criteria;
+	delete builder;
 	return fortunes;
 }

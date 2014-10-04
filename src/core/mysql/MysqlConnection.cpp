@@ -8,6 +8,9 @@
 // C header
 #include <string.h>
 
+// C++ Header
+#include <string>
+
 // Emwd
 #include <core/mysql/MysqlConnection.h>
 
@@ -103,29 +106,27 @@ bool MysqlConnection::execute(const char* query, Results &results)
 	int numOfRows = mysql_num_rows(res);
 	int numOfFields = mysql_num_fields(res);
 
-	std::vector<std::string> fieldNames;
-
 	while((field = mysql_fetch_field(res)))
 	{
-		fieldNames.push_back(field->name);
+		results.fields.push_back(field->name);
 	}
 
 	for (int i = 0; i < numOfRows; i++)
 	{
-		std::map<std::string, std::string> record;
+		Connection::Record record;
 		row = mysql_fetch_row(res);
 		for (int j = 0; j < numOfFields; j++)
 		{
 			if (row[j] != NULL)
 			{
-				record[fieldNames[j]] = row[j];
+				record.push_back(row[j]);
 			}
 			else
 			{
-				record[fieldNames[j]] = "";
+				record.push_back("");
 			}
 		}
-		results.push_back(record);
+		results.records.push_back(record);
 	}
 	mysql_free_result(res);
 	return true;
@@ -157,6 +158,21 @@ bool MysqlConnection::prepare(const char* name, const char* query)
 
 bool MysqlConnection::bindParams()
 {
+	return true;
+}
+
+bool MysqlConnection::setCharset(CHAR_SET charset)
+{
+	std::string query = "SET NAMES ";
+	if (charset == UTF_8)
+	{
+		query += "UTF8";
+	}
+
+	if (mysql_query(this->_connection, query.c_str()))
+	{
+		return false;
+	}
 	return true;
 }
 

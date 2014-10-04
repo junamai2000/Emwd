@@ -111,7 +111,7 @@ foreach my $file (@all_files)
 	my $basename = get_base_name($tmp);
 	open my $fh, '<', $file or die $! ." : ". $file;
 
-	#Parse::Lex->trace;  # Class method
+    #Parse::Lex->trace;  # Class method
 	Parse::Lex->exclusive('in_header', 'in_init', 'in_cpp', 'in_echo');
 	$lexer = Parse::Lex->new(@token);
 	$lexer->from($fh);
@@ -129,17 +129,17 @@ foreach my $file (@all_files)
 			#print "Type: ", $token->name, "\t";
 			#print "Content:->", $token->text, "<-\n";
 			if ($token->name eq "H_STRING"){ 
-				$header .= $token->text;
+				$header .= $token->text."\n";
 			} elsif ($token->name eq "I_STRING") {
-				$init .= $token->text;
+				$init .= $token->text."\n";
 				#print $token->text;
 			} elsif ($token->name eq  "C_STRING") {
-				$source .= $token->text ."\n";
+				$source .= $token->text."\n";
 				#print $token->text;
 			} elsif ($token->name eq "E_STRING") {
-				#$source .= 'output->append("'. $token->text .'")';
+				$source .= 'args->output.append('. $token->text .');'."\n";
 			} elsif ($token->name eq "STRING") {
-				$source .= 'output->append("'. $token->text .'");'."\n";
+				$source .= 'args->output.append("'. $token->text .'");'."\n";
 			}
 		} else {
 			last TOKEN;

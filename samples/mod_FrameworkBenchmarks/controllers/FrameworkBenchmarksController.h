@@ -18,6 +18,7 @@ private:
 	Emwd::web::Action* _dbAction;
 	Emwd::web::Action* _queriesAction;
 	Emwd::web::Action* _fortunesAction;
+	Emwd::web::Action* _updatesAction;
 	Emwd::web::Action* _plaintextAction;
 
 	/**

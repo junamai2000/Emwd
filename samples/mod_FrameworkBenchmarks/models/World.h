@@ -13,9 +13,12 @@ public:
     virtual const char* getComponentName();
     virtual bool processSave() { return true; }
     virtual void registerValidators() { return; }
-    World(Emwd::core::Connection *connection);
+    bool update();
+
+    explicit World(Emwd::core::Connection *connection);
     virtual void setTableSchema();
     static World* findByPk(int id, Emwd::core::Connection *con);
+
 };
 
 #endif

@@ -5,7 +5,6 @@
 #include <web/Controller.h>
 
 #include "actions/JsonAction.h"
-#include "models/Category.h"
 #include "vendors/picojson/picojson.h"
 
 using namespace Emwd::core;

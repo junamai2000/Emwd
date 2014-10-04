@@ -62,6 +62,7 @@ static int FrameworkBenchmarks_handler(request_rec *r)
     // Test type 4: Fortunes
     app->registerRoute("/FrameworkBenchmarks/fortunes", "FrameworkBenchmarksController", "FortunesAction");
     // Test type 5: Database updates
+    app->registerRoute("/FrameworkBenchmarks/updates", "FrameworkBenchmarksController", "UpdatesAction");
     // Test type 6: Plaintext
     app->registerRoute("/FrameworkBenchmarks/plaintext", "FrameworkBenchmarksController", "PlainTextAction");
     app->run();
@@ -104,6 +105,16 @@ static void child_init(apr_pool_t *p, server_rec *s)
             conf->getDatabaseUser(),
             conf->getDatabasePassword(),
             conf->getDatabaseName());
+    connection->setCharset(Connection::UTF_8);
+
+    int numOfPreparedStaatement = conf->getPreparedStatementCount();
+    for (int i=0; i<numOfPreparedStaatement; i++)
+    {
+        connection->prepare(
+            conf->getPreparedStatementNameByIndex(i),
+            conf->getPreparedStatementByIndex(i)
+        );
+    }
     apr_pool_cleanup_register(p, s, child_init_destroy, apr_pool_cleanup_null);
 }
 

@@ -23,8 +23,14 @@ class Connection : public Emwd::core::CoreComponent
 private:
 
 public:
-	typedef std::map<std::string, std::string> Result;
-	typedef std::list<Result> Results;
+	typedef std::vector<std::string> Fields;
+	typedef std::vector<std::string> Record;
+	typedef std::vector<Record> Records;
+	typedef struct _Results
+	{
+		Fields fields;
+		Records records;
+	} Results;
 
 	virtual const char* getDriverName() = 0;
 	virtual bool connect(const char* host, int port, const char* user, const char* passwd, const char* db) = 0;
@@ -38,6 +44,9 @@ public:
 	virtual bool execute(const char* query) = 0;
 	virtual bool prepare(const char* name, const char* query) = 0;
 	virtual bool bindParams() = 0;
+
+	enum CHAR_SET {UTF_8, CP932, EUC_JP};
+	virtual bool setCharset(CHAR_SET charset) = 0;
 };
 
 class ConnectionManager

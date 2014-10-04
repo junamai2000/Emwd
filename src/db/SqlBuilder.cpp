@@ -43,28 +43,65 @@ std::string SqlBuilder::buildFindCommand(Emwd::core::CoreComponent *cc, Emwd::db
     return sql;
 }
 
+std::string SqlBuilder::buildUpdateCommand(Emwd::core::CoreComponent *cc, Attributes attributes, Emwd::db::Criteria *criteria)
+{
+    std::string sql = "UPDATE ";
+    sql += cc->getComponentName();
+    sql += " SET ";
+    Attributes::iterator it = attributes.begin();
+    for (; it != attributes.end(); ++it)
+    {
+    	sql += "`";
+    	sql += it->first;
+    	sql += "`";
+    	sql += "=";
+    	sql += it->second;
+    }
+
+    if (criteria->condition != "")
+    {
+    	sql += " WHERE ";
+    	sql += criteria->condition;
+    }
+
+    if (criteria->limit > 0)
+    {
+    	sql += " LIMIT ";
+    	std::stringstream ss;
+    	ss << criteria->limit;
+    	sql += ss.str();
+    }
+    return sql;
+}
+
 std::string SqlBuilder::applyJoin()
 {
+	return "";
 }
 
 std::string SqlBuilder::applyCondition()
 {
+	return "";
 }
 
 std::string SqlBuilder::applyOrder()
 {
+	return "";
 }
 
 std::string SqlBuilder::applyLimit()
 {
+	return "";
 }
 
 std::string SqlBuilder::applyGroup()
 {
+	return "";
 }
 
 std::string SqlBuilder::applyHaving()
 {
+	return "";
 }
 
 Emwd::db::SqlBuilder* SqlBuilderManager::createSqlBuilder(Emwd::core::Connection *connection)

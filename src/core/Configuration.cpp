@@ -155,4 +155,37 @@ int Configuration::getDatabasePort()
 	}
 }
 
+int Configuration::getPreparedStatementCount()
+{
+	return this->_ptree.count("web.db.prepared");
+}
+
+const char* Configuration::getPreparedStatementByIndex(int index)
+{
+	int counter = 0;
+	BOOST_FOREACH(boost::property_tree::ptree::value_type &v, this->_ptree.get_child("web.db.prepared"))
+	{
+		if (counter == index)
+		{
+			const boost::property_tree::ptree &pt2 = v.second;
+			return pt2.get<std::string>("query").c_str();
+		}
+	}
+	return "";
+}
+
+const char* Configuration::getPreparedStatementNameByIndex(int index)
+{
+	int counter = 0;
+	BOOST_FOREACH(boost::property_tree::ptree::value_type &v, this->_ptree.get_child("web.db.prepared"))
+	{
+		if (counter == index)
+		{
+			const boost::property_tree::ptree &pt2 = v.second;
+			return pt2.get<std::string>("name").c_str();
+		}
+	}
+	return "";
+}
+
 } }

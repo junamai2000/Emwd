@@ -36,6 +36,7 @@ public:
 	virtual bool execute(const char* query, Results &results);
 	virtual bool prepare(const char* name, const char* query);
 	virtual bool bindParams();
+	virtual bool setCharset(CHAR_SET charset);
 };
 
 } }

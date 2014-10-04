@@ -12,7 +12,11 @@
             "prepared": [
                 {
                     "name": "world",
-                    "query": "SELECT * FROM World WHERE id = ?"
+                    "query": "SELECT * FROM World WHERE id = ? LIMIT 1"
+                },
+                {
+                    "name": "fortune",
+                    "query": "SELECT * FROM Fortune"
                 }
             ]
         }   

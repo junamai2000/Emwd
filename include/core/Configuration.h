@@ -54,6 +54,9 @@ public:
 	 */
 	const char* getApplicationName();
 
+	/**
+	 * DB Settings
+	 */
 	const char* getDatabaseDriver();
 	const char* getDatabaseDriverPath();
 	const char* getDatabaseHost();
@@ -61,6 +64,9 @@ public:
 	const char* getDatabasePassword();
 	const char* getDatabaseName();
 	int getDatabasePort();
+	int getPreparedStatementCount();
+	const char* getPreparedStatementByIndex(int index);
+	const char* getPreparedStatementNameByIndex(int index);
 };
 
 } }

@@ -1,12 +1,11 @@
 <?header
+#include <string>
+#include <boost/lexical_cast.hpp>
+#include <web/Helper.h>
 #include "models/Fortune.h"
+#include "views/View.h"
 ?>
 <?init
-struct FortuneTmplArgs;
-{
-    std::string output;
-    Fortunes fortunes;
-};
 FortuneTmplArgs *args = (FortuneTmplArgs*)stash;
 ?>
 <!DOCTYPE html>
@@ -17,12 +16,25 @@ FortuneTmplArgs *args = (FortuneTmplArgs*)stash;
 <body>
 <table>
 <tr><th>id</th><th>message</th></tr>
+<?c++
+Fortune::Fortunes::iterator it;
+for (it = args->fortunes->begin(); it != args->fortunes->end(); ++it) {
+?>
 <tr>
-<?c++ for() { ?>
-<td><?= fortune->id ?></td>
-<td><?= fortuen->message ?></td>
-<?c++ } ?>
+<td>
+<?=
+boost::lexical_cast<std::string>((*it)->id)
+?>
+</td>
+<td>
+<?=
+Emwd::web::Helper::encode((*it)->message)
+?>
+</td>
 </tr>
+<?c++
+}
+?>
 </table>
 </body>
 </html>

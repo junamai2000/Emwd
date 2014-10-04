@@ -24,6 +24,7 @@
 #include <db/SqlBuilder.h>
 
 #define EMWD_ACTIVE_RECORD_MAKE_COLUMN(col, type) this->makeColumn(#col, type, (void*)&this->col)
+#define EMWD_ACTIVE_RECORD_MAKE_PK(col, type) this->makePrimaryKey(#col, type, (void*)&this->col)
 
 namespace Emwd { namespace db {
 
@@ -36,7 +37,7 @@ private:
 	ActiveRecord() {};
 
 protected:
-	enum COLUMN_TYPE {COL_BOOL=1, COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR};
+	enum COLUMN_TYPE {COL_BOOL=1, COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR, COL_STRING};
 	struct FIELD_META {
 		COLUMN_TYPE type;
 		void* member;
@@ -55,6 +56,7 @@ protected:
 			double dval;
 			const char* cval;
 		};
+		void* member;
 	};
 	std::list<PRIMARY_KEY> _pks;
 	Emwd::core::Connection* _connection;
@@ -65,7 +67,7 @@ protected:
 	}
 
 public:
-	ActiveRecord(Emwd::core::Connection *connection) {
+	explicit ActiveRecord(Emwd::core::Connection *connection) {
 		this->_connection = connection;
 		//this->setTableSchema();
 	};
@@ -78,11 +80,12 @@ public:
 		this->_meta[col] = meta;
 	}
 
-	virtual void makePrimaryKey(const char* col, COLUMN_TYPE type)
+	virtual void makePrimaryKey(const char* col, COLUMN_TYPE type, void* member)
 	{
 		PRIMARY_KEY pk;
 		pk.col = col;
 		pk.type = type;
+		pk.member = member;
 		this->_pks.push_back(pk);
 	}
 
@@ -97,6 +100,11 @@ public:
 		else if (field.type == COL_CHAR)
 		{
 			const char **tmpChar = (const char**)field.member;
+			*tmpChar = value;
+		}
+		else if (field.type == COL_STRING)
+		{
+			std::string *tmpChar = (std::string *)field.member;
 			*tmpChar = value;
 		}
 		else if (field.type == COL_LONG)
@@ -183,14 +191,18 @@ public:
 			return false;
 		}
 
-		Emwd::core::Connection::Results::iterator it;
-		for (it = results.begin(); it != results.end(); ++it)
+		Emwd::core::Connection::Records::iterator rIt;
+		int index = 0;
+		for (rIt = results.records.begin(); rIt != results.records.end(); ++rIt)
 		{
-			Emwd::core::Connection::Result::iterator it2;
-			for (it2 = (*it).begin(); it2 != (*it).end(); ++it2)
+			Emwd::core::Connection::Record::iterator rIt2;
+			int index2 = 0;
+			for (rIt2 = (*rIt).begin(); rIt2 != (*rIt).end(); ++rIt2)
 			{
-				this->restoreRecord((*it2).first.c_str(), (*it2).second.c_str(), this->getMeta());
+				this->restoreRecord(results.fields[index2].c_str(), (*rIt2).c_str(), this->getMeta());
+				index2++;
 			}
+			index++;
 		}
 		delete criteria;
 		return true;

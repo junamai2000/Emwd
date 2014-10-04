@@ -14,7 +14,7 @@
 namespace Emwd { namespace db {
 
 class Criteria;
-class Emwd::core::Connection;
+
 /**
  *
  */
@@ -28,12 +28,13 @@ protected:
 
 public:
     SqlBuilder(Emwd::core::Connection *connection);
+    typedef std::map<std::string, std::string> Attributes;
 
     std::string buildFindCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria);
-    std::string buildCountCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {} ;
-    std::string buildDeleteCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {} ;
-    std::string buildInsertCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {} ;
-    std::string buildUpdateCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {} ;
+    std::string buildCountCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) { return ""; }
+    std::string buildDeleteCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) { return ""; }
+    std::string buildInsertCommand(Emwd::core::CoreComponent *cc, Emwd::db::Criteria *criteria) {return ""; }
+    std::string buildUpdateCommand(Emwd::core::CoreComponent *cc, Attributes attributes, Emwd::db::Criteria *criteria);
 
     std::string applyJoin();
     std::string applyCondition();

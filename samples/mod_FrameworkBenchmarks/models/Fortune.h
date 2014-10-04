@@ -3,6 +3,7 @@
 #define FB_MODELS_FORTUNE_H_ 
 // C++ Header
 #include <list>
+#include <string>
 
 #include <db/ar/ActiveRecord.h>
 
@@ -10,13 +11,13 @@ class Fortune : public Emwd::db::ActiveRecord
 {
 public:
     int id;
-    const char* message;
+    std::string message;
     typedef std::list<Fortune*> Fortunes;
 
     virtual const char* getComponentName();
     virtual bool processSave() { return true; }
     virtual void registerValidators() { return; }
-    Fortune(Emwd::core::Connection *connection);
+    explicit Fortune(Emwd::core::Connection *connection);
     virtual void setTableSchema();
 
     static Fortune* findByPk(int id, Emwd::core::Connection *con);
