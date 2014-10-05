@@ -37,16 +37,15 @@ private:
 	ActiveRecord() {};
 
 protected:
-	enum COLUMN_TYPE {COL_BOOL=1, COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR, COL_STRING};
 	struct FIELD_META {
-		COLUMN_TYPE type;
+		Emwd::core::Connection::COLUMN_TYPE type;
 		void* member;
 	};
 	std::map<std::string, FIELD_META> _meta;
 
 	struct PRIMARY_KEY {
 		const char* col;
-		COLUMN_TYPE type;
+		Emwd::core::Connection::COLUMN_TYPE type;
 		union
 		{
 			int ival;
@@ -72,7 +71,7 @@ public:
 		//this->setTableSchema();
 	};
 
-	virtual void makeColumn(const char* col, COLUMN_TYPE type, void* member)
+	virtual void makeColumn(const char* col, Emwd::core::Connection::COLUMN_TYPE type, void* member)
 	{
 		FIELD_META meta;
 		meta.type = type;
@@ -80,7 +79,7 @@ public:
 		this->_meta[col] = meta;
 	}
 
-	virtual void makePrimaryKey(const char* col, COLUMN_TYPE type, void* member)
+	virtual void makePrimaryKey(const char* col, Emwd::core::Connection::COLUMN_TYPE type, void* member)
 	{
 		PRIMARY_KEY pk;
 		pk.col = col;
@@ -92,27 +91,27 @@ public:
 	virtual void restoreRecord(const char* col, const char* value, std::map<std::string, FIELD_META> &meta)
 	{
 		FIELD_META field = meta[col];
-		if(field.type == COL_INT)
+		if(field.type == Emwd::core::Connection::COL_INT)
 		{
 			int *tmpInt = (int*)field.member;
 			*tmpInt = atoi(value);
 		}
-		else if (field.type == COL_CHAR)
+		else if (field.type == Emwd::core::Connection::COL_CHAR)
 		{
 			const char **tmpChar = (const char**)field.member;
 			*tmpChar = value;
 		}
-		else if (field.type == COL_STRING)
+		else if (field.type == Emwd::core::Connection::COL_STRING)
 		{
 			std::string *tmpChar = (std::string *)field.member;
 			*tmpChar = value;
 		}
-		else if (field.type == COL_LONG)
+		else if (field.type == Emwd::core::Connection::COL_LONG)
 		{
 			long *tmpLong = (long*)field.member;
 			*tmpLong = atol(value);
 		}
-		else if (field.type == COL_BOOL)
+		else if (field.type == Emwd::core::Connection::COL_BOOL)
 		{
 			std::string tmp = value;
 			bool *tmpBool = (bool*) field.member;
@@ -125,21 +124,21 @@ public:
 				*tmpBool = false;
 			}
 		}
-		else if (field.type == COL_FLOAT)
+		else if (field.type == Emwd::core::Connection::COL_FLOAT)
 		{
 			float *tmpFloat = (float*)field.member;
 			*tmpFloat = (float)atof(value);
 		}
-		else if (field.type == COL_DOUBLE)
+		else if (field.type == Emwd::core::Connection::COL_DOUBLE)
 		{
 			double *tmpDouble = (double*) field.member;
 			*tmpDouble = atof(value);
 		}
-		else if (field.type == COL_DATE)
+		else if (field.type == Emwd::core::Connection::COL_DATE)
 		{
 			// not implemented yet
 		}
-		else if (field.type == COL_BIN)
+		else if (field.type == Emwd::core::Connection::COL_BIN)
 		{
 			// not implemented yet
 		}
@@ -161,13 +160,13 @@ public:
 			PRIMARY_KEY pk = *it;
 			sql = pk.col;
 			sql += "=";
-			if (pk.type==COL_INT)
+			if (pk.type == Emwd::core::Connection::COL_INT)
 			{
 				std::stringstream ss;
 				ss << pk.ival;
 				sql += ss.str();
 			}
-			else if (pk.type==COL_CHAR)
+			else if (pk.type == Emwd::core::Connection::COL_CHAR)
 			{
 				sql += pk.cval;
 			}

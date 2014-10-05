@@ -41,10 +41,9 @@ static int FrameworkBenchmarks_handler(request_rec *r)
     if (strcmp(r->handler, "frameworkbenchmarks")) {
         return DECLINED;
     }
-
+    // Request and Response for Apache
     Request *request = new ApacheRequest(r);
     Response *response = new ApacheResponse(r);
-
     // Application
     WebApplication *app = new WebApplication();
     app->setRequest(request);
@@ -52,7 +51,6 @@ static int FrameworkBenchmarks_handler(request_rec *r)
     app->setConnection(connection);
     app->setConfiguration(conf);
     app->registerController("FrameworkBenchmarksController", controller);
-
     // Test type 1: JSON serialization
     app->registerRoute("/FrameworkBenchmarks/json", "FrameworkBenchmarksController", "JsonAction");
     // Test type 2: Single database query
@@ -65,6 +63,9 @@ static int FrameworkBenchmarks_handler(request_rec *r)
     app->registerRoute("/FrameworkBenchmarks/updates", "FrameworkBenchmarksController", "UpdatesAction");
     // Test type 6: Plaintext
     app->registerRoute("/FrameworkBenchmarks/plaintext", "FrameworkBenchmarksController", "PlainTextAction");
+    // Run
+    // Todo: Need to catch exception?
+    // Todo: Check return value
     app->run();
 
     delete request;
@@ -83,7 +84,7 @@ static apr_status_t post_config_destroy(void *data)
 static int post_config(apr_pool_t *p, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s)
 {
     conf = new Configuration();
-    conf->readJson("/home/junya/Emwd/samples/mod_FrameworkBenchmarks/test.json");
+    conf->readJson("/home/junya/Emwd/samples/mod_FrameworkBenchmarks/fwb-conf.json");
     controller = new FrameworkBenchmarksController();
     apr_pool_cleanup_register(p, s, post_config_destroy, apr_pool_cleanup_null);
     return OK;

@@ -3,3 +3,5 @@
 
 # このアーカイブのルールを生成
 # $(eval $(call make-exec-binary, test, test.cpp, web/web.a validator/validator.a core/core.a))
+
+$(eval $(call make-so, libemwd.so, ,*/*.o))

@@ -19,16 +19,16 @@ World::World(Emwd::core::Connection *connection) : ActiveRecord(connection)
 
 void World::setTableSchema()
 {
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, COL_INT);
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(randomNumber, COL_INT);
-    EMWD_ACTIVE_RECORD_MAKE_PK(id, COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, Connection::COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(randomNumber, Connection::COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_PK(id, Connection::COL_INT);
 }
 
 World* World::findByPk(int id, Emwd::core::Connection *con)
 {
     PRIMARY_KEY pk;
     pk.ival = id;
-    pk.type = COL_INT;
+    pk.type = Connection::COL_INT;
     pk.col = "id";
     std::list<PRIMARY_KEY> pks;
     pks.push_back(pk);
@@ -44,7 +44,7 @@ bool World::update()
 
     PRIMARY_KEY pk;
     pk.ival = this->id;
-    pk.type = COL_INT;
+    pk.type = Connection::COL_INT;
     pk.col = "id";
     std::list<PRIMARY_KEY> pks;
     pks.push_back(pk);

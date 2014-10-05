@@ -32,11 +32,23 @@ public:
 	virtual bool inTransaction();
 	virtual bool rollback();
 	virtual bool commit();
+
+	// Normal
 	virtual bool execute(const char* query);
 	virtual bool execute(const char* query, Results &results);
 	virtual bool prepare(const char* name, const char* query);
+
+	// Prepared - not implemented yet
+	virtual bool executePreparedStatement(const char* name, Results &results);
+	virtual bool executePreparedStatement(const char* name);
 	virtual bool bindParams();
+
 	virtual bool setCharset(CHAR_SET charset);
+
+	virtual ~MysqlConnection()
+	{
+		;
+	}
 };
 
 } }

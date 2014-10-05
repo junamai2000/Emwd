@@ -7,6 +7,9 @@
  */
 #ifndef EMWD_CORE_CONNECTION_H_
 #define EMWD_CORE_CONNECTION_H_
+// C Header
+#include <pthread.h>
+
 // C++ header
 #include <map>
 #include <list>
@@ -22,7 +25,12 @@ class Connection : public Emwd::core::CoreComponent
 {
 private:
 
+protected:
+	pthread_mutex_t _connectionMutex;
+
 public:
+	enum COLUMN_TYPE {COL_BOOL=1, COL_INT, COL_LONG, COL_FLOAT, COL_DOUBLE, COL_DATE, COL_BIN, COL_CHAR, COL_STRING};
+
 	typedef std::vector<std::string> Fields;
 	typedef std::vector<std::string> Record;
 	typedef std::vector<Record> Records;
@@ -40,13 +48,29 @@ public:
 	virtual bool inTransaction() = 0;
 	virtual bool rollback() = 0;
 	virtual bool commit() = 0;
+
+	// For Normal SQL execution
 	virtual bool execute(const char* query, Results &results) = 0;
 	virtual bool execute(const char* query) = 0;
+
+	// For Prepared Statement
 	virtual bool prepare(const char* name, const char* query) = 0;
+	virtual bool executePreparedStatement(const char* name, Results &results) = 0;
+	virtual bool executePreparedStatement(const char* name) = 0;
 	virtual bool bindParams() = 0;
 
 	enum CHAR_SET {UTF_8, CP932, EUC_JP};
 	virtual bool setCharset(CHAR_SET charset) = 0;
+
+	Connection()
+	{
+		pthread_mutex_init(&(this->_connectionMutex), NULL);
+	}
+
+	virtual ~Connection()
+	{
+		pthread_mutex_destroy(&(this->_connectionMutex));
+	}
 };
 
 class ConnectionManager

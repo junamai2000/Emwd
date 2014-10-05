@@ -39,7 +39,6 @@ Emwd::core::Connection* ConnectionManager::loadDriver(const char* path, const ch
 	getEmwdDatabaseDriver = (Emwd::core::Connection* (*)(void))dlsym(handle, symbol.c_str());
 	if (getEmwdDatabaseDriver == 0)
 	{
-		std::cerr << "case 2" << std::endl;
 		return NULL;
 	}
 	return getEmwdDatabaseDriver();

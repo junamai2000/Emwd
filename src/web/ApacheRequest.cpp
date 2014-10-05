@@ -79,6 +79,11 @@ ApacheRequest::ApacheRequest(request_rec *r)
 
 const char* ApacheRequest::getGet(const char* key)
 {
+	if (!this->_get)
+	{
+		return "";
+	}
+
     return (const char*)apr_hash_get(this->_get, key, APR_HASH_KEY_STRING);
 }
 

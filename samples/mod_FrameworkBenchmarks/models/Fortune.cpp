@@ -19,16 +19,16 @@ Fortune::Fortune(Emwd::core::Connection *connection) : ActiveRecord(connection)
 
 void Fortune::setTableSchema()
 {
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, COL_INT);
-    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, COL_STRING);
-    EMWD_ACTIVE_RECORD_MAKE_PK(id, COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(id, Connection::COL_INT);
+    EMWD_ACTIVE_RECORD_MAKE_COLUMN(message, Connection::COL_STRING);
+    EMWD_ACTIVE_RECORD_MAKE_PK(id, Connection::COL_INT);
 }
 
 Fortune* Fortune::findByPk(int id, Emwd::core::Connection *con)
 {
     PRIMARY_KEY pk;
     pk.ival = id;
-    pk.type = COL_INT;
+    pk.type = Connection::COL_INT;
     pk.col = "id";
     std::list<PRIMARY_KEY> pks;
     pks.push_back(pk);
